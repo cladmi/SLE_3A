@@ -7,11 +7,8 @@ Le premier CPU envoye le message à la mémoire,
 et prévient le controlleur d'interruption qui préviendra le second CPU. 
 
 Adrien :
-
-connexion de deux ARM9 avec 1 ports initiateurs chacun:
-
-ajout d'une mémoire
-
+Connexion de deux ARM9 avec 1 ports initiateurs chacun:
+Ajout d'une mémoire
 Proc1 écrit dans mémoire
 Proc1 déclenche interruption
 Controleur d'interruption envoie interruption à Proc2
