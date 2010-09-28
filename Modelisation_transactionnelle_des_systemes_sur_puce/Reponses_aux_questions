@@ -1,0 +1,15 @@
+Question Page 78 :
+
+Gaetan : 
+Ils ne peuvent pas communiquer directement.
+Il faut ajouter une mémoire partagée et un controleur d'interruption. 
+Le premier CPU envoye le message à la mémoire,
+et prévient le controlleur d'interruption qui préviendra le second CPU. 
+
+
+
+
+
+−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−
+
+
