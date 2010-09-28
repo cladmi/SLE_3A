@@ -1,0 +1,22 @@
+J'ai créé un dépôt Github, accessible en READ ONLY à l'adresse git://github.com/cladmi/SLE_3A.git
+
+Si vous voulez CONTRIBUER il vous faudra un compte gratuit Github.
+Une fois qu'il sera créé, faites moi savoir votre login et je vous ajouterais en tant que collaborateurs au projet.
+Une fois que vous serez ajouté, vous pourrez pusher sur le dépot qui sera accessible en READ WRITE à l'adresse git@github.com:cladmi/SLE_3A.git
+
+Pour récupérer le contenu du dépot :
+git clone <adresse>
+avec <adresse> qui vaut soit la première soit la seconde si vous avez les droits d'accès.
+Et après c'est du git classique. C'est bien documenté pour ceux qui ont jamais utilisé, et sinon demandez à quelqu'un directement, ça sera plus simple.
+
+
+Mettez à jour vos informations concernant votre nom prénom et email, les commandes pour le faire vous seront communiquées lors du premier push (il faut déjà être collaborateur du projet pour ça).
+
+Règles supplémentaires :
+ - conservez la présentation des documents que ce soit simple à maintenir. On finira par générer automatiquement un latex à la fin, donc gardez bien les ** pour les questions, les == pour les noms et les 80 - pour les transitions entre les sections
+ - évitez les abréviations, il y a des gens qui pourraient ne pas savoir ce que ça veut dire.
+ - faites attention à la justesse de la langue, on est censé devenir ingénieur et savoir écrire
+ - écrivez en Français ou Anglais suivant ce qui vous va le mieux, je ne recommande pas les autres langues, du fait que vraiment peu de gens en profiteront
+
+
+En espérant qu'on validera tous notre semestre 5, grâce ou non à ça.
