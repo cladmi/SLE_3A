@@ -1,0 +1,45 @@
+== Gaetan
+Thales avionique
+Thales a 3 pôles : défense, sécurité et avionique. Produits duals, origine défense utilisés pour sécurité et avionique.
+Projet important A350.
+1/3 gens de Valence == centrale inertielle, permet de savoir la position
+R&D -> avancé par Thales et retour sur investissements seulement lors des ventes des produits.
+Galileo, concurrent de GPS -> récepteurs faits à Valence
+Il faut lire le rapport du crash d'Ariane 5, le vol 501
+Valence -> spécialisés capteurs.
+...
+1 ligne de code == 1h au pire. À cause de la validation.
+20% du code == fait la fonction
+80% du code == monitoring, vérifie que pas d'erreur
+...
+Norme DO178B
+Norme DO178B donne des objectifs mais ne dit pas comment les atteindre. Il faut donner les preuves qu'on les atteints. DO est indépendante de la technologie.
+Il faut pouvoir ressortir n'importe quelle version du logiciel même 30 ans après. + outils pour tester, plus une verification (checksum) des sources
+2 méthodes de preuves :
+- instructionnelle == preuve de l'assembleur
+- preuve haut niveau, prouve chaque branches + preuve compilateur ne modifie pas les branches
+..
+1 Exigence système = en entrée : que doit faire le logiciel
+2 High Level Requirement -> page 47 des slides…
+3 Low Level Requirement -> est censé être directement transformable en code
+4 Exigences dérivées : pas liée au niveau ou la demande -> capacité de debug, il en faut le minimum
+..
+Cycle de développement en V
+Beaucoup (trop ?) de temps avant de pouvoir tester, tests unitaires sont souvents oubliés, intégration Big-Bang
+On ne peut plus revenir sur la spec après
+Pas de suivi avec le client
+Méthode la plus utilisée pour le développement, surtout pour l'avionique, est dans les mentalités des gens, certains disent même que la DO l'impose
+..
+Méthodes agiles
+"Manifesto for Agile Software Development"
+Moins proche du contrat, plus proche du client => collaboration
+Itérations très courtes, "Sprint" d'un mois. Implication du client à chaque fin de boucle, pour valider ce qui est fait, et prévoir les priorités pour la suite.
+Certaines pratiques :
+- Faire le test avant de faire le code
+- Prog par contrat : Test + spec, assert des pré-conditions et post-conditions
+Résultats de meilleur qualité.
+Le programme "tourne plus" car testé en continu et toutes les nuits.
+..
+Difficile et lent de faire accepter une nouvelle méthode, obligé de faire ça sur des petits projets d'abord, sans avertir toute la hierarchie, puis faire lentement remonter les résultas.
+..
+LEAN -> faire uniquement des choses utiles pour le client, en adéquation avec méthodes agiles.
