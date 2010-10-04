@@ -1,0 +1,230 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{pgf}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{eurosym}
+\usepackage{wrapfig}
+
+\newcommand{\unitnb}[2]{\unit{\nombre{#1}}{#2}}
+\newcommand{\hexa}[1]{$\mathrm{\textbf{0x}}{#1}$}
+\definecolor{vert}{rgb}{0.2,0.6,0.4} 
+\definecolor{gris}{rgb}{0.4,0.4,0.4} 
+
+\newcommand{\lettrine}[2]{\hspace{5mm}\LARGE{#1}\normalsize{#2}}
+
+\newenvironment{changemargin}[2]{\begin{list}{}{
+	\setlength{\topsep}{0pt}
+	\setlength{\leftmargin}{0pt}
+	\setlength{\rightmargin}{0pt}
+	\setlength{\listparindent}{\parindent}
+	\setlength{\itemindent}{\parindent}
+	\setlength{\parsep}{0pt plus 1pt}
+	\addtolength{\leftmargin}{#1}
+	\addtolength{\rightmargin}{#2}
+}\item }{\end{list}}
+
+%--------------------EVITE LES ORPHELINS-----------
+\widowpenalty=10000
+\clubpenalty=10000
+\raggedbottom
+%--------------------------------------------------
+
+\makeatletter
+\@addtoreset{chapter}{part}
+\makeatother
+
+%\renewcommand{\FrenchLabelItem}{\textbullet}
+
+\textwidth = 15cm
+\hoffset = -1.54cm
+\voffset = -1cm
+\headsep = 0cm
+\headheight = 0cm
+\topmargin = 1cm
+\textheight = 22cm
+
+%% Package pour faire des liens dynamiques entre les pdf
+\usepackage[pdftex,
+		    bookmarks         = true,       % Signets
+		    bookmarksnumbered = true,       % Signets numérotés
+		    pdfpagemode       = None,       % Signets fermé à l'ouverture
+		    pdfstartview      = FitH,       % La page prend toute la largeur
+		    colorlinks        = true,       % Liens en couleur
+		    urlcolor          = cyan,				% Couleur des liens externes
+		    pdfborder         = {0 0 0}   	% Style de bordure
+    		]{hyperref}
+
+\hypersetup{
+    pdfauthor   = {Adrien Oliva},
+    pdftitle    = {Rapport de conférence},
+    pdfsubject  = {Conférence technologique},
+    pdfkeywords = {SLE conférence rapport avionique thales},
+    pdfcreator  = {PDFLaTeX},
+    pdfproducer = {PDFLaTeX}
+}
+
+\begin{document}
+
+\begin{wrapfigure}{r}{2cm}
+	\centering
+	\includegraphics[width=40mm]{img/ensimag.png}
+	\includegraphics[width=40mm]{img/thales_avionics.png}
+\end{wrapfigure}
+
+Adrien Oliva
+
+\rule{5cm}{1pt}
+
+\vspace{1cm}
+
+\begin{center}
+\Large
+\textbf{Rapport de conférence technologique}
+\normalsize
+\end{center}
+
+\begin{flushright}
+Nicolas Blanpain et Pascal Fortin
+
+24 septembre 2010
+\end{flushright}
+
+\vspace{10mm}
+
+\rule{15cm}{0.5pt}
+
+\vspace{2cm}
+
+Cette conférence technologique, présentée par messieurs Blanpain et Fortin
+de Thales, montre les enjeux de la programmation dans le domaine de 
+l'avionique et les méthodes de programmation mise en \oe{}uvre au sein de 
+leur société.
+
+\section{Enjeux de l'avionique}
+
+Quand on parle de logiciel embarqué au sein de l'avionique, il faut 
+respecter un bon nombre de contraintes. En effet, dans un tel domaine, le
+coût du bug est très important, tant au niveau matériel comme par exemple
+le bug de la centrale inertielle du vol 501 d'Arianne 5 dont le coût est
+estimé à 370 millions de dollars, qu'au niveau humain lorsqu'on parle de
+système sur un avion de ligne de type airbus A350.
+
+Les systèmes embarqués pour l'avionique sont à la convergence de plusieurs
+problèmes techniques~: ce sont des logiciels \textbf{embarqués}, 
+\textbf{temps réels}, et \textbf{critiques}. Ainsi, le logiciel doit 
+satisfaire et répondre à des normes strictes. Dans le cas de l'avionique,
+cette norme est la DO-178B qui contient 5 niveaux de criticité de A à E,
+basé sur les conséquences que produisent un bugs dans le logiciel. Le 
+niveau E est le plus bas en spécifiant que le problème est sans effet sur
+la sécurité du vol, tandis que le niveau A implique un problème 
+catastrophique conduisant presque inévitablement vers un crash de l'avion.
+
+Pour de tels systèmes critiques, le coût de la ligne de code est le plus
+important parmis toutes les lignes de codes écrites dans d'autres domaines.
+En effet, il faut compter une ligne à l'heure pour un logiciel critique 
+répondant aux normes DO-178B de niveau A. D'une manière générale, dans un
+système critique, seul 20\% du code fait la fonctionnalité initiale~; le 
+reste va gérer les cas particuliers et les effets de bord.
+
+\section{Méthodes Agiles}
+
+Les méthodes agiles consistent en des méthodes de développement logiciel
+de type incrémentale, c'est-à-dire qu'à tout moment du développement, un
+logiciel, même incomplet peut être livré à un client. Ce logiciel offre de
+plus en plus de fonctionnalité au fur et à mesure des itérations.
+
+\subsection{Historique}
+
+Les méthodes agiles ont été introduites par le Manifeste Agile, 
+officialisées en \oldstylenums{2001} par 17 personalités du génie logiciel.
+Elles se basent sur 4 valeurs que sont \textbf{l'équipe}, qui est au centre
+de la chaîne de développement, \textbf{l'application}, qui est finalement 
+plus importante que la documentation associée, \textbf{la collaboration}, 
+qui permet d'associer constamment le client à l'équipe de développement 
+pour réellement répondre à ses attentes, et enfin, \textbf{l'acceptation au
+changement}, qui permet une flexibilité dans l'application finale.
+
+Même si l'ensemble des méthodes agiles fut officialisé en 
+\oldstylenums{2001}, certaines d'entres elles ont été définies bien plus
+tôt. Ainsi par exemple, la méthode SCRUM, utilisé par Thalès Aerospace à
+Valence, est définie en \oldstylenums{1996}. Elle propose l'évolution du 
+logiciel par fonctionnalitées. À chaque itération de la méthode, une 
+nouvelle fonctionnalitée est implantée, testée, et documentée. Un autre 
+exemple est la méthode XP pour eXtreme Programming, enoncé en 
+\oldstylenums{1999}, qui préconnise des cycles de développement rapides et 
+repose sur la programmation en binôme.
+
+\subsection{Incrémentation}
+
+Les méthodes agiles instaurées au sein de Thalès repose sur la combinaison
+de la méthode SCRUM et de la méthode XP. Il s'agit donc de cycle de 
+développement rapides basés sur les fonctionnalités du logiciel avec 
+une programmation en binôme au sein d'une équipe soudée. Chaque cycle
+d'incrémentation comprend les étapes suivantes~:
+
+\begin{itemize}
+\item définition de la nouvelle fonctionnalitée à implanter en accord et
+avec le concours du client.
+\item découpage et répartition de la fonctionnalitée aux binômes de 
+programmation. Le découpage se fait en suivant la philosophie KISS (voir
+la section~\ref{Kiss} pour plus de détail).
+\item écriture des tests et vérification que ces test échouent sur la
+version courante du logiciel.
+\item implantation de la nouvelle fonctionnalitée et partage du code produit
+avec toute l'équipe.
+\item validation par, entre autre, les tests écrits en début de cycle. 
+S'ajoute à cette validation les tests de non régression effectués chaque 
+nuit sur la version courante.
+\item écriture de la documention strictement nécessaire sur cette 
+fonctionnalitée.
+\item livraison de la nouvelle version au client
+\end{itemize}
+
+\subsection{Avantages face à un cycle en V}
+
+Le cycle en V impose plusieurs prérequis. Tout d'abord, l'intégralité du
+logiciel final doit être définit et spécifié dès le début. Ensuite, chaque
+étape (spécification, architecture, conception, tests…) est confiée à des
+personnes différentes ce qui implique forcément des problèmes de 
+compréhension lié à la différence entre ce qu'on pense, ce qu'on écrit et
+ce qu'on comprend. La méthode SCRUM évite ces inconvénients. À chaque cycle,
+le client peu remodeler sa vision d'une fonctionnalitée~: la nouvelle 
+itération va alors s'adapter à cette vision. Contrairement au modèle en V, 
+les méthodes agiles offres plus de flexibilité. De plus, l'équipe de 
+développement est associé dans son ensemble à toutes les étapes de la 
+création du logiciel, allant de la spécification à la validation en passant
+par l'implantation.
+
+\section{Un mot sur la philosophie KISS}
+\label{Kiss}
+
+KISS est un acronyme pour \textit{Keep It Simple, Stupid}. Cette philosophie
+impose par exemple de découper une fonction complexe en une multitude de 
+fonction simple dont le fonctionnement est stupide. Comme le disait 
+Léonard de Vinci~: ``La simplicité est la sophistication ultime''.
+
+\section*{Sources}
+
+Méthodes Agiles, article wikipedia, 
+\href{http://fr.wikipedia.org/wiki/M%C3%A9thode_agile}
+{http://fr.wikipedia.org/wiki/Méthode\_agile}
+
+Méthodes Scrum, article wikipedia,
+\href{http://fr.wikipedia.org/wiki/Scrum_(m%C3%A9thode)}
+{http://fr.wikipedia.org/wiki/Scrum\_(méthode)}
+
+Philosophie Kiss, wiki de la distribution Archlinux,
+\href{http://wiki.archlinux.org/index.php/The_Arch_Way}{The Arch Way}
+
+\end{document}
