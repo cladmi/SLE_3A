@@ -1,0 +1,43 @@
+** 02 - C++
+	
+
+
+--------------------------------------------------------------------------------
+
+** 03 - Modélisation TLM
+
+== Gaetan
+sc_time : couple {valeur, unité de temps}
+	temps simulé != temps pris par la simulation (Wall clock Time)
+	 - Computation : temps de simulation avance
+	 - Wait : temps simulé avance
+	Les deux avancent en même temps en pratique, mais pas toujours à la même vitesse.
+SystemC -> 
+	Faire les fils == sc_module.sc_port.bind(sc_signal) == sc_module.sc_port(sc_signal) !! sc_port n'est pas une fonction
+	Faire les composants : hérite de la classe sc_module 
+		constructeur doit avoir en argument un sc_module_name (compatible avec une string) 
+	Macros : 	'SC_MODULE(Additionneur)' == 'struct Additionneur : public sc_module'; 
+			'SC_CTOR(Additionneur)'
+	Module a un nom de classe, un nom de variable et un nom d'instance 'Additionneur add1("Composant 1");'
+	Regarder constructeur page 25. Attention, SC_MODULE(compname) { … SC_HAS_PROCESS(compname) …} il faut que compname == compname
+	Processus ne lâchent pas la main tant qu'ils ne le disent pas explicitement.
+	 => atomicité, mais besoin de "redonner la main"
+	 Attention aux : while(!x) et en face x= true, on voudrait que ça puisse changer.
+	SC_METHOD : toujours appeler la méthode mère "Add8bits::Add8bits(sc_module_name nom) : sc_module(nom)" page 33
+		SC_METHODE(calcul);
+		sensitive << a << b;
+		+
+		void Compteur:calcul() { }
+		//
+		sensitive << clk.pos(); // front montant
+	
+	ST_THREAD -> attente de temps ou d'événement
+	sc_event -> permet de réveiller sur un événement sc_event.notify()
+	Scheduling Algorithm : regarder page 50-51
+
+	
+		
+
+
+
+
