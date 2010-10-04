@@ -1,5 +1,23 @@
 ** 02 - C++
-	
+== Gaetan
+ne pas mettre 'using namespace nom' dans un .h pour ne pas polluer tout le code
+'<<' si on change le format, il faut le remettre normal après (syntaxe ?) 
+endl -> vide buffer écriture
+Pour les paramètres, mettre toujours des références constantes 'const type &name'
+ sauf :	si il faut modifier pour l'appelant -> référence non constante
+ 	si il faut modifier à l'intérieur de la fonction -> passage par copie
+class nom { … }; // ne pas oublier le point virgule !! De base tout est privé dans une classe
+!! struct C++ != struct C. En c++ c'est une classe où tout est public (ne pas l'utiliser de base)
+new [] => delete []
+Il y a de l'héritage multiple
+'class Voiture : public Vehicule' si on omet le public, on ne pourra pas accéder aux méthodes mères
+ public : visible partout
+ private : visible uniquement dans cette classe
+ protected : visible dans la classe + classe filles, à utiliser pour des "choses stables"
+Les attributs constants peuvent uniquement être initialisés, et non affectés
+Il faut donc faire un appel du constructeur dès l'initialisation de la classe :
+voiture::voiture(…) : vehicule(immatriculation)
+Si on ne le met pas, le constructeur sans argument est appelé
 
 
 --------------------------------------------------------------------------------
