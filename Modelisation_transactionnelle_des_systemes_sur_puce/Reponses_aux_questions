@@ -20,6 +20,9 @@ Proc2 lit en mémoire
 
 −−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−
 
-** Question Page XX 
+** Question Page 34 
+
+== Gaetan
+Pour faire un additionneur générique n bits, on utilise un template et non pas n additionneurs 1 bit.
 
 
