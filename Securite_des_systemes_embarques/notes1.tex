@@ -98,4 +98,17 @@ D'autres perturbations existent tels que des ``glitches'' sur l'horloge ou l'ali
 TODO\\
 
 \subsubsection{Laser-based attack}
+Plus le circuit est petit, plus le laser doit être cher et complexe. Permet de modifier des valeurs.
+
+\subsubsection{Fault-based attacks}
+En créant une faute, on peut exploiter le résultat et obtenir la clé. 
+La Bellcore attack à permis de casser la clé de 1024 bit du RSA avec un résultat crypté correct et un autre erroné (avec laser) et par un simple calcul du GCD (greatest common divisor ou PGCD) on obtient la clé (Description page 45).
+
+
+\subsection{Conclusion}
+Une attaque a réussi non pas quand on a injecté une faute mais quand on a obtenu le résultat. Donc il faut que le résultat d'une attaque par faute doit être caché ou être corrigé, ou de changer l'erreur (repmlacer par une autre erreur). \\
+==> Attention au changement de delais.\\
+Autres exploitations d'erreurs : changer la configuration du circuit (compteur illimter de tentatives pour le code PIN, ``protection bypass'', ..
+
+
 \end{document}
