@@ -1,0 +1,114 @@
+% definit le type de document et ses options
+\documentclass[a4paper,12pt]{article}
+
+% des paquetages indispensables, qui ajoutent des fonctionnalites
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{fancyvrb}
+\usepackage[francais]{babel}
+
+\begin{document}
+\section{Séance 1}
+\textit{Summary}\\
+Common Criteria sont particulièrement importants et essentiel mais tous les systèmes ne peuvent pas les suivre. En effet, de nombreux systèmes sont trop complexes pour correspondre aux critères. Seul les cartes à puces correspondent le mieux (EAL5-6-7).
+
+\section{Séance 2}
+\large{\textbf{Les méthodes d'attaques}}\\
+\normalsize
+Types d'attaques :
+\begin{description}
+\item[Implementation based attacks] Attaque au laser, rajout de composants, de sondes ... 
+\item[Observation-based] Mesure du courant lors d'une utilisation normale ou caractéristique pour repérer la clé de chiffrement et comprendre le fonctionnement du circuit.
+\item[Perturbation-based] A partir d'une perturbation induite, et le résultat, repérer le fonctionnement du circuit.\\
+\end{description}
+
+\textbf{Définir la menace} (pirate dans son garage, chercheur dans une université).
+\subsection{Méthodes invasives}
+\begin{description}
+\item[Depackaging/Repackaging] (Exemple de la carte à puce) Récupérer la puce en enlevant tout le plastique de la carte et en le plaçant dans des solutions chimiques (pour dissoudre le plastique), puis obtenir le circuit. On rajoute souvent des détecteurs de lumière pour repérer l'état. En effet, cette étape est utilisée principalement pour le debuggage et la qualité, cependant en rajoutant des capteurs de lumière, on peut détecter une attaque et détruire les informations. Le pirate qui s'y connaît un peu, peut toujours déconnecter les capteurs. Il s'agit du premier niveau de protection.
+
+\item[Direct optical observation] De nos jours, il est difficile d'analyser un circuit car les circuits sont sur plusieurs couches, et ils sont souvent très petits. Cela empêche au pirate de situer les composants dans le circuit (mémoire, chiffrement).
+\end{description}
+\large{Méthodes physiques}
+\normalsize
+\begin{description}
+\item[Layout observation and micro-probing] On peut supprimer les couches (chimiques), pour repérer ce qui est utile et ce qui n'est que du remplissage. (voir example page 26, une première image avec seulement les rails d'alimentation, et dans la deuxième, on peut localiser de nombreux composants et ensuite comprendre le circuit par l'analyse, et tester d'autres attaques sur un autre circuit). Après avoir analyser le circuit, on peut descendre des ``aiguilles'' (micro-probing) pour sonder les puces. Deux problèmes, il faut localiser précisément les signaux que l'on veut mesurer (le micro-probing se fait souvent sur les bus car il y a plus de chance d'obtenir le bus du processeur. Il faut aussi en poser un nombre suffisant en simultané ( en étant doué, quelques dizaines de pointes ) car il est difficile de les placer de façon stable. De plus, il faut pouvoir analyser, en post-traitement, les signaux récupérer. Il faut donc beaucoup de compétences, de matériels et de temps pour faire cette attaque. Pour un FPGA classique, il suffit de moins de 10 pointes (l'horloge, entrées/sorties ...)
+
+\item[Reading ROM Memory contents] On peut récupérer le programme du système et parfois la clé de chiffrement. Pour éviter cela, il faudrait mélanger les bits, c'est-à-dire, 8 bits qui se suivent doivent être éparpillé sur toute la surface de la ROM, cela permet d'éviter qu'une simple lecture du masque suffit à lire la ROM.
+
+\item[Reverse engineering] A partir du matériel, on en déduit la fonction du circuit (ex : décodeur DVD).
+
+\item[Physical interventions] On peut modifier le circuit en coupant certaines connexions et d'en recréer d'autre (pour ``supprimer'' certains éléments de sécurité comme des capteurs ou pour réparer un fusible qui a servi pour les tests (scanpath), un fusible qui a sauté est facilement localisable).
+\end{description}
+\large{Méthodes sans contact}
+\normalsize
+\begin{description}
+\item[Voltage contrast microscopy (SEM)] Méthode permettant d'obtenir le comportement des circuits sans abîmer le circuit en prenant des photos au microscope.
+\item[Dynamic analysis of data sent on a bus]
+\end{description}
+\subsection{Méthodes non invasives}
+\large{\textbf{Side channels} ou canaux cachés} \\
+\normalsize
+Il ne suffit pas de faire du circuit intégré pour avoir un circuit sécurisé. Il existe de nombreux éléments qui peuvent permettre d'analyser un circuit (avec des attaques qui s'y rapportent) :
+\begin{description}
+\item[Execution time] : Timing Attack.
+\item[Power consumption] : Power attacks (SPA / DPA / CPA).
+\item[Electromagnetic emmisions] : Electromagnetic Attack (EMA)
+\item[Sound, heat, photons] : analyse des secteurs du circuit qui travaille à l'instant t.
+\end{description}
+
+A partir de ces mesures, il faut savoir décoder les données qui correspondent. 
+De plus, il est démontré que les algorithmes secrets sont peu fiables par rapport à ceux testés et prouvés (RSA, il y a juste la clé à protéger, l'AES est le remplaçant du DES qui est obsolète par la force brute). Car il y a beaucoup plus de gens qui peuvent le tester et le confirmer. L'inconvénient est, bien sûr, que tout le monde connaît l'algorithme et ce qui est important à mesurer.
+
+\subsubsection{Timing attacks}
+Selon les entrées, le temps de réponse peut aider à analyser la réponse. Une condition sur la clé par exemple. La solution est de modifier le code de tel façon que qu'on est le même temps quelque soit l'entrée (perte de performance).
+La ``timing attack'' est souvent utilisé sur le code PIN car l'aglorithme compare les chiffres un par un. Donc plus, la vérification met du temps, plus le nombre de chiffres sont bons.
+Cependant le fait qu'il est un nombre limité d'essais oblige un meilleur algorithme. \\
+L'optimisation des processeurs permet d'avoir une description plus exacte dans la timing attack car il travaille uniquement quand il a besoin de faire quelque chose.
+
+\subsubsection{Power consumption}
+TODO
+\\
+Un transitor consomme lors d'un changement d'états. Donc si on a une hypothèse ou un accès on a un ensemble réduit d'hypothèse sur la valeur finale en analysant la consommation d'un groupe de transistor. On peut donc ainsi faire des hyphotèses sur la clé jusqu'à faire une attaque par force brute.\\
+\large{\textbf{SPA, simple power analysis}}\\
+La consommation n'est pas la même selon la valeur du bit.
+L'exemple page 35 permet de savoir où se situe le calcul le plus complexe du RSA et on peut en déduire le type de calcul. Et ainsi, on sait quand recupèrer la clé.\\
+\large{\textbf{DPA, differential power analysis}}\\
+Moyenne de courbes de consommations
+
+Sur un bus, on a souvent Y=aH(X)+b avec Y puissance consommée, X la donnée, et H le poids de Hamming. Peu précis mais permet d'avoir une approche.
+Pour être plus précis, il y a le modèle de la distance de Hamming : Y=aH(P-X)+b avec P la valeur précédente.
+
+Sur l'image de la page 38, la mesure de la différentiel permet de deviner quand on a obtenu la bonne clé sur l'ensemble des tests.
+
+
+\subsubsection{Electomagnetic attacks}
+Même chose que la consommation mais avec un matériel différent et plus précis (méthode encore théorique et difficile en pratique). Plus d'information sur le signal enregistré. Beaucoup de contraintes et de paramètres.
+
+\subsubsection{Perturbation-based attacks}
+A pour méthode de changer les conditions de fonctionnement en manipulant la fréquence de la clock, l'alimentation et la temperature, causant des changements de temps de propagations. Pour lutter contre ces methodes, on rajoute des capteurs (qui peuvent être désactivé).
+D'autres perturbations existent tels que des ``glitches'' sur l'horloge ou l'alimentation, des perturbations optiques ou électromagnétiques.\\
+
+\large Overclocking vs clock glitch : \normalsize \\
+TODO\\
+
+\subsubsection{Laser-based attack}
+Plus le circuit est petit, plus le laser doit être cher et complexe. Permet de modifier des valeurs.
+
+\subsubsection{Fault-based attacks}
+En créant une faute, on peut exploiter le résultat et obtenir la clé. 
+La Bellcore attack à permis de casser la clé de 1024 bit du RSA avec un résultat crypté correct et un autre erroné (avec laser) et par un simple calcul du GCD (greatest common divisor ou PGCD) on obtient la clé (Description page 45).
+
+
+\subsection{Conclusion}
+Une attaque a réussi non pas quand on a injecté une faute mais quand on a obtenu le résultat. Donc il faut que le résultat d'une attaque par faute doit être caché ou être corrigé, ou de changer l'erreur (repmlacer par une autre erreur). \\
+==> Attention au changement de delais.\\
+Autres exploitations d'erreurs : changer la configuration du circuit (compteur illimter de tentatives pour le code PIN, ``protection bypass'', ..
+
+
+\end{document}
