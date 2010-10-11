@@ -1,0 +1,97 @@
+
+
+
+**Wed Oct 6
+
+==Gaetan
+Temps
+Objectif : ordonner les événements
+ UTC : Coordinated Universal Time -> horloge atomique
+ 	Leap second 23h59'59'' -> 0h00'01''
+
+ UT1 : Temps Solaire : ralentit 1.7ms par siècle
+
+ PC : quartz
+ 	boot : heure récupérée par le système qui s'en occupe lui même par la suite
+	runtime :  
+		RDTSC : (ASM) : Timestamp Counter : compte le nombre de clock déclenchés depuis le boot
+			-> relatif au boot
+			-> changement de fréquence
+		gettimeofday : syscall -> prend du temps => pas précis
+Algorithmes de synchronisation :
+	Berkeley : sur un réseau fermé sans horloge (time server)
+	Cristian (1989) : 1 client avec 1 serveur
+	NTP : le standard
+
+ Berkeley : 1 ensemble de machine
+ 	Objectif : leur donner la même heure
+	 1) Choisir un coordinateur
+	 2) le coordinateur demande l'heure à tout le monde
+	 3) Moyenne
+	 4) Renvoie de l'heure à toutes les machines
+	Problèmes :
+	 1) Temps de communication entre les machines
+	 2) Choix de la machine référente ?
+ Cristian : 1 serveur de référence, 1 client se met à l'heure.
+			T2			T3	
+ Server ----------------+-----------------------+-------------------------------
+                       /|		 	|\
+                      / |		 	| \
+                     /  |			|  \
+                    /   |			|   \
+ Client -----------+----+-----------------------+----+---------
+  		  T1 D1				  D2  T4		
+ En supposant D1~D2, D = (D1+D2)/2
+	 Correction à effectuer :
+	  T4 + THETA = T3 + Delta
+	  si THETA < 0 on ralenti l'horloge
+	  si THETA > 0 on accélère l'horloge
+ 	 Problèmes :
+	  1) si D1!= D2, (utilisation du réseau) -> moyenner (ne règle pas le problèmes de connections asymétriques)
+	  2) Utiliser plusieurs serveurs
+ NTP : Network Time Protocol -> transmet UTC
+ 	Organisé en strates :
+	  Niveau 0 : horloges atomiques (pas de synchro, pas de réseau)
+	  Niveau 1 : PCs : reçoivent le temps du niveau 0, connectés à internet.
+	  Niveau 2 : NTP pour déterminer le temps 
+	  Niveau 3 : Reçoivent les requêtes du reste du monde
+	10ms de décalage par internet, 200 microsecondes en locale
+  Algorithme : Pool de sources
+  	1) Déterminer la confiance qu'on a dans la source
+	2) Créer une table des intervalles de confiance
+	 	Pour un intervalle :
+		 2 tuples : <offset (temps), type> type = -1 au début de l'intervalle +1 à la fin
+	3) Trier la table par offset croissant
+	4) int = 0; best = 0;
+	   for (i = 1; i <= n; i++) {
+	   	int = int - type[i];
+		if (int > best) {
+			best = int; 
+			start = offset[i];
+			end = offset[i+1];
+		}
+	   }
+Ordre sur les événements / messages
+ Idée : identifier les relations de causalité
+ 	Deux Événements sur la même machine sont forcément ordonnés
+	La réception d'un message a toujours lieu après son envoi
+	Transitivité 
+ Modèle de processus
+  Pi : processus
+  e1i, e2i, … eni événements
+  Tout changement local est un événement
+  Tout envoie/réception aussi
+  e1i -> e2i : e1i arrivé avant e2i
+
+  Horloge de Lamport : 
+   chaque process possède un compteur (LC)
+   chaque événement incrémente le compteur
+   Envoie : LCi++ -> timestamp message
+   Réception : LCi = max (LCi, Message)
+   	       LCi ++
+
+		
+
+
+
+
