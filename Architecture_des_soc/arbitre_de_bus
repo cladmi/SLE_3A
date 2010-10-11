@@ -1,0 +1,41 @@
+== Adrien
+
+Système de m maitre (0..m-1)
+arbitre avec priorité fixe
+
+Pseudo code vhdl:
+
+ok: signal
+i: integer
+
+for (i = 0..m-1) {
+   s[i] = 0;
+   if e[i] and not ok then
+      s[i] = 1;
+      ok = true;
+   end if
+}
+
+
+-- Avec priorité tournante
+
++------ +1 ----+
+|              |
+|   +----+     |
+|   |    |     |
++---|    +-----+----------------------------------+
+    | /\ |     |                                  |
+  +-+/  \|     |                                  |
+  | +----+     |s = log_2(n)                      |
+e |            |                                  |
+--+            v                                  v
+           +-------+        +-------+        +--------+
+           |       |        |       |        |        |
+           |       |        |       |        |        |
+      m    |       |   m    |       |   m    |        |        +------+
+ -----/----| shift |---/----| fix   +---/----| shift  +--------| enc  |->mux
+           | left  |        | prio  |        | right  |        +------+
+           |       |        |       |        |        |
+           |       |        |       |        |        |
+           +-------+        +-------+        +--------+
+
