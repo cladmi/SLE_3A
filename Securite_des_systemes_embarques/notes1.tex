@@ -111,4 +111,68 @@ Une attaque a réussi non pas quand on a injecté une faute mais quand on a obte
 Autres exploitations d'erreurs : changer la configuration du circuit (compteur illimter de tentatives pour le code PIN, ``protection bypass'', ..
 
 
+
+\section{Séance 3}
+
+www.industrie.gouv.fr/logiciel-embarque : Rapport du gouvernement sur le logiciel embarqué.
+Beaucoup de demandes dans l'industrie (30000 pour 5 ans).\\
+
+Page 47\\
+
+L'attaque par faute est surtout une erreur logiciel (commutation d'un bit (SEU) ou plusieurs (MBU)). Finalement, nous obtenons un ou plusieurs bits erronés dans un registre. Il faut faire appel aux codes correcteurs d'erreurs (le bit de parité ne suffit pas toujours).
+Les attaques doivent être réalistes, il faut que l'attaque corresponde au profil de l'attaquant en prévoyant ses moyens.
+\\
+Au sujet du logiciel, les attaques se font de plus en plus nombreuses car les systèmes sont plus ``ouverts'' (ex : téléphone). Il faut se méfier : 
+\begin{itemize}
+\item des failles du logiciel
+\item des buffers qui ne doivent pas être ``overflow''
+\item des trojans (ex : certaines applis pour smartphones)
+\item du réseau, avec les attaques classiques sur un réseau.
+\end{itemize}
+Pour cela, plusieurs solutions pour les ``smart-cards'', il faut déjà connaître son matériel pour adapter le logiciel parfaitement, implémenter les dernières technologies qui ont été vérifiées par la communauté ... (exemple page 48). Les failles sont plutôt dans l'EEPROM (stockage applis) mais la partie critique est dans la ROM (où se trouve le coeur de la carte SIM). Quelques attaques :
+\begin{itemize}
+\item Attaque par downgrade en installant la version précédente pour rendre le système sensible à une faille connue.
+\item Les attaques à distance pour les systèmes sans fils (un mètre ou plus) en récupérant des informations ou autres ... Il faut prendre en compte les émissions EM générées par le clavier qui peuvent être récupéré à distance (dépend de l'équipement 15 ou 20 m, les pertes ne sont pas trop importantes et passe tout cryptage) ==> existe.
+\item Faire confiance (ou pas) aux laboratoires externes et étrangers qui peuvent rajouter des failles ( pas d'exemple sur cela // voir pologne, communications bancaires).
+\end{itemize}
+Non seulement les produits doivent être sécurisés mais ils doivent être vérifiés et testés. Il faut vérifier que les protections n'entraînent pas des dysfonctionnements. 
+\subsection{Attaques : impact des techniques de tests}
+Les attaques sur l'horloge lorsque l'horloge est externe (l'horloge doit être interne) car la synchronisation de l'attaque et la base de temps pour l'attaquant est une faille. Alors que il y a parfois besoin d'une horloge externe pour les tests. 
+Les accès privilégiés sur le circuit sont utiles pour les tests mais peuvent se révéler être des failles. Exemple page 51 : l'implantation du ``scanpath'' est à surveiller, dans les exemples fournis, ils faut peu de signaux pour contrôler totalement le circuit.\\
+{\bf Sécurisation des modes de tests}
+\begin{itemize} 
+\item clé secrète
+\item Détection de décalage lors du mode test
+\item Rajout d'aléatoire dans la chaîne (complique la tâche à l'attaquant et le testeur, connaissant l'algorithme, peut faire ses tests)
+\item Rajout de bits non utiles
+\item Éviter les techniques de scan en utilisant des tests auto.
+\end{itemize}
+
+En conclusion, quasiment toutes les contraintes de design ont un lien avec la sécurité. 
+
+\subsection{Modélisation et caractérisation des erreurs}
+
+A une époque, il était évalué que la plupart des attaques seraient une faute sur un seul bit.
+Deux exemples : l'attaque de Giraud qui modifie un seul bit à un certain moment du système mais n'importe où. Et l'attaque de Blömer avec l'inversion l'une valeur qui est plus complexe mais qui change beaucoup.
+
+{\bf Attaque par laser}\\
+Selon la taille du laser, plusieurs bits d'un registre peuvent être modifié. L'élargissement du faisceau est possible par contre la réduction l'est moins. Les solutions sont la parité d'une cellule d'un registre ...
+Actuellement, plusieurs bits peuvent être modifié en même temps et sur plusieurs registres.\\
+Il faut noter que les protections coûtent très rapidement très chers, il faut donc parfois faire des compromis.
+
+Pour éviter l'optimisation par l'outil de synthèse qui pourrait supprimer les parties de vérification et de redondance dans un bloc, il faut décrire des blocs séparés (en VHDL) pour que l'outil les synthétisent et optimisent indépendamment. Après coup, les portes sont mélangés pour éviter l'identification des blocs.
+L'implantation de blocs de vérifications et de redondance coûte cher en place et en argent (même pour une simple parité, il y a des codeurs et décodeurs à rajouter).
+
+{\it Étude d'une attaque au laser page 63-66}
+
+{\it Étude d'une attaque basée sur la SRAM d'un FPGA : page 66-68}
+
+\subsection{Protections : page 80}
+Compromis sécurité/coût. Les approches évoluent rapidement, des méthodes pour détruire des protections peuvent apparaître en quelques mois : 100\% sécurisé n'existe pas. Les protections peuvent faire apparaître des possibilités pour d'autres.
+
+\subsection{influence du style de design}
+Les circuits asynchrones sont plus robustes que les synchrones (pics de consommation, émission EM ...)
+
+
+
 \end{document}
