@@ -25,4 +25,11 @@ Proc2 lit en mémoire
 == Gaetan
 Pour faire un additionneur générique n bits, on utilise un template et non pas n additionneurs 1 bit.
 
+−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−
+
+** 05 question page 43. On n'a pour l'instant que des connections points à points, Que manque t'il -- comment faire ?
+
+== Gaetan
+Les connection N initiateurs M cibles
+On ajoute un composant pour modéliser le bus (sc_module)
 

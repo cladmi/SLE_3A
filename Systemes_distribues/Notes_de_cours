@@ -82,16 +82,61 @@ Ordre sur les événements / messages
   Tout changement local est un événement
   Tout envoie/réception aussi
   e1i -> e2i : e1i arrivé avant e2i
-
-  Horloge de Lamport : 
+Horloge de Lamport : 
    chaque process possède un compteur (LC)
    chaque événement incrémente le compteur
    Envoie : LCi++ -> timestamp message
    Réception : LCi = max (LCi, Message)
    	       LCi ++
+   Si a->b alors LCa < LCb
 
-		
+----------------------------------------------------------------------
+** Wed Oct 13		
 
+== Gaëtan
+Examen systèmes répartis
+	1 Fondamentaux
+	1.1 Gestion de temps
+Q1
+    1                         2                 8                     
+     m1                      m2                m3               
+1 ---+------------------------+----------------+---------------------
+   0  \                        \              /                         
+      1\−−−−−−−−−−−−−−\         \2           /                                
+        |    3 m4  m5 4\         \          /   m3 8                    
+2 ------+-------+--+----\---------+--------/----+--------------------
+   0    m1     /    \    \        m2      /    /                         
+        2     /2     \4   \       5      /_7__/                          
+             /        \    \            /                              
+3 -----+----+----------+----+----------+-----------------------------
+   0   |    m4         m5    m1        m3                               
+       |    2          5     6          7                              
+       1                                                               
+Totally ordered multicast : N Processus
+	- Chaque message est envoyé à tout le monde
+	- canal de communication FIFO et Loss-less
+	- Sur chaque Pi	
+		- LCi
+		- chaque message est timestampé avec LC
+		- à la reception d'un message un "ack" est envoyé à tout le monde
+		- file à priorité sur les message reçus (timestamp)
+	- un message n'est délivré à l'application que si
+		- tout le monde a envoyé un "ack"
+		- le message est le plus petit timestamp
+	- Si deux messages ont la même horloge, il faut un moyen de les ordonner 
+	  de la même façon sur toutes les machines. Ex : id machine
+Vector Clocks :
+	- chaque processus possède son vecteur de compteurs
+	- VCi[i] = LCi
+	Local : VCi[i]++
+	Envoi : VCi[i]++
+		VCm = VCi
+	Réception : 	VCi[k] = max(VCm[k], VCi[k]) pour tout k!=i
+			VCi[i]++
+Causally Ordered Multicast :
+	un message est envoyé à l'application si
+		VCm[sender] = VCr[sender] + 1
+		VCm[k] <= VCr[k] pour tout k!=sender
 
 
 

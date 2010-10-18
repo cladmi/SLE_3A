@@ -1,4 +1,3 @@
-
 me:
 	@(runner=`whoami`;\
 	if test $$runner != "root" ; \

@@ -53,9 +53,47 @@ SystemC ->
 	sc_event -> permet de réveiller sur un événement sc_event.notify()
 	Scheduling Algorithm : regarder page 50-51
 
-	
+--------------------------------------------------------------------------------	
 		
+** 05 - 11 Octobre 2010
 
+== Gaetan
+Connexions port à port
+	Pour pouvoir mettre une boîte englobante, connecter un port de sortie d'un sous-bloc à un port de sortie de la boîte englobante
+Brancher port externe directement sur le bus 
+	Utilisable depuis l'extérieur
+	sc_port ~> sc_export : transmet les appels à l'objet auquel il est connecté -> permet de recevoir des appels
+page_19
+	De base : un process dans chaque module qui écoute
+	Maintenant : maître va appeler directement des appels vers esclave
+On souhaite modéliser page 26, on envoie les actions avec une plage d'adresse
+	??Manque une partie, je révais??
+Ensitlm
+	Librairie pour simplifier les read et les writes
+	tlm_generic_payload
+	(page 33)
+	Possibilité de rendre ou non la main
+Interfaces pour transactions bloquantes
+	Toute la transaction se fait en un appel
+	interface tlm_blocking_transport_if<TRANS>
+	retour par le même TRANS (passé en référence)
+Transport bloquant
+	On se bloque en attendant la requète
+Transport non bloquant
+	(page 37)
+	forward_path et backward_path (nb_transport_fw, nb_transport_bw) 
+	=> un thread de chaque côté, + plus d'appels de méthodes, + de code => seulement si nécessaire d'avoir de la précision au niveau timing
+Question page 43
+Ensitlm 
+	Limitations : 
+		protocole bloquant seulement
+		Pas de généricité : adresses : typedef uint32_t addr_t, données; typedef uint32_t data_t;
+		Pas de byte enable (pouvoir écrire un seul octet au lieu de 4 d'un coup)
+		Pas de transactions par blocs
+		Seulement deux commandes : read/write (pas de lock)
+		Peu d'optimisations de performances possibles
 
+	
+	
 
 
