@@ -110,6 +110,56 @@ Ensitlm
 ** 07 - 18 Octobre 2010
 	
 == Gaetan
+TLM :
+	--
+	moins précis
+	pas synthétisable
+	++
+	un peu l'esperanto du développement logiciel/matériel
+	développement + debug
+	vérification hardware
+		=> précision fonctionnelle
+	~ parfois => analyse de performance
+		=> besoin de précisions sur des choses non fonctionnelles
+		=> temps, énergie, …
+Vérification de hard
+	~ je dormais ~
+TLM for SW development
+	Modéliser tout ce qu'on a besoin pour le dev embarqué et seulement ça
+	- fonctionnement
+	- mapage adresses
+	- ~ architecture  globale, pas la micro architecture (on oublie pipeline /fifos)
+~~~ not looking ~~~
+Wrappers natifs
+	intégration dans la plateform 
+	- #include
+	- linker les .o
+	- dlopen (utilisé pour les plugins …)
+Abstraction du hardware
+	HAL
+	Si des choses sont différentes entre le matériel et le logiciel :
+	- on met une fonction dans une API qu'on va utiliser. 1 définition plusieurs implem
+	- en pratique : difficile à gérer du code existant quand ça devient gros
+	=> portable
+Question : Implémentation standard de gestion des interruptions ?
+	NON
+	Dépendant de l'archi + il y a un OS
+		gérer interruptions :
+		- void irq_handler(void)
+		- while (!condition) { /* nothing */} ne fait rien tant que pas d'interruption == polling 
+		- attente explicite d'interruption (pas dispo sur microblaze)
+	Ne va pas marcher tel quel
+		- le while () { /* nothing */ }=>   en systemeC -> nothing = wait => on utilise HAL cpu_relax() 
+		- attente explicite ne compile même pas en général
+	wait_for_irq()
+		
+
+
+	
+
+
+	
+
 
 	
 	
