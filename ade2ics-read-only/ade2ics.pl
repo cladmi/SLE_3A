@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 # Author: Jean-Edouard BABIN, je.babin in telecom-bretagne.eu
-# Extended by:
+# Notable contributors:
 #	Ronan Keryell, rk in enstb.org
 #	Matthieu Moy, Matthieu.Moy in grenoble-inp.fr
 #	François Revol, Francois.Revol in imag.fr
@@ -27,6 +27,8 @@
 #	(would be usefull for the cgi version where some users still try to load older project no longer existing
 #
 # For history see the end of the script
+#
+# If you want to contact author and contributors you can write to ade2ics in googlegroups.com
 
 use strict;
 use warnings;
@@ -787,6 +789,11 @@ sub debug_url {
 __END__
 
 History (doesn't follow commit revision)
+
+Reversion 3.5 TBD
+Improved tree parsing
+Improved hours parsing
+Fix a problem with some version of module used by WWW::Mechanize
 
 Revision 3.4 2010/05/08
 Improve output when path (-a) is invalid
