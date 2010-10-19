@@ -1,0 +1,8 @@
+Pour récupérer son emploi du temps
+Les chiffres après le -n sont ceux que vous trouver dans l'url de votre emplois du temps disponible à l'adresse 
+https://intranet.ensimag.fr/ZENITH/affiche-etu.php?ETU=votre_login
+
+J'ai du ajouter le 239 à la main qui correspond à mon cours d'anglais. 
+Pour le trouver dans ADE, passer sur le nom du cours dans l'arborescence et vous aurez son numéro dans la barre des tâches
+
+perl ade2ics.pl -u http://ade52-inpg.grenet.fr/ade/ -l voirIMATEL -p imatel -y 'ENSIMAG2010-2011' -n 239,1788,1736,1742,1751,1820,1877,1899,1875,1874,1873,1901,1905,1909 -v > emplois_du_temps.ics
