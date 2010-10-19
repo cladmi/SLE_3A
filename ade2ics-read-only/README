@@ -1,6 +1,7 @@
 Pour récupérer son emploi du temps au format ics 
 (utilisé par google agenda entre autre)
 
+
  perl ade2ics.pl -s Ensimag -u http://ade52-inpg.grenet.fr/ade/ -l voirIMATEL -p imatel -y 'ENSIMAG2010-2011' -n 239,1788,1736,1742,1751,1820,1877,1899,1875,1874,1873,1901,1905,1909 > emplois_du_temps.ics
 
 	Les chiffres après le -n sont ceux que vous trouvez dans l'url de votre emplois du temps disponible à l'adresse 
@@ -27,7 +28,11 @@ BEGIN failed--compilation aborted at ade2ics-read-only/ade2ics.pl line 37.
  	Signifie qu'il faut que vous installiez le paquet "libterm-readkey-perl"
 
 
+Sources :
 
-ade2ics
-ADE Campus schedule to ICS converter 
-http://code.google.com/p/ade2ics/
+	Ensiwiki
+	http://ensiwiki.ensimag.fr/index.php/Emplois_du_temps_en_ligne_avec_ADE
+
+	ade2ics
+	ADE Campus schedule to ICS converter 
+	http://code.google.com/p/ade2ics/
