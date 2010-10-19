@@ -4,7 +4,7 @@ Pour récupérer son emploi du temps au format ics
 
  perl ade2ics.pl -s Ensimag -u http://ade52-inpg.grenet.fr/ade/ -l voirIMATEL -p imatel -y 'ENSIMAG2010-2011' -n 239,1788,1736,1742,1751,1820,1877,1899,1875,1874,1873,1901,1905,1909 > emplois_du_temps.ics
 
-	Les chiffres après le -n sont ceux que vous trouvez dans l'url de votre emplois du temps disponible à l'adresse 
+	Les nombres après le -n sont ceux que vous trouvez dans l'url de votre emplois du temps disponible à l'adresse 
 	https://intranet.ensimag.fr/ZENITH/affiche-etu.php?ETU=votre_login
 
 	J'ai dû ajouter le 239 à la main, c'est le numéro qui correspond à mon cours d'anglais. 
