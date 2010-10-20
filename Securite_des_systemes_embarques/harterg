@@ -1,0 +1,84 @@
+==Cours 11 Octobre 2010
+**Gaëtan
+Erreurs logiciels
+ Set d'un seul ou de plusieurs bites SEU/MBU ==
+ Induction dans une logique combinatoire
+ Effet final : bit erronés dans un registre
+???????
+Modèles d'attaques
+ Les attaques sont elles réalistes ?
+  Attaquer à un cycle précis à un endroit précis
+  (Attaque de ??  demi exponentiation) On peut taper à peu près où on veut avec une plage de temps large
+Les types d'attaques en software
+ Avancement des capacités des systèmes embarqués donne de plus en plus de possibilité d'attaque
+ Carte à puce, -> possibilité d'ajouter des choses dessus donne un point d'entrée
+ 	Exploitation des failles
+	Buffer overflow ("facile" car buffer petit, mais systèmes d'exploitation sont plus sécurisés, 
+	 il faut arriver à toucher le buffer, après c'est facile
+	Chevaux de troie, vers -> possibilité de télécharger des application, cachés dans des jeux
+	Connectés au réseau => virus, tous types d'attaque réalisés sur internet
+ => faire mieux que ce qu'on fait sur PC
+ Logiciel très bas niveau, très proche du matériel => connaissance du matériel
+ Bien identifier CE qui est critique et doit être protégé
+ Obscurité n'est plus utilisé pour algo de crypto, on utilise des choses qui sont connus et validés,
+  idem firewall, micro-kernels sécurisés. 
+Ex : carte java
+ tout ce qui est fait en matériel est "normalement" bien fait en usine
+ Il faut bien protéger au niveau logiciel, pour éviter que les applis téléchargées ne puissent attaquer là où il ne doit pas.
+Cas particulier : matériel reconfigurable
+ Par ex flash-based FPGA ou Sram
+ Attaque par "Downgrade". 
+ On trouve une faille, on la corrige, on met à jour. 
+ L'attaquant downgrade, connaît la faille, et attaque sur la faille
+Problématique "nouvelle"
+ Accès sans fil.
+	Accès à distance, si == à 1cm, ça va
+	Si à 1m, il y a une attaque possible sans le savoir. Afin de récupération d'information ou cloning
+	Papier d'identité, ou récupération des touches tapées sur le clavier par analyse des ondes électromagnétique
+ Chevaux de troie matériels
+	Modèles Fabless -> Délocalisation de fabrication => a t'on bien ce qu'on a commandé ?
+	Attaque au niveau du circuit intégré, => vhdl synthétisable, a t'il ajouté des choses ? 
+	 en pratique, on envoie plutôt des masques, les attaques sont plus difficiles, mais possibles
+	Est-ce qu'il n'y pas de circuits ajoutés à côté du principal qui permettraient de prendre le contrôle
+% 
+Attacks: impact on test techniques
+ Si on connaît l'horloge, on peut se synchroniser pour attaquer => horloge totalement interne, pas d'accès externe
+ Boundary scan/scanpath 
+ Peut être utilisé pour attaquer
+ Authentification pour accéder au test (ajout d'un ?? de chiffrement)
+ Détection de décalage inattendu 
+Contraintes sur le design et lien avec la sécurité
+ Taille -> limite les protections
+ Fréquence d'horloge -> limite protections et augmente les possibilités de fautes 
+ Consommation d'énergie : 
+  dynamique -> (side channel) == attaque par analyse de consommation 
+  température -> attaque par fautes, (on évite les ventilateurs)
+ Nombre de pins : indirectement (attaque par buffer overflow ??)
+ On-chip interconnection : Oui
+ Testabilité
+ Caractéristiques électromagnétiques : attaque side channel + perturbation possible
+ 	Contraintes de sécurité en plus des contraintes déjà présentes
+%
+Caractérisation et modélisation des erreurs
+ Modèle SEU, acceptable à une époque (un ion qui change la mémoire),
+ Attaques théoriques
+	 Attaque sur AES (2003): stuck at bits Attaque stuck-at-0, en attaquant successivement les 128bits
+	 Attaque Giraud : un seul bit modifié avant d'executer le dernier SubBytes, mais n'importe où dans le circuit
+	 Blömer's Attack on ECC -> inverser le signe => dépend du codage, si complément à 2 == compliqué
+   Dans la pratique, que peut-on mettre en œuvre ? Giraud, oui, les autres sont plus dures
+  Faute n'a d'effet que si conduit à erreur qui conduit ensuite à défaillance
+ Attaque par laser: SEU ou multiple bit-flips
+	Dépends de la taille du laser, de là où on vise
+	Si bits à côté l'un de l'autre, on peut en modifier 2 dans le registre.
+	Une solution -> écarter spatialement les bits, => on peut élargir le faisceau et toucher plusieurs bits 
+	==> on ne pas plus se limiter à une seule erreur sur un seul registre. => fausse sécurité
+ From Singel Event Transiant to soft error
+  	Si arrive au bon moment et est échantillonné c'est gagné,
+	Peut avoir comme conséquence de changer plusieurs bits en sortie
+Besoin de charactérisation :
+	Toute protection demande de connaître les menaces
+	La sur protection a un coût
+  
+  
+
+ 

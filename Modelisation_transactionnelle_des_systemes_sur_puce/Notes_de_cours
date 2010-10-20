@@ -1,23 +1,33 @@
 ** 02 - C++
 == Gaetan
-ne pas mettre 'using namespace nom' dans un .h pour ne pas polluer tout le code
-'<<' si on change le format, il faut le remettre normal après (syntaxe ?) 
-endl -> vide buffer écriture
-Pour les paramètres, mettre toujours des références constantes 'const type &name'
- sauf :	si il faut modifier pour l'appelant -> référence non constante
- 	si il faut modifier à l'intérieur de la fonction -> passage par copie
-class nom { … }; // ne pas oublier le point virgule !! De base tout est privé dans une classe
-!! struct C++ != struct C. En c++ c'est une classe où tout est public (ne pas l'utiliser de base)
+using namespace <espace_de_nom>
+	ne pas mettre 'using namespace nom' dans un .h pour ne pas polluer tout le code
+std::cout
+	'<<' si on change le format, il faut le remettre normal après (syntaxe ?) 
+	endl -> vide buffer écriture
+Pour les paramètres 
+Toujours mettre des références constantes 'const type &name'
+	 sauf :	si il faut modifier pour l'appelant -> référence non constante
+ 		si il faut modifier à l'intérieur de la fonction -> passage par copie
+class nom { … }; 
+struct nom { … };
+	// ne pas oublier le point virgule !! 
+	De base tout est privé dans une classe
+	!! struct C++ != struct C. 
+	En c++ c'est une classe où tout est public (ne pas l'utiliser de base)
 new [] => delete []
-Il y a de l'héritage multiple
-'class Voiture : public Vehicule' si on omet le public, on ne pourra pas accéder aux méthodes mères
- public : visible partout
- private : visible uniquement dans cette classe
- protected : visible dans la classe + classe filles, à utiliser pour des "choses stables"
-Les attributs constants peuvent uniquement être initialisés, et non affectés
-Il faut donc faire un appel du constructeur dès l'initialisation de la classe :
-voiture::voiture(…) : vehicule(immatriculation)
-Si on ne le met pas, le constructeur sans argument est appelé
+Classes et hériatge
+	Il y a de l'héritage multiple
+	'class Voiture : public Vehicule' 
+		si on omet le public, on ne pourra pas accéder aux méthodes mères
+	public : visible partout
+	private : visible uniquement dans cette classe
+	protected : visible dans la classe + classe filles, à utiliser pour des "choses stables"
+Appels des methodes mêres
+	voiture::voiture(…) : vehicule(immatriculation)
+		Les attributs constants peuvent uniquement être initialisés, et non affectés
+		Il faut donc faire un appel du constructeur dès l'initialisation de la classe :
+		Si on ne le met pas, le constructeur sans argument est appelé
 
 
 --------------------------------------------------------------------------------
@@ -53,9 +63,105 @@ SystemC ->
 	sc_event -> permet de réveiller sur un événement sc_event.notify()
 	Scheduling Algorithm : regarder page 50-51
 
+--------------------------------------------------------------------------------	
+		
+** 05 - 11 Octobre 2010
+
+== Gaetan
+Connexions port à port
+	Pour pouvoir mettre une boîte englobante, connecter un port de sortie d'un sous-bloc à un port de sortie de la boîte englobante
+Brancher port externe directement sur le bus 
+	Utilisable depuis l'extérieur
+	sc_port ~> sc_export : transmet les appels à l'objet auquel il est connecté -> permet de recevoir des appels
+page_19
+	De base : un process dans chaque module qui écoute
+	Maintenant : maître va appeler directement des appels vers esclave
+On souhaite modéliser page 26, on envoie les actions avec une plage d'adresse
+	??Manque une partie, je révais??
+Ensitlm
+	Librairie pour simplifier les read et les writes
+	tlm_generic_payload
+	(page 33)
+	Possibilité de rendre ou non la main
+Interfaces pour transactions bloquantes
+	Toute la transaction se fait en un appel
+	interface tlm_blocking_transport_if<TRANS>
+	retour par le même TRANS (passé en référence)
+Transport bloquant
+	On se bloque en attendant la requète
+Transport non bloquant
+	(page 37)
+	forward_path et backward_path (nb_transport_fw, nb_transport_bw) 
+	=> un thread de chaque côté, + plus d'appels de méthodes, + de code => seulement si nécessaire d'avoir de la précision au niveau timing
+Question page 43
+Ensitlm 
+	Limitations : 
+		protocole bloquant seulement
+		Pas de généricité : adresses : typedef uint32_t addr_t, données; typedef uint32_t data_t;
+		Pas de byte enable (pouvoir écrire un seul octet au lieu de 4 d'un coup)
+		Pas de transactions par blocs
+		Seulement deux commandes : read/write (pas de lock)
+		Peu d'optimisations de performances possibles
+
+----------------------------------------------------------------------
+** 06 - TP
+
+----------------------------------------------------------------------
+** 07 - 18 Octobre 2010
 	
+== Gaetan
+TLM :
+	--
+	moins précis
+	pas synthétisable
+	++
+	un peu l'esperanto du développement logiciel/matériel
+	développement + debug
+	vérification hardware
+		=> précision fonctionnelle
+	~ parfois => analyse de performance
+		=> besoin de précisions sur des choses non fonctionnelles
+		=> temps, énergie, …
+Vérification de hard
+	~ je dormais ~
+TLM for SW development
+	Modéliser tout ce qu'on a besoin pour le dev embarqué et seulement ça
+	- fonctionnement
+	- mapage adresses
+	- ~ architecture  globale, pas la micro architecture (on oublie pipeline /fifos)
+~~~ not looking ~~~
+Wrappers natifs
+	intégration dans la plateform 
+	- #include
+	- linker les .o
+	- dlopen (utilisé pour les plugins …)
+Abstraction du hardware
+	HAL
+	Si des choses sont différentes entre le matériel et le logiciel :
+	- on met une fonction dans une API qu'on va utiliser. 1 définition plusieurs implem
+	- en pratique : difficile à gérer du code existant quand ça devient gros
+	=> portable
+Question : Implémentation standard de gestion des interruptions ?
+	NON
+	Dépendant de l'archi + il y a un OS
+		gérer interruptions :
+		- void irq_handler(void)
+		- while (!condition) { /* nothing */} ne fait rien tant que pas d'interruption == polling 
+		- attente explicite d'interruption (pas dispo sur microblaze)
+	Ne va pas marcher tel quel
+		- le while () { /* nothing */ }=>   en systemeC -> nothing = wait => on utilise HAL cpu_relax() 
+		- attente explicite ne compile même pas en général
+	wait_for_irq()
 		
 
 
+	
+
+
+	
+
+
+	
+	
 
 

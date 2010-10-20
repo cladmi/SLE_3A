@@ -25,4 +25,23 @@ Proc2 lit en mémoire
 == Gaetan
 Pour faire un additionneur générique n bits, on utilise un template et non pas n additionneurs 1 bit.
 
+−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−
+
+** 05 question page 43. On n'a pour l'instant que des connections points à points, Que manque t'il -- comment faire ?
+
+== Gaetan
+Les connection N initiateurs M cibles
+On ajoute un composant pour modéliser le bus (sc_module)
+
+−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−
+
+** 06 - page 18
+Va on voir tous les accès mémoires ? Même avec les read_mem et les write_mem
+== Gaetan
+	On a pas les fetch ! 
+		En plus, les instructions pentium sont plus compactes 
+		que celles d'un autre processeur
+		Il faudrait avoir ajouté le binaire cross-compilé + ajouter des choses
+	On ne modélise pas complètement la pile : @adresse, appels de fonctions
+	Pas d'analyse de performance sans ajouter beaucoup de choses
 
