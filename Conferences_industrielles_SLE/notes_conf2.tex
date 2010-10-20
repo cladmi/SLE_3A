@@ -1,0 +1,168 @@
+% definit le type de document et ses options
+\documentclass[a4paper,12pt]{article}
+
+% des paquetages indispensables, qui ajoutent des fonctionnalites
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{fancyvrb}
+\usepackage[francais]{babel}
+
+\begin{document}
+
+\begin{center}
+\Large{Systèmes temps réels, véhicules spatiaux}\\
+\vspace{0.4cm}
+\normalsize{Conférence technologique de François Dubuc de EADS Astrium.}\\
+\end{center}
+
+\section{Introduction}
+
+ASTRIUM de EADS (avionique et spatial).
+Grand programme très long :
+\begin{itemize}
+\item Ariane
+\item Missile balistique SM : M-R1
+\item Colombus de la station internationnal
+\end{itemize}
+Les seuls projets qui vont avoir une durée de vie de plus de 40 ans.
+
+L'ingénieur :
+Ariane : Amélioration du lanceur pour faire face à la constructeur : logiciels de vol, systèmes éléctriques ...
+Chef de projet.\\
+
+\subsection{contexte}
+Après la 2nd guerre mondiale, après la défaite des allemands, recuperation des technologies et des scientifiques. Accès à l'espace dans le domaine militaire.
+Leadership français pour les lanceurs.
+Puis prise de conscience dans le domaine civile : Astérix, 1er satellite.
+Les plus grosses fusées ont mis du temps à arriver : Décomposition en étage, hors cela cause des problèmes globaux (dû à la structure). Apparition de ``l'architecte'' qui a une vue d'ensemble.
+Le dvlp d'ariane 5 : 6 Milliards d'euros (bien plus pour le rafale (<3 fois plus)).
+Importance du GPS.
+Apport de Prestige et de Compétences.
+Vision politique du spatial (plus limité en Europe qu'aux USA).
+ESA = Agence spatiale européenne.
+L'espace dépend directement des états.
+
+Rentable ? Les lanceurs ne sont pas rentables, correspond aux stratégies :
+
+ - Sattelites de com => dépénse pour avoir le sattelite
+ - Armée, recherche, meteo, service public.
+
+La concurrence est rude : Russie, USA, Chine.
+De nombreux concurrents peu chers. (concurrence 2 fois moins cher et rentable (autofinancement)  (entreprise USA, paypal)).
+
+Lancement d'ariane : 200-300 Millions d'euros.
+
+Client de l'entreprise : Arianespace, ESA, Direction des armements (missiles).
+
+Sous-traitement : equiments éléctoniques (salle blanche)
+
+\subsection{Le ``lanceur''}
+
+2 Réacteurs annexes : 2min pour la poussée initiale (2-3g)
+1 réacteur principale après le décollage (après le largage) (~1.5g).
+Protection des sattelites et on ejecte tout ce qu'on peut pour diminuer le poids.
+10T de cargaison.
+A5ECA : charge varié haute altitude. (50m, 700T (5m de diam)).
+A5ES : charge lourde basse altitude
+A5M2 : polyvalent
+
+Tous les ans les sattelites augmentent de 250kg par ans (loi de moore) (6 tonnes maintenant).
+
+Les clients demandent que le lanceur accompagne jusqu'au bout le sattelite : rallumage des moteurs 4 fois.
+
+Developpement des lanceurs à long terme (prévisions sur 40 ans)
+
+ESA : Astrium (sol, construction)  => RUANG, SNECMA(moteur primaire), EUROPROPULSION (moteurs secondaires)
+      CNES (control en vol et lancement)
+
+Dvlp de ariane : 7ans pour 8 Md d'euros
+100 à 100M d'euros
+Les restes des fusées vont soit dans la mer (atlantique et indien) soit dans une orbitre cimetière.
+Les débris ne sont que peu génant pour les sattelites et lancement.
+
+Le lanceur est un réservoire de liquide et des boosters avec de la poudre(brule de façon constante) : forme en étoile pour diminuer la quantité de poudre qui brule en même temps avec le temps.
+
+Le contrôle se fait par verrins hydraulique ou des explosifs au niveau des séparations des étages de façon très précise (10 ms de tolérance) (tps réel) pour éviter un mauvais comportement. 
+
+Pendant le lancement, il y a de nombreux facteurs à prendre en compte : boucle fermée en temps réel (asservissement grâce à de nombreux capteurs).
+Le fuselage se tord par le vent, le liquide balotte, les moteurs bougent.
+
+70L/s pour les pompes d'alimentation du moteur primaire : pas constant à cause des vibrations, raisonnance de vibration du liquide ayant la même que les tuyaux (POGO). 
+Le calculateur : naviguer(connaitre sa position ..) , guider(trajectoire, cible ..), piloter(gestion des tuyères).
+
+Les communications avec la fusée sont très limité (quasi nul sauf auto-destruction).
+
+Environnement : 
+\begin{itemize} 
+\item Problème de radiations (processeurs non miniaturisé).
+\item Thermique : pas d'air.
+\item EM : émission du satellite ou du centre. 
+\item les essais sont peu nombreux
+\item tps de dvlp et durable
+\item budgets limités
+\item marchés guidés par les clients
+\end{itemize}
+Les composants ne sont pas très miniaturisé mais très robuste : technologie dépassé.
+
+
+ROAS : pas de plomb dans les composants. Mais l'étain pur sur du cuivre fabrique un alliage provoquant une pression sur l'étain provoquant des fils d'étains (1cm max) qui peuvent mettre en contact des broches : soit ça devient un fusible, soit c'est un arc élèctrique qui peut provoquer des dommages sur la fusée.
+
+\subsection{Notion de système}
+
+\section{Cycle de dvlp syst tps reel}
+
+Cycle en V vérifié par des simulations virtuels et des physiques mais au sol en stimulant des entrées pour faire croire à la chaine fonctionnelle qu'elle est en vol.
+Test grandeurs natures dans des pseudo fusées pour vérifier qu'il n'y a pas de risques pour la fusee.
+
+Le logiciel est la variable d'ajustement du matériel en rajoutant des lignes de codes pour corriger les problèmes du système.
+\subsection{Concurrent engineering / Qualification du système}
+Il y a des liens croisés entre les métiers nécéssitant des multiples boucles d'études pour converger vers le concept optimal : il y a des thèmes, radiation, thermique, ..., que chaque equipe doit connaitre et gérer le problème/critère/secteurs de la fusée.
+\subsection{Architecture HW}
+Architecture duplex : tout en doublon pour eviter la panne et extinction d'éléments si absurde.
+Le calculateur décide du fonctionnement (ou pas) d'un élément et contôle de gestion des pannes (auto-detectement de 90\% des pannes du calculateur : dans le cas d'une panne, passe la main au second et s'éteint).
+
+Code correcteur : 1o sur 5. Les deux calculateurs fonctionnent tout le temps sauf en cas de plantage (une comparaison des états se fait si il y a 3 calculateurs, lors du transport humain, il y en a 4 pour survivre à 2 pannes critiques).
+
+Attention : plus il est complexe, moins il est fiable.
+
+
+
+
+Nombreux tests : couverture du max du code et toutes les combinaisons du code. Protection du code (div by 0) mais les tests avant les zones à riques ont des limites (else et puissance de calcul). Mode survie. Double developpement (airbus). Redondance et vode.
+
+Stabilité numérique :
+
+Au niveau du hardware :
+Attention : Entre deux processeurs différents, il peut comporter des différences dans les calculs \begin{math}(+/-10^{-15})\end{math} : l'asservissement va provoquer un ``tennis'' entre les calculateurs (corrections des uns et des autres => exponentiel : au bout de 60s, on se trouve avec une trajectoire très différente de celle voulue. Divergence des processeurs.
+
+Au niveau du software :
+Impossible à faire au niveau economique et si une erreur même minime apparait, ç'est un enorme plantage.
+
+
+\subsection{Cycle logiciel}
+
+\subsection{Gestion projet / CMMI / gestion de conf}
+CMMI :
+
+Resumé : dire précisément où on en ai (utilisation de chiffres, de stat), estimation et calibrage pour le futur.
+
+standard :
+
+niv 1 : héroique : certaines personnes à elles seules tiennent le projet.
+\section{Exemple : ATV}
+
+1er contrat : 300M euros => 1Md euros (+4ans)
+6 calculateurs, de nombreux périphériques (camera, GPS, telegognimètre, imagerie, laser ...).
+Mode de survie ATV : extinction du calculateur puis rallumage en mode minimal (tous les periphériques sont éteint), face au soleil et écoute et éxecute les commandes venant du sol(identification et correction des erreurs).
+
+Cycle en V mais de façon incrémentale (forme de W).
+Baseline (censé faire) et version (fait). plusieurs versions avec des exigences mises de coté précédements. Dvlp parallèle de la V1 et V2 (les équipes de codage travaillent tout le temps. Les versions se suivent en cascade et les equipes sont optimisés. Les versions intermédiaires : quelques modif en plus d'après la baseline (R2.1 => V2.2). 
+2500 pages de baseline, 500000 lignes de codes par logiciel.
+
+
+\end{document}
