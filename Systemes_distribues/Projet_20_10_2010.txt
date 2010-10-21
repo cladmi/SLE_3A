@@ -1,0 +1,39 @@
++-------------------------------------------------+
+|Projet Systèmes Répartis - Distributed Hash Table|
++-------------------------------------------------+
+
+8 semaines - jusqu'à Noël
+
+Projet C : pthread, socket, table de hash
+
+Rapport : quelques pages : protocoles de communication, choix d'implémentation (argumenté), déscription des parties réalisés
+Code : une version par point de bonus implémenté
+
+1/3 de la note finale, possibilité d'avoir de questions sur le projet dans l'examen final
+
+-----------------------------------
+
+3 opérations:
+	put(clé, valeur)
+	get(clé) <- ne supprime pas la clé
+	remove(clé)
+
+- HT sur tous les processus participant à la DHT
+- 1 règle pour décider sur quel processus va être stocké le couple <clé,valeur>
+
+- Transparent: un client n'a besoin de connaître qu'un seul processus participant (serveurs)
+- Fonction de hash: clé -> entier entre 0 et 2^m - 1 . m est paramètre de l'appli.
+- Arrivée d'un serveur : 1 point d'entrée -> demander le hash du point d'entrée
+- Processus:
+	|- Gère des clés
+	|- identifiant
+	|- hash
+	|- successeur, hash?
+	|- prédécesseur, hash?
+
+Bonus: au moins 1
+Finger Table : chord
+m voisins d'enregistrés par processus j.
+indice i : le processus gérant le hash j+2^i
+
+
