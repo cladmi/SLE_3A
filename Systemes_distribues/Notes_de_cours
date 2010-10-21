@@ -82,16 +82,125 @@ Ordre sur les événements / messages
   Tout changement local est un événement
   Tout envoie/réception aussi
   e1i -> e2i : e1i arrivé avant e2i
-
-  Horloge de Lamport : 
+Horloge de Lamport : 
    chaque process possède un compteur (LC)
    chaque événement incrémente le compteur
    Envoie : LCi++ -> timestamp message
    Réception : LCi = max (LCi, Message)
    	       LCi ++
+   Si a->b alors LCa < LCb
 
-		
+----------------------------------------------------------------------
+** Wed Oct 13		
+
+== Gaëtan
+Examen systèmes répartis
+	1 Fondamentaux
+	1.1 Gestion de temps
+Q1
+    1                         2                 8                     
+     m1                      m2                m3               
+1 ---+------------------------+----------------+---------------------
+   0  \                        \              /                         
+      1\−−−−−−−−−−−−−−\         \2           /                                
+        |    3 m4  m5 4\         \          /   m3 8                    
+2 ------+-------+--+----\---------+--------/----+--------------------
+   0    m1     /    \    \        m2      /    /                         
+        2     /2     \4   \       5      /_7__/                          
+             /        \    \            /                              
+3 -----+----+----------+----+----------+-----------------------------
+   0   |    m4         m5    m1        m3                               
+       |    2          5     6          7                              
+       1                                                               
+Totally ordered multicast : N Processus
+	- Chaque message est envoyé à tout le monde
+	- canal de communication FIFO et Loss-less
+	- Sur chaque Pi	
+		- LCi
+		- chaque message est timestampé avec LC
+		- à la reception d'un message un "ack" est envoyé à tout le monde
+		- file à priorité sur les message reçus (timestamp)
+	- un message n'est délivré à l'application que si
+		- tout le monde a envoyé un "ack"
+		- le message est le plus petit timestamp
+	- Si deux messages ont la même horloge, il faut un moyen de les ordonner 
+	  de la même façon sur toutes les machines. Ex : id machine
+Vector Clocks :
+	- chaque processus possède son vecteur de compteurs
+	- VCi[i] = LCi
+	Local : VCi[i]++
+	Envoi : VCi[i]++
+		VCm = VCi
+	Réception : 	VCi[k] = max(VCm[k], VCi[k]) pour tout k!=i
+			VCi[i]++
+Causally Ordered Multicast :
+	un message est envoyé à l'application si
+		VCm[sender] = VCr[sender] + 1
+		VCm[k] <= VCr[k] pour tout k!=sender
+
+
+----------------------------------------------------------------------
+** Wed Oct 20
+
+== Gaëtan
+Distributed Hash Table
+	Projet
+	8 semaines
+	TEIDE+Kiosk
+	Projet C : pthread, socket, table de hash
+	Rapport :
+		qq pages, 
+		protocole de communication, 
+		choix d'implémentation (argumentés)
+		Description des parties réalisées
+	3 personnes max
+	Code : 1 version par point bonus implémenté
+	1/3 de la note du cours
+3 opérations :
+	put(clé, valeur)
+	get(clé) <- ne supprime pas la clé
+	remove(clé)
+- HT sur tous les processus participant à la DHT
+- 1 règle pour décider sur quel processus va être stocké un couple <clé, valeur>
+- Transparent: un client n'a besoin de connître qu'un seul processus participant (serveur)
+Fonction de hash  cle |-> entier entre 0 et 2^m -1, m est paramêtre de l'appli
+On donne un hash par serveur, on les places sur un cercle (entre 0 et 2^n -1)
+et un serveur récupère toutes les clés qui sont "après" lui et avant un autre serveur
+Arrivée d'un serveur : 1 point d'entrée		| Processus	- gère des clés
+	- demande le hash du point d'entrée   	|		- identifiant
+        - succ(P4) = P2                       	|		- hash
+        - succ(p1) = P4                       	|		- nécessaire: successeur, hash ?
+        - echange des clés               	|		- prédecesseur, hash ?
+Bonus : au moins 1
+Finger Table : Chord
+	m voisins d'enregistrés par processus j
+	indice i : le processur gérant le hash j + 2^i
+Prévenir ses voisins qu'on est toujours en vie, de manière "régulière" (pas trop ni pas assez)
+Sockets
+	API:
+	Basée fichiers
+	fd = socket(domaine, type, protocole) ==> renvoie un file descriptor
+	domaine : AF_INET, AF_INET6	ipv4, ipv6
+		  AF_UNIX		ipc
+		  AF_NETLINK		Communication avec le kernel
+	type : 	SOCK_STREAM		mode connecté (FIFO, loss-less) TCP
+		SOCK_DGRAM		mode non-connecté UDP
+		SOCK_RAW		
+	Protocole : domain-dependent
+		bind() : associe un socket à une addresse locale
+		listen() : déclence l'écoute sur la socket
+		accept() : accepte les connections entrantes et retourne la socket entrante
+		----
+		connect() : se connecte à une addresse distante
+
+	
 
 
 
 
+
+
+
+
+
+			
