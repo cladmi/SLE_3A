@@ -1,0 +1,122 @@
+\documentclass[a4paper,10pt]{article}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+
+
+%--------------------EVITE LES ORPHELINS-----------
+\widowpenalty=10000
+\clubpenalty=10000
+\raggedbottom
+%--------------------------------------------------
+
+\makeatletter
+\@addtoreset{chapter}{part}
+\makeatother
+
+%\renewcommand{\FrenchLabelItem}{\textbullet}
+
+%=========================ENVIRONNEMENT======================================================
+%--------AJUSTEMENT DE LA MARGE VIA L'ENVIRONNEMENT "<CHANGEMARGIN">-------------------------
+\newenvironment{changemargin}[2]{\begin{list}{}{
+\setlength{\topsep}{0pt}
+\setlength{\leftmargin}{0pt}
+\setlength{\rightmargin}{0pt}
+\setlength{\listparindent}{\parindent}
+\setlength{\itemindent}{\parindent}
+\setlength{\parsep}{0pt plus 1pt}
+\addtolength{\leftmargin}{#1}
+\addtolength{\rightmargin}{#2}
+}\item }{\end{list}}
+
+
+
+%==========================================
+%  ENSEMBLE DES DEFINITIONS
+%           UTILISE EN COURS DE MATHS
+%==========================================
+
+%-----ENSEMBLE-----
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+%-----RELATION SUR LES ENSEMBLES ET D'ORDRE-----
+
+\newcommand{\inclu}{\subset}
+\newcommand{\ioe}{\leqslant}
+\newcommand{\soe}{\geqslant}
+
+%-----LOGIQUE-----
+
+\newcommand{\implique}{\Rightarrow}
+\newcommand{\equivaut}{\Leftrightarrow}
+
+%-----INTERVALLE-----
+\newcommand{\seg}[1]{\left[#1\right]}
+\newcommand{\ioo}[1]{\left]#1\right[}
+\newcommand{\iof}[1]{\left]#1\right]}
+\newcommand{\ifo}[1]{\left[#1\right[}
+\newcommand{\ens}[1]{\left\{#1\right\}}
+\newcommand{\ie}[1]{\left[\!\left[#1\right]\!\right]}
+
+%-----LIMITE ET BORNES-----
+\newcommand{\LIM}[3]{\underset{#1\to #2}{\mathrm{lim}}{#3}}
+\renewcommand{\sup}[2]{\underset{#1}{\mathrm{sup}}{#2}}
+\renewcommand{\max}[2]{\underset{#1}{\mathrm{max}}{#2}}
+\renewcommand{\inf}[2]{\underset{#1}{\mathrm{inf}}{#2}}
+\renewcommand{\min}[2]{\underset{#1}{\mathrm{min}}{#2}}
+
+%------SOMME ET INTEGRALE-----
+\newcommand{\Sum}[3]{\displaystyle\sum_{#2}^{#3}{#1}}
+\newcommand{\Int}[4]{\displaystyle\int_{#3}^{#4}{#1\mathrm{d}#2}}
+\newcommand{\Somme}[2]{\displaystyle\sum_{#2}^{+\infty}{#1}}
+
+%-----FONCTION-----
+\newcommand{\abs}[1]{\left| #1\right|}
+\renewcommand{\No}[1]{\left\|#1\right\|}
+
+
+%-----DÉRIVATION---------------------------
+\newcommand{\diff}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\ddiff}[2]{\frac{\partial #1}{\partial #2}}
+
+%-----MATRICE------------------------------
+\newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\vmat}[1]{\begin{vmatrix}#1\end{vmatrix}}
+\newcommand{\mat}[1]{\begin{matrix}#1\end{matrix}}
+
+
+
+%-----RACCOURCI PRATIQUE ET ESTHETIQUE-----
+
+\newcommand{\p}[1]{\left(#1\right)}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\ssi}{si et seulement si }
+\renewcommand{\epsilon}{\varepsilon}
+\newcommand{\B}{\mathfrak{B}}
+\newcommand{\classe}[1]{\mathcal{C}^{#1}}
+
+\begin{document}
+
+\[ H\p{z} = \frac{\p{\p{kp_{\theta}+ki_{\theta}T}lT^2}z^2 - \p{kp_{\theta}lT^2}z}{\p{\p{l + kp_{\theta}T + ki_{\theta}T^2}lT}z^2 - \p{\p{2l + kp_{\theta}T}lT^2}z + l^2T} \]
+
+\[ H\p{\omega} = \frac{\p{\p{kp_{\theta}+ki_{\theta}T}lT^2}\p{\frac{1-\omega}{1+\omega}}^2 - \p{kp_{\theta}lT^2}\p{\frac{1-\omega}{1+\omega}}}{\p{\p{l + kp_{\theta}T + ki_{\theta}T^2}lT}\p{\frac{1-\omega}{1+\omega}}^2 - \p{\p{2l + kp_{\theta}T}lT^2}\p{\frac{1-\omega}{1+\omega}} + l^2T} \]
+
+avec $a=\dfrac{kp_{\theta}}{l}$ et $b=\dfrac{ki_{\theta}}{l}$, on a 
+
+\[p\p{\omega}=\omega^2\p{4+2aT+bT} + \omega\p{-2aT-2bT^2} + bT^2\]
+
+Dans le fichier \verb!mat_robot_v4.m!, 
+\end{document}
