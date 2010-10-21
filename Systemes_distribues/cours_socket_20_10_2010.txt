@@ -1,0 +1,21 @@
+Cours du 20-10-2010
+			+-------+
+			|Sockets|
+			+-------+
+
+API : basée fichiers
+fd = socket (domaine, type, protocole)
+
+Domaine : AF_INET, AF_INET6	ipv4, ipv6
+	  AF_UNIX		ipc
+	  AF_NETLINK		communication avec le kernel
+
+Type : 	SOCK_STREAM	: mode connecté (FIFO, less-less)	TCP
+	SOCK_DGRAM	: mode non connecté			UDP
+	SOCK_RAW
+
+protocole : domaine dépendant
+	bind() : associe un socket à une addresse locale
+	listen() : déclencher l'écoute sur le socket
+	accept() : accepter une connection (sur socket en écoute)
+	connect() : se connecter à une addresse distante.
