@@ -1,0 +1,25 @@
+** Tue Nov 02
+
+== Gaetan
+Faire un programme en mono tâche, 
+	il mets un certain temps à s'exécuter, 
+	on s'assure qu'il est appelé à des intervalles assez grands 
+	pour qu'il puisse s'exécuter correctement.
+On peut faire du multi tâche séquentiel, 
+	la deuxième tâche n'est pas exécutée à chaque appel,
+	et l'exécution des 2 tâches tient dans l'intervalle d'appel.
+Si la tâche 2 est trop longue pour être exécutée sur un cycle d'appel, on peut,
+	la découper statiquement -> pas évident à faire
+	la découper dynamiquement -> ordonnancement	
+La tâche la plus critique est mise plus prioritaire, 
+	et la seconde tâche s'exécute "lorsqu'il reste du temps"
+	Temps réel ?
+	Tant que "Temps exécution du plus long" + nb_ex_par_période * "Temps exécution du plus court" < Période_d'exécution_totale
+Communication ?
+	Communications non bloquantes par mémoire partagée
+	Accès donnés selon les priorité
+~~~
+Pour envoyer sur la carte
+	rxe		rom.bin		ram
+Linux	O		X		*	
+Win	O		O		X
