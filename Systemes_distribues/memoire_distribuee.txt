@@ -1,0 +1,48 @@
+03/11/2010		
+			+------------------+
+			|Mémoire distribuée|
+			+------------------+
+
+I- Modèle à mémoire centrale :
+
+cf figures figs_memoire_distribuee.png
+
+II- Modèle sans mémoire centrale :
+
+	-> La cohérence est un contrat entre les processus et la mémoire
+	-> plus de garanties = plus couûteux
+	* Déviation numérique : NTP, capteurs physiques
+	* Déviation d'état : cache web
+	* Dérivation d'ordre
+
+Cohérence séquentielle :
+
+Toute exécution est telle que les opérations pour tous les process peuvent être placées dans un ordre qui respecte l'ordre local.
+
+P_1 W_1(x)a				séquence : W_2(x)b R_3(x)b R_4(x)b W_1(x)a R_4(x)a R_3(x)a
+   ------------------------------
+P_2 	W_2(x)b				P_i     R_i(x)a : lecture de la variable x: valeur a
+   ------------------------------		W_i(x)a : écriture dans la variable x de la valeur a
+P_3		R_3(x)b R_3(x)a
+   ------------------------------
+P_4              R_4(x)b R_4(x)a
+   ------------------------------
+
+Cohérence causale
+
+les écritures potentiellement correllées doivent être vues par tous les processus dans le même ordre
+
+
+P_1 W_1(x)a						P_1 W_1(x)a		
+   ------------------------------			   ------------------------------
+P_2 	R_2(x)a W_2(x)b					P_2 	W_2(x)b		
+   ------------------------------			   ------------------------------
+P_3		R_3(x)a R_3(x)b				P_3		R_3(x)a R_3(x)b
+   ------------------------------			   ------------------------------
+P_4             R_4(x)a R_4(x)b				P_3		R_3(x)b R_3(x)a
+   ------------------------------			   ------------------------------
+
+Remarque : séquentiel => causal
+	   !causal => !séquentiel
+
+
