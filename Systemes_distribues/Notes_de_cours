@@ -192,15 +192,85 @@ Sockets
 		accept() : accepte les connections entrantes et retourne la socket entrante
 		----
 		connect() : se connecte à une addresse distante
+--------------------------------------------------------------------------------
+** Wed Nov 03
+== Gaetan
+Mémoire distribuée
+	I - Modèle à mémoire centrale
+		a)
+			P1 _r(x)-1____w(x)2--_____________
+			     \  /      \   /
+			M  ---x=1-------x=2--------------
+				 /  \        /  \
+			P2 ____r(x)--1_____r(x)--2_______
+			!
+			=> Pas performant
+		b)Cache
+			P1 _r(x)-----1_______w(x)2__________________  
+			     \      /         \
+			C1 ~~~\~~~~x=1~~~~~~~~~x=2~~~~~~~~~~~~~~~~~~
+			       \  /             \ update
+			M  -----x=1--------------x=2----------------
+				    /\            \ invalidate
+			C1 ~~~~~~~~/~~x=1~~~~~~~~~~x=?~~~~~~~~~~~~~~
+				  /    \       /\
+			P1 _____r(x)----1___r(x)-1__________________
+	II - Modèle sans mémoire centrale
+		-> la cohérence est un contrat entre les processus et la mémoire
+		-> plus de garanties = plus coûteux
+		Deviation Numérique : NTP, capteurs physiques. On a pas la valeur exacte
+		Déviation d'état : cache Web, git. Pas à jour
+		Déviation d'ordre
+		~~
+		Cohérence Séquentielle
+			Toute exécution est telle que les opérations pour tous les processus 
+			peuvent être placées dans un ordre qui respecte l'ordre local
+			~
+		Pi 	Ri(x)a : lecture de la variable x : VALEUR a
+			Wi(x)a : écriture dansla variable x la valeur a 
+			~
+			P1 ___w1(x)a_____________________________ 
+			P2 __________w2(x)b______________________ 
+			P3 _______________r3(x)b_r3(x)a__________ 
+			P4 _______________r4(x)b_r4(x)a__________ 
+			->
+			Ordre total _w2(x)b_r3(x)b_r4(x)b_w1(x)a_r4(x)a_r3(x)a
+		Cohérence causale
+			Les ÉCRITURES potentiellement corrélées doivent être
+			vues par tous les processus dans le même ordre.
+			~
+			P1 ___w1(x)a______________________________________ 
+			P2 __________r2(x)a_w2(x)b________________________ 
+			P3 ________________________r3(x)a_r3(x)b__________ 
+			P4 ________________________r4(x)a_r4(x)b__________ 
+			~
+			~
+			P1 ___w1(x)a_____________________________ 
+			P2 __________w2(x)b______________________ 
+			P3 _________________r3(x)a_r3(x)b________ 
+			P4 _________________r4(x)b_r4(x)a________ 
+			~
+			Pex :	P1.P3 <---reseau-qui-lague---> P2.P4
+		Séquentielle => causale
+		On s'en fout de l'ordre local pour les processus qui font que lire
+Proposition de cours
+	Programmation parallèle haute performance
+		Cilk, Intel TBB, MPI
+	Modèle de programmation parallèle
+		RO
+	Distributed File System
+		NFS
+	Distributed Operating System
+		BarelFish
+	BD distribué 
+		Chord, haystack
+	Cloud Computing
+		Amazon EC2, Google, Azure
+
+
+
 
 	
-
-
-
-
-
-
-
 
 
 			
