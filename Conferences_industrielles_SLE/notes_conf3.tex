@@ -1,0 +1,157 @@
+% definit le type de document et ses options
+\documentclass[a4paper,12pt]{article}
+
+% des paquetages indispensables, qui ajoutent des fonctionnalites
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{fancyvrb}
+\usepackage[francais]{babel}
+
+\begin{document}
+
+\begin{center}
+\Large{Systèmes Implantables et Applications pour la neurologie}\\
+\vspace{0.4cm}
+\normalsize{Conférence technologique de Guillaume CHARVET du CEA LETI.}\\
+\end{center}
+
+Chef de projet d'un développement d'un dispositif implantable actif au CEA / LETI / CLINATEC
+\section{Presentation CEA et CLINATEC}
+15000 employés avec un budget de 3Milliards d'euros
+LETI de Grenoble : 1600 chercheurs : Micro Nano Technologiques \& Integration en Systèmes
+ => MINATEC : 3500 personnes avec un budget de 320 Millions euros : CEA, CNRS, PHELMA ...
+
+Mission de LETI :
+Créer de l'innovation dans le besoin de l'industrie (fort lien avec l'industrie)
+
+Axes de recherches
+\begin{itemize}
+\item Énergies \& Environnement
+\item Photoniques \& Multimédia
+\item Biologie \& Santé 
+\item ...
+\end{itemize}
+
+Biologie :
+\begin{itemize}
+\item In vivo electonics
+\item bio sytem on chip
+\item preclinical molecular imaging 
+\item X rayonnement
+\end{itemize}
+
+Minatec - Nanobio : nouveau bâtiment spécialisé.
+
+\subsection{Clinatec} 
+DEF :  nouveau centre de recherche médical dédié pour les micro nano technologies pour la santé (Alim-Louis Bernadid -- Maladie de Parkinson : implants médicaux.
+Partenariat avec le CHU.
+Objectif : regrouper les micro nano tech, traitement signal, chirurgie, médecines, bio-medicales, experimentation sur animaux ...
+POURQUOI : Besoin des outils du domaines, pour plusieurs pathologies.
+5 en 2008 (financé par le CEA). Batiment livré en 2011. Technologie dernière génération en médical, pseudo hôpital avec bloc opératoire.
+équipements : MEG (mesure EM du cerveau), bloc chirurgicale...
+
+
+\section{Etat de l'art des implants médicaux du commerce}
+3 grandes familles des dispositifs médicaux : DM(dispositif médical), DMIA(Implantable Actif), DMDIV (DM de diagnostic in vitro)
+
+Risque augmente selon les classes de DM (du médicament à la prothèse active, I, IIA, IIB, III (DMIA inclues))
+ex: risque mécanique avec un implant : rupture de l'implant, lésion sur le corps ...
+
+DMIA : 
+\begin{itemize}
+\item stimulateurs cardiaques et défibrillateurs
+\item stimulateurs neurologiques
+\item stimulateurs musculaires
+\item ..
+\end{itemize}
+ex : pacemaker : stimuler le coeur par des impulsions : le bloc est éloigne du coeur, il transmet les impulsions par des sondes.
+neurostimulation : auditif, visuel vésicaux ...
+industriels : Medtronic, St Jude Medical, Cyberonics, boston scientific, ..
+>15 \% par an
+
+4 grandes classes d'appareil : pour parkinson(deep brain stimulation), épilepsie(vagus nerve ), douleurs, tympans
+Stimulation cérébrale profonde sonde dans le cerveau : opération sous conscience du patient (le patient doit faire certaine activités : risques cassures d'électrodes).
+
+
+ex : Épilepsie : en recherche
+ex implant cochléaires pour des systèmes auditifs détérioré : micro -> antenne (RFID) -> électrodes dans la cochée pour refaire le son en signaux électriques directement dans le nerf pour le cerveau. 
+ex vision artificiel : en projet ; caméra sur lunette par ex, et relié à l'oeil par un implant sur l'oeil (intérieur), batterie par la lunette => distingue ombres (ligne blanche)).
+
+Cycle de dvlp d'un DMIA : Recherche fondamentale --> Recherche appliqué --> Prototype --> Dossier de conception (études cliniques) (critique pour le projet) --> CE marché .. --> Comcommercialisation --> Mise en service --> Utilisation  ===> 10 ans
+Valider par l'AFFSPAS (association française de sécurité sanitaires des produits de santé)
+
+Limitations des implants médicaux actuels :
+- stimulation électriques uniquement
+- macro électrodes (mm et non micro)
+- nombre limité d'électrodes
+
+Besoin :
+pour les diagnostiques (épilepsie)
+bouclage ( mesure/stimulation) pour épilepsie
+bouclage pour DBS (deep brain stimulation)
+mdeure multivoie pour appl BCI (cerveau - machine
+
+\section{Recherche \& Développement technologiques pour les neurosciences}
+
+
+
+pose des sondes directement dans les réseaux de neurones par des matrices de micro-electrodes
+
+MEA 
+tissus neurales en contact avec les micro électrodes pour de meilleurs diagnostiques.
+Applications : recherches en nanosciences, pharmacologie, nouveau implants thérapeutiques (DBS), BCI, prothèse rétinienne.
+
+
+Vivo BioMEA : brain activity sur un rat
+Épilepsie : ``trou noir'' sur les enfants de l'activité du cerveau (rat génétiquement modifié) : solution : stimulation dans le cortex pendant qq secondes et arrête immédiatement la crise. Résonance du cerveau.
+
+
+ASIC
+architecture ASIC  pour les implants neuronal
+
+augmentation de l'offre et demande de permis
+
+
+Algo sous matlab puis en vhdl pour des FPGA : contraintes electroniques  => méthode de gain de temps sur la cahine de production
+
+Importance du sans-fils : danger du piratage mais permet des maj.
+
+Futur : implants en 3D (couches en étages)
+
+\section{Une thématique emergente : le BCI (Brain computer interface)}
+Controle d'un robot par l'intermédiare du cerveau pour un handicapé (interaction avec l'envirronement par interaction cérébrale)
+
+Patient actif.
+
+Mesure EEG (EM par la peau) ...
+EEG non invasif
+ECoG inv (tableaux electrodes) (ex : surface du cerveau pointes dans le cerveau) (stable pour plus de 28j à demontrer pour l'homme, commerciale validée, plus pour la recherche)
+Local F.P (tableaux multi - electrodes) (interieur ) ( qualité excellente, resolution,  pas stable, mort neuronale, difficilement applicable pour l'homme)
+Single Unit A.P (micro electrodes)
+
+EEG très courant mais le temps de pose très long car rajout de liquide pour aider les sondes à capter ( possibilité pour le grand publique pour EEG ou EMG, jeux videos ...)
+
+ex de BCI non inv : P300 Speller => potentiel evoqué 300ms après une estimation visuel (flash) (actuellement 1-2 mots à la minute)
+  utilisable pour communiquer pour les handicapés lourds
+
+ex : BCI asynchrone : Brain Switch
+  possibilité de transformer une intention de mouvement en commande (concentration forte requise)
+
+Application pour un casque P300 rapide à installer
+
+Pilotage d'un brat robotisé par un primate (méthode invasive) succès mais durée de vie de 1-2 semaines.
+
+Connecteur sur la tete à brancher sur un pc(1cm3, risque d'infection et d'endommagement du cerveau). Le traitement d'information très lourd 
+
+Electrodes dans le cerveau (3mm environ)
+
+EEG : dépend d'un neuronne
+
+ECOG : depend d'un reseau de neurone (duree de vie sup)
+curseur 2D, fauteil roulant , exosquelette (grand nombre d'electrodes possibles)
+\end{document}
