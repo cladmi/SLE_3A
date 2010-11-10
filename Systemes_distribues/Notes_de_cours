@@ -266,11 +266,82 @@ Proposition de cours
 		Chord, haystack
 	Cloud Computing
 		Amazon EC2, Google, Azure
-
-
-
-
+--------------------------------------------------------------------------------
+** Wed Nov 10
+== Gaëtan
+Barrières mémoire (mem_fence / sync)
+	Permet à un processus de se bloquer jusqu'à ce que toutes les 
+	opérations d'écritures qu'il a déjà réalisé soient 
+	prises en compte par la mémoire.
+	Système: implémenté par le matériel.
+	Mémoire distribuée: 
+		- conflit
+		- force le système à "flusher" toutes les opérations en attente
+		  (ou provoque un blocage trop long)
+	Peut être utilisé pour implémenter "facilement" 
+	de la communication entre processus
+Exclusion Mutuelle
+	La façon la plus simple d'implémenter une exclusion mutuelle c'est 
+	l'élection
+	Élection: Un groupe de process, d'un commun accord, choisissent 
+		1 (et un seul) Leader.
+			-> soit l'élection réussit, 
+			   et un processus devient L
+			-> soit l'élection rate, 
+			   et aucun process ne devient L
+		La nature du process choisit n'importe peu
+		ex: section critique
+			- les processus souhaitant entrer dans la section
+			  critique déclenchent une élection
+			- le L rentre dans la section
+			- En sortie il redéclenche une nouvelle élection
+		    répliqua:
+		    	- un processus maître répliqué par un groupe de process
+			- si le maître tombe  en panne, les répliquas élisent
+			  le nouveau maître
+		Impossibilité de base:
+			Si tous les processus sont strictement 
+			identiques (code + mémoire)
+			Alors il n'existe aucun algorithme déterministe 
+			permettant de réaliser une élection.
+	Algo sur anneau de processus: (unidirectionnel)
+		chaque processus possède un UID 
+		(unique à chaque processus, comparaison entre UID possible)
+		- chaque processus envoie son UID sur l'anneau
+		- à la réception, le processus compare son UID à celui reçut
+		  Seuls les processus voulant se faire élire jettent les messages
+		  si UID2 < UID on jette le message
+		     UID2 > UID transmet le message
+		     UID2 = UID je suis le Seigneur
+		- Étape finale: le processus se découvrant Leader
+		  le signale à tous les autres
+		O(n²) messages dans le pire des cas
+		! Une panne fait ratter l'élection
+	Bully
+		Gère les pannes "fail/stop"
+		- Un ou plusieurs processus déclenchent l'élection
+		  en envoyant un message aux UID plus grands
+		- À la réception de ce message on 
+			envoi un ACK au "déclencheur" (permet de voir qui est en vie)
+			envoi élection à tous les processus de plus
+			haut UID
+		- Si aucun ACK n'est reçu, je suis le leader 
+		  (et si il mets 1000 ans ?)
+Pannes
+	- fail/stop : tout état d'erreur stoppe le process. 
+		=> aucune communication erronée
+	- Byzantine : État corrompu de processus déclenchant des communications
+	 	et/ou des opérations erronées	 
+~
+Réplication: solution classique au problème de la panne
+	Transparent: 
+		un client n'est pas forcément 
+		conscient de l'apparition d'une panne
+		- N serveurs pour gérer N-1 pannes simultanées
+		- quand une panne est détectée il y a réparation et réinsertion
+	Active: client discute avec tous les serveurs en même temps
+	Primaire: client ne discute qu'avec le primaire, 
+		qui est remplacé lors d'une panne, par un des répliquas
 	
 
-
-			
+		 
