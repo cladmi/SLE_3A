@@ -1,0 +1,108 @@
+% definit le type de document et ses options
+\documentclass[a4paper,12pt]{article}
+
+% des paquetages indispensables, qui ajoutent des fonctionnalites
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{fancyvrb}
+\usepackage[francais]{babel}
+
+\begin{document}
+
+\begin{center}
+\Large{Présentation de Polyspace}\\
+\vspace{0.4cm}
+\normalsize{Conférence technologique de Cyril PREVE, chef d'équipe chef POLYSPACE.}\\
+\end{center}
+
+\section{Presentation de Mathworks / Polyspace}
+Le soucis d'un code est non seulement qu'il compile mais que son execution se passe sans aucune erreur.
+Polyspace permet de prouver l'absence d'erreurs d'overflow, de division par 0, d'accès mémoires interdits et d'autres erreurs ``run-time''.
+
+Justement, la sécurité des systèmes obligent à vérifier l'existence de bugd et d'erreurs non voulues.
+
+Exemple de la voiture : si un bug informatique, mais si le dvlp est sous-traité, le fait d'avoir à réparer toutes les voitures à un coût pour l'image de marque.
+
+MathWorks : MATLAB, SIMULINK ...
+2000 employees
+
+Polyspace :
+30 ingénieurs (grenoble et paris)
+
+\section{Les principes théoriques sur lesquels reposent les produits Polyspace }
+
+Erreurs logiciels : la vérification est un compromis entre la qualité, le temps et le coût.
+Run-time erreurs (erreurs d'éxecution) : Polyspace 
+Vient de l'erreur de ariane 5 où un protoype aurait pu reperer l'erreur
+Def : acces aux données non initialisés, debordement de tableaux, variable partagé, pointeur, ...
+
+Pourquoi :
+exemple : pouce-seringue (injection)
+
+Ecart très important entre les coûts au codage et les cycles de tests.
+Polyspace permet de vérifier avant les tests.
+
+\section{ ... };
+
+\begin{verbatim} 
+x = x / ( x - y)
+\end{verbatim}
+overflow par + - ou /, division par 0, non initialisé, underflow
+
+
+Range analysis : permet de voir les erreurs possibles (mais pas son absence)
+
+Abstract interpretation : regoupe les erreurs en ensemble pour les étudier plus rapidement.
+Fonction à deux entrées entiers : 2^32 * 2^32 = 2^64 cas de tests à faire pour tout vérifier.
+\section{Le défi : comment passer du laboratoire au produit utilisé par les industriels} 
+
+Techniques : revue manuelle, ``complexity metrics'', rêgles de codage, méthodes formels (mathématiques).
+
+Dataflow analysis :
+Vérifications statiques, 
+interprétation abstraite :
+On obtient l'intervalle sujet à l'erreur.
+
+
+
+Schéma relais (passage à simulink : rend bien plus simple le schéma) 
+Débuggage du modèle : vérification du code généré et reprend le bloc.
+
+\section{Le processus de vente}
+
+Comment vendre : test d'un morceau de code déjà implanter pour mettre en confiance. Problème car il ne faut pas ridiculiser le développeur et en même temps convaincre les chefs.
+
+Combien : dépend du client, de son chiffre d'affaire sur le produit, des gains possibles 
+le choix : entre 30 et 50000€ par licence par utilisateur (vérification en même temps).
+et +18\% de maintenance par an. (échantillion gratuit pour compter sur la pub aux sous-traitants : problèmes : les sous-traitants ne jouent pas le jeu, ils préférent nier que l'outil ne marche pas (ex : SNCF car partenaires ; sauf automobiles ).
+
+
+
+\section{Quelques exemples de résultats}
+Limite Mathématique
+
+Opérateurs bits à bits : tests avec toutes les valeurs possibles
+
+Analyse de pointeur : complexe car les pointeurs apportent de nombreuses erreurs possibles.
+
+
+C ++ :
+language complexe à vérifier  
+exemple : une allocation de string (une ligne) : 5 appels de fonctions et 2 variables temporaires
+
+exemple d'un expert de c++ qui fait de grosses fautes dans son code
+
+
+
+
+Remarque : 
+
+Developpement en V : manque de réactivité 
+Agile : utile mais il y a parfois besoin d'un socle fixe que l'on n'a pas à changer.
+Dans la pratique, il s'agit de plusieurs cycles en V (W)
+\end{document}
