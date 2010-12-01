@@ -342,6 +342,168 @@ Réplication: solution classique au problème de la panne
 	Active: client discute avec tous les serveurs en même temps
 	Primaire: client ne discute qu'avec le primaire, 
 		qui est remplacé lors d'une panne, par un des répliquas
-	
+--------------------------------------------------------------------------------
+** RPC
+== Gaëtan
+Remote procedure Call
+19?? -- phrase de présentation : rendre ~~ aussi simple qu'un appel de fonction
+fonction : 
+	 - paramêtre
+	 - code
+	 - valeur de retour
+-> Local  : support archi pour manipuler une pile d'appel
+-> remote : simuler tout ça en software
+Stub : code local qui permet à un client de faire un appel de foction classique 
+	pour déclencher un RPC
+Skel : code local au serveur, écoutant l'arrivée du RPC et 
+	appelant le code serveur correspondant
++−−−−−−−−+        +−−−−−−−−+                                                                        
+| Client |        |Serveur |                                                                        
++−−−−−−−−+        +−−−−−−−−+                                                                        
+ 1|   ^              ^  |6                                                    
+  V   |10           5|  V                                                     
++−−−−−−−−+        +−−−−−−−−+                                                                        
+|  Stub  |        |  Skel  |                                                                       
++−−−−−−−−+        +−−−−−−−−+                                                                      
+ 2|   ^              ^  |7                                                    
+  V   |9     3      4|  V                                                     
++−−−−−−−−+------->+−−−−−−−−+                                                                       
+| Réseau |   8    | Réseau |                                                                                
++−−−−−−−−+<-------+−−−−−−−−+                                                                      
+~
+1 Client appelle la fonction stub (passage de paramêtres)
+2 Marshalling : encapsuler les paramêtres pour les envoyer sur le réseau
+3 Communication avec le serveur
+4 Unmarshalling : extraire du message les paramêtres
+5 réaliser l'appel de fonction
+~
+But de RPC : encapsuler stub, le réseau et skel
+Problème : passage de paramêtres/valeur de retour
+	par valeur : facile, simple copie
+	références : nécessite de copier toute la mémoire accessible par la ref (shallow copy)
+	Communication : conversion d'une architecture à une autre
+Annuaire :
+	- serveurs s'enregistrent
+		- fonction fournies 
+		- nom
+	- client
+		- recherche de serveurs
+Un RPC peut s'exécuter 
+	0 Crash serveur
+	1 OK
+	Plusieurs fois perte de réponses
+Les fonctions doivent être idempotantes
+--------------------------------------------------------------------------------
+** RMI
+== Gaëtan
+Objectif = porter RPC au monde objet
+Autres ajouts de RMI
+	Références distantes
+	Garbage Collector
+	Remote Method
+- Ref D : demander à une machine une références sur un de ces objets
+	connaître le code de l'objet pour pouvoir le manipuler
+	disposition asynchrone de l'objet : callback
+Garbage collector :
+	principe général : nettoyer périodiquement ou lorsque la mémoire vient à manquer
+		les objets inatteignables
+	refcounter : pour chaque objet, je connais le nombre de références dessus
+	?? reférences distantes ??
+--------------------------------------------------------------------------------
+** Message Oriented Middleware
+== Gaëtan
+Rappels RPC & Sockets
+	- Synchrone
+		- attente de réponse de la part du client,
+		- bloquants
+	- Identification des destinataires (ip, port)
+		- Socket : évident
+		- RPC/RMI : recherche dans un annuaire
+	- Communication 1-1
+		- Le niveau transport ne le permet pas
+MOM
+	- Communication à base de messages
+	- Transformation des messages à la volée
+	- Gestion de la persistance des messages, 
+		gérer le cas où l'envoyeur ou le destinaire n'est pas actif (sauvegarde)
+	+ Message Queues 
+		méchanisme qui permet au message d'exister en dehors des applications
+	+ Message Broker 
+		la couche middleware qui s'occupe de gérer les messages 
+		qui ne sont pas dans les applications (transformer les messages,…)
+I-Message Queues
+	- Protocole de communication asynchrone
+	- Une file est identifiée de manière unique au sein du système
+	+ Envoi : poser un message dans la file
+	  Réception : demander à la file si un message est présent et le récupérer
+	- Le middleware est chargé de sauvegarder les messages.
+ Interface
+ 	- C'est à l'application de construire un message
+	- Fonctionnalités du middleware
+		- Sauvegarde : en RAM, sur disque ou "ailleurs"
+		- Sécurité : règles d'accès/permissions sur les messages
+		- Durée de vie : est-ce que les messages peuvent périmer (TTL)
+		- Filtres : une destination ne reçoit que certains messages
+		- Delivery : au plus 1 fois ou au minimum 1 fois
+		- Routage
+		- Batch : regroupe les messages 
+++++++++++++++++++++++++++++++++++++++++
++++ À découvrir pour but culturel    +++
++++	nmap                         +++
++++	nemesis                      +++
++++	metasploit                   +++
+++++++++++++++++++++++++++++++++++++++++
+Architecture
+	Centralisée : 1 Broker qui gère toutes les files 
+		- on considèle qu'il est "facile" d'accès
+		  (réponse rapide, peu de pannes, environnement contrôlé)
+	                  Broker
+        +−−−−−−+ push  +−−−−−−−−+  pull +−−−−−−−−−+
+        |Client|------>| file_1 |------>|  Client |
+	|Envoie|       | file_2 |       |Réception|
+        +−−−−−−+       |   …    |       +−−−−−−−−−+
+                       +−−−−−−−−+
+		- Files dynamiques : 
+			création à la demande des files
+			destruction
+			listing des files courantes
+		- Tolérance aux pannes
+			- persistance forte
+		- Dans la mesure où l'environnement est centralisé, 
+		  possibilité de "geler" le système (configuration)
+		- Possibilité pour les clients de s'enregistrer auprès du Broker
+		  afin de recevoir les messages de certaines files
+	Décentralisé : 
+		- Files installées chez les clients
+		- Transformation est critique
+		- Broadcast + Multicast
+		(dessin avec des clients qui ont des files et une 
+		communication avec des broker qui ont des files également et 
+		qui communiquent entre eux)
+	    +----+           +----+
++-------+   |+--+| +-------+ |+--+|
+| +---+ |   |+--+|V         \|+--+|
+| | P | |-->|    |           |    |
+| +---+ |   |+--+|   +----+  |+--+|
+| ++ ++ |   |+--+|\  |+--+|  |+--+|
+| || || |   +----+ \ |+--+|  +----+
+| ++ ++ |           V|    |   ^
++-------+            |+--+|___|
+                     |+--+|
+                     +----+
+	Broker :
+		- Composant indispensable des MOM
+		- Passerelle pour lpermettre la communicatino entre plusieurs applications
+                - Transformation :
+                	- Transport
+			- Format du message
+I-Push/Pull
+        - Mail :
+                On envoie un message
+                On peut lire un message
+II-Publish/Subscribe
+	- On peut récupérer des messages qui matchent un topic
 
-		 
+
+			
+
