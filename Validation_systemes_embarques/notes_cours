@@ -1,0 +1,59 @@
+	** Wed Nov 10
+== Gaëtan
+Entre la réalité et la validation, on doit faire des abstractions.
+Que ce soit sur les contraintes, ou sur le modèle.
+~~
+Automates interprétés.
+Passer d'un programme itératif à un automate interprété.
+	Programme intératif avec variables booléennes
+		Si il n'y a pas d'entrées, 
+		il suffit de "déplier" le programmes.
+		Expending variables 
+			on remplace les affectations 
+			faites sur les transitions par
+			les états des variables lorsqu'on est dans un état.
+		"est-ce qu'on peut avoir le cas A vrai et B faut ?" 
+		il suffit de "regarder"
+	Programme itératifs avec des variables dans un domaine finit
+		Control and data =~ (états et variables)
+		On peut remplacer des états par des variables et inversement
+..
+Safety : Something wrong will never happen -> supporte bien l'abstraction 
+Liveness : Something good will enventually happen
+Bounded liveness == safety
+       +------------------------------+
+       |                              |
+       |                   +-----+    |
+       |  /----------------| Env |-------- Environnement réaliste
+       |  |               /+-----+    |
+       |  |  +-------+   /            |
+       |  |  |       |  |             |
+-- i -----+--|Modèle |--+             |
+       |  |  |       |  |             |
+       |  |  +-------+  |             |
+       |  |              \+------+    |
+       |  +---------------| Prop |-------- Propriété vérifiée
+       |                              |
+       |                              |
+       +------------------------------+
+On regarde si Propritée est OK, ou sinon, si elle n'est pas vérifiée, 
+si l'environnement était bien réaliste avant.
+Prop vrai <=> Erreur inaccessible
+Sur-approximation : 
+	verif conservative, on peut jeter des programmes justes, 
+	mais pas se valider des programmes faux
+Abstraction : signes
+	Signes (8)
+		= 0, != 0
+		< 0, > 0
+		<= 0, >= 0
+		vide, tout Z
+	Signes (3)
+		P, N, Z
+	pex {-4, 12, 2} => on peut abstraire par !=0 ou tout Z
+Avec des branches qui se rejoignent : on a un "ou" sur les conditions
+Avec des séparations, on a un "et"
+Quand on ajoute des opérateurs, +, -, *, 
+	on doit regarder comment se comporte les ensembles, 
+	pex: X + Y avec X € P et Y € N
+	on doit alors ajouter un état "?"

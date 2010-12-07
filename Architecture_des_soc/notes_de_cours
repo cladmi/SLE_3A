@@ -1,0 +1,115 @@
+** Mon Nov 15 - Avec Pétrot
+== Gaëtan
+Exemple Instructions
+					Type
+1	lw	$6, 	36($2)		(I)
+2	add	$5,	$6,	$4	(R)	$6 dépend de $6(1)
+3	lw	$7,	1000($5)	(I)	$5 dépend de $5(2)
+4	sub	$9,	$12,	$8	(R)
+5	sw	$5,	200($6)		(I)	$6 dépend de $6(1) $5 dépend de $5(2)
+6	add	$3,	$9,	$9	(R)	$9 dépend de $9(4)
+7	and	$11,	$5,	$6	(R)	$6 dépend de $6(1) $5 dépend de $5(2)
+~~
+Graphe des dépendances
+		1            4
+               /|\           |                                                   
+              / | \          |                                                  
+             v  |  |         v                                                  
+            2   v  v         6                                                 
+           / \--+--+                                                                 
+          /     |   \                                                                 
+         v      v    v                                                               
+        3       5    7                                                              
+Execution sur un processur Out-of-order
+"R"	 0 ,  0 , (2), (4), (6), (7) 
+"I"	(1),  0 ,  0 , (3), (5) 
+Même mieux, on peut mettre (4) et (6) à la place des instructions nulles au début
+~
+~
+Software techniques - Example
+Page 17
+This code, add a scalar to a vector
+	x[i] and s float
+	for (i = 999; i >= 0, i--)
+		x[i] = x[i] + s;
+					Latency		stalles between 
+					in cycles	in cycles
+FP ALU OP 	-> 	FP ALU OP	4		3
+FP ALU OP 	->	Store double	3		2
+LOAD Double	->	FP ALU OP	1		1
+LD		->	SD		1		0
+Integer 	->	Integer		1		0
+Integer		->	Branch		1		1
+-> to mips
+~
+Loop:	(1)	L.D	F0,	0(R1)		; FO = vector element
+	(2)	NOP
+	(3)	ADD.D	F4,	F0,	F2	; add scalar from F2
+	(4)	NOP
+	(5)	NOP
+	(6)	S.D	0(R1),  F4		; store result
+	(7)	ADDUI	R1,	R1,	-8	; decrement pointer 8B (double word)
+	(8)	NOP
+	(9)	BNEZ	R1,	Loop		; Branch R1 != Zero , -8 en théorie
+~ 
+Changer l'ordre
+Loop:	(1)	L.D	F0,	0(R1)		; FO = vector element
+	(2)	ADDUI	R1,	R1,	-8	; decrement pointer 8B (double word)
+	(3)	ADD.D	F4,	F0,	F2	; add scalar from F2
+	(4)	NOP
+	(5)	NOP
+	(6)	S.D	+8(R1),  F4		; store result
+	(7)	BNEZ	R1,	Loop		; Branch R1 != Zero , -8 en théorie
+9 instructions -> 7
+~
+Déroulons en 2 
+Loop:	(1)	L.D	F0,	0(R1)		; FO = vector element
+	(2)	ADDUI	R1,	R1,	-8	; decrement pointer 8B (double word)
+	(3)	ADD.D	F4,	F0,	F2	; add scalar from F2
+	(4)	NOP
+	(5)	NOP
+	(6)	S.D	+8(R1),  F4		; store result
+	(7)	L.D	F0,	0(R1)		; FO = vector element
+	(8)	ADDUI	R1,	R1,	-8	; decrement pointer 8B (double word)
+	(9)	ADD.D	F4,	F0,	F2	; add scalar from F2
+	(10)	NOP
+	(11)	NOP
+	(12)	S.D	+8(R1),  F4		; store result
+	(13)	BNEZ	R1,	Loop		; Branch R1 != Zero , -8 en théorie
+~ Enlever un add,
+Loop:	(1)	L.D	F0,	0(R1)		
+	(2)	ADDUI	R1,	R1,	-16	; on passe à -16
+	(3)	ADD.D	F4,	F0,	F2	
+	(4)	 NOP
+	(5)	 NOP
+	(6)	S.D	+16(R1),  F4		
+	(7)	L.D	F0,	8(R1)		
+	(8)	 nop				; on a une nouvelle dépendance
+	(9)	ADD.D	F4,	F0,	F2	
+	(10)	 NOP
+	(11)	 NOP
+	(12)	S.D	+8(R1),  F4		
+	(13)	BNEZ	R1,	Loop		
+~ on réordonne, et comme il n'y a pas d'interdépendances, 
+Loop:	(1)	L.D	F0,	0(R1)		
+	(2)	L.D	F5,	-8(R1)		
+	(3)	ADD.D	F4,	F0,	F2	
+	(4)	ADD.D	F9,	F5,	F2	; pas besoin de nop pcq pas de dépendances
+	(5)	ADDUI	R1,	R1,	-16	; on a le
+	(6)	S.D	+16(R1),  F4		
+	(7)	S.D	+8(R1),  F4		
+	(8)	BNEZ	R1,	Loop		
+~ dérouler encore plus, fera gagner 2 cycles, pour plus de registres utilisés, plus de code (!! Attention au Cache également)
+
+
+
+		
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+
+
+
+
+
