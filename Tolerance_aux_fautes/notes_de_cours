@@ -1,0 +1,86 @@
+** Tue Dec 07
+== Gaëtan
+Introduction 
+	Besoin de sécurité pour les systèmes critiques (avionique, nucléaire)
+	pour les systèmes hautes performances (Complexes => pas fiable)
+	Pour la confidentialité (RFID, système bancaire)
+	=> presque partout
+	Le logiciel a prit une place de + en + importante => tolérance aux pannes également
+Matériel tolérant aux fautes
+	Histoire 
+		Début ~1950: Military and space applications
+		Semiconductor: plus de circuits dans la même puce => plus fiable => plus complex
+			Airbus A320, Boeing 777 sont parmis les choses les plus évoluées en matière de résistance
+		Business assisted by SW:
+		High/medium risk industrial power plants
+		Now: Nearly all computers systems
+	Quand a-t-on besoin de tolérance aux pannes
+		Environnement contraint
+		Utilisateurs n00b
+		Coût de réparation très important
+		Systèmes larges et complexes
+		Satisfaction client (qualité, perfection)
+		Nouveaux processus microélectroniques (too small, too imperfect)
+	Comment faire un système tolérant aux fautes ?
+		Ajouter du matériel qui vérifie
+			=> ajouter de la surface
+			=> ralentir le système
+		Il faut donc évaluer quoi mettre comme dispositifs
+	Origine des fautes
+		Mauvaises spécifications (timing, power, environnemental)
+		Erreurs d'implémentations
+		Défaut matériel: fabrication, défauts aléatoires, vieillissement
+		Facteurs externes: radiations, orage, erreur de manipulation
+Défauts:
+	Défauts systématiques: pendant le procédé de masquage. Collages, ouvertures, court-circuit
+	Défauts paramétriques: courant de fuite !=, plus lent, dégradation des performances, 
+		vieillissement accéléré, consommation plus grande
+		Impact des erreurs de fabrication
+		pour un même circuit en 130nm
+			~30% de variation de fréquence et 5~10x plus de consommation 
+		30° de différence => 7% d'augmentation des délais
+		Solution => mettre des capteurs, si trop chaud: 
+			on souffle, on baisse la VDD et donc on baisse la fréquence
+Aggressions externes
+	Bruits
+	Couplages (8 couches de métallisations), interférences à l'intérieur d'un chip
+	Interférences électromagnétiques
+Défaillances
+	La fonction/service du système est déviée de la fonction prévue
+		Erreurs, défaillance fonctionnelle, timing
+	Défaillance pour l'utilisateur ou le fabricant ?
+	Conséquence sur l'environnement du système
+		(Machine à café qui ne rend pas la monnaie)
+	~~ asleep ~~ Page 31
+	Défaillances des systèmes distribués
+		crash
+		omission, ou ne répond plus aux entrées (ne les reçoit plus)
+		temporelle: trop lent
+		de valeur: réponse erronée
+		arbitraire (byzantines): réponses arbitraires
+	Page 32 ~ asleep
+Logiciels résistants aux fautes
+	Moins d'expériences
+		eBay: à cause de rayonnements solaire important (1999)
+		Ariane
+	Reliability
+		Besoin de haute fiabilité
+			R(t) probalité que le système soit fonctionnel sans défaillance [0,t[
+			Courtes périodes de temps avec performances mauvaises inacceptables (avion, médicale)
+			Aucune réparations possibles (satellites, vaisseaux spatiaux)
+			Avions : R(several hours) = 0.999 999 9
+			Spacecraft : R(several years) = 0.95
+			MTTF = mean-time to fail, applications critiques 25-50 ans
+	Availability
+		A uptime downtime = jour/an
+		ATM A = 0.93 //(< 10 heures / ans)
+		Banking = 0.997 //(< 10 s/hour)
+		supercomputer centers A = 0.997 //(< 10 days / year)
+	Safety
+		Probabilité que le système fonctionne corrèctement ou s'arrète en sécurité
+		Ex: feu tricolores qui passent en orange clignotant
+	
+	
+	
+	
+
