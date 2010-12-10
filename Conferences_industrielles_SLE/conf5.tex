@@ -1,0 +1,136 @@
+% definit le type de document et ses options
+\documentclass[a4paper,12pt]{article}
+
+% des paquetages indispensables, qui ajoutent des fonctionnalites
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{fancyvrb}
+\usepackage[francais]{babel}
+
+\begin{document}
+
+\begin{center}
+\Large{Présentation des cartes intelligentes / cartes SIM}\\
+\vspace{0.4cm}
+\normalsize{Conférence technologique de Jean-Marc Rocchi de Orange.}\\
+\end{center}
+
+\section{Introduction à la carte à puces}
+
+Très peu cher (centimes d'euros).
+Système embarqués autonomes (sauf alimentation) => mémoires, processeurs ...
+
+2 catégories : mémoire (simple espace de stockage) et micro-processeurs
+
+2 catégories : contact (sim, bancaires) et sans contact (badge, RFID ...)
+
+2 caractéritiques : données à haut niveau de sécurité et personnelles
+
+Domaines : téléphonie, téléphonie mobile, cartes bancaires, fidélité, TV payantes, transport, passport, cartes d'identité, cartes vitales
+
+\section{Carte SIM : carte sans-fils}
+
+Utilisation sécurisé : authentification de l'utilisateur (le téléphone permet de l'identifier)
+
+Acteurs : Gemalto (1er), Oberthur ... => concurrence chinoise 
+
+594 millions de cartes SIM actives. plusieurs cartes SIM par portable (plusieurs abonnements) : 1,5 Millards d'abonnés, 1,2 Milliards de téléphones vendues par an (100 millions par moi), 2,4-2,5 Milliards cartes SIM par an.
+La carte SIM n'apprtient pas à l'utilisateur.
+Change selon l'abonnement. 5,1 Milliards de cartes SIM en stock.
+
+Marché de 1,9 Milliard d'abonnés. 45\% de croissance par an au Pakistan.
+Smartphone : marché mondiale
+
+Prévision de croissance jusqu'à 6,3 Milliards cartes SIM en 2014
+Même dans les régions pauvres : permet de diminuer les risques d'épidémie (pour des gens avec moins d'un 1 euro par jour).
+Politique de réduction des coûts
+
+\section{Standardisation des cartes SIM/USIM}
+
+Obligation de possibilité de dialogue carte/lecteur : obligation d'une norme pour polyvalence des systèmes et avec la concurrence.
+Normes complexes et restrictives mais obligatoires : normes télécoms mais surtout ISO (IS-7816 évolution sur 20 ans) (caractéristiques éléctrique (1,8V). Les collecteurs doivent être identiques
+
+Les données sont décritent par leur longueur et crypté
+
+GSM 11.11 : norme décrivant la façon de coder l'identité sur la carte.
+
+L'architecture : connexion en liaison série.
+ROM : OS et environnement JAVA
+Le rôle de l'OS : la gestion de la mémoire de la carte : pas d'accès directe avec la mémoire de l'extérieur.
+Donc lors d'une lecture, il y a une phase de lancement de l'OS puis une vérification lecteur/recepteur.
+Gestion des accès à la carte : utilisateur et administrateur. Clé de sécurité.
+
+La carte est divisée en fichier, fichier maitre (la racine de la structure du fichier), fichier dédié ...
+Impossibilité de ``dumper'' une carte : il faut connaitre la structure des fichiers avant d'y accéder sinon coupure de la connexion au moindre faux-pas
+Normalisation de l'existance de certains fichiers. 
+
+Certains fichiers sont directement sous la racine (ex : code pin, cote bancaire ...) : fichiers très protégés.
+Dès qu'il ya un défaut sur la carte ou dans son fonctionnement, elle est tuée pour éviter le piratage ou autres : pas de prise de risque sur l'intégrité de la carte.
+
+Facilité pour l'opérateur pour tuer la carte car dès la déclaration, la responsabilité de l'activité de la carte est l'opérateur : la carte devient donc hors service.
+
+La carte ne peut être craquée sans fuite d'information sur la carte de la part du constructeur / opérateur.
+
+Chaque fabricant de téléphone à sa propre gestion des fichiers / répértoires mais elle est commune avec la carte SIM : elle sert donc d'espace déchange entre téléphones (sms, derniers coups de tel, contacts, seuil de payement ...
+
+L'allocation de mémoire pour une donnée est prise à la création. La création reste dans les possibilités données par l'administrateur / constructeur.
+
+
+a) lecteur
+b) carte
+=> a) Lecture 
+=> b) signal de fin du boot (echec = carte muette) 
+=> a) définition d'une opération (taille, type d'opération, vitesse de transfert, fonctionnalités supportés ..) 
+=> b) signal d'erreur car il faut indiquer le fichier master (Master File)(un essai possible) 
+=> a) Selectionne le MF, demande le mot de passe (pin code) à l'utilisateur, envoi le MF et le pin code 
+=> b) Vérification du mot de passe et stocke le status de a vérification et renvoit ``OK''
+=> a) Renvoi du MF
+=> b) OK
+=> a) opération sur un fichier précis
+=> b) répond à l'opération s'il n'y a pas de problèmes de sécurité, on rend ``ok''
+
+\section{Les cartes SIM dans les réseaux mobiles}
+
+La carte SIM consulte l'utilisateur une seule fois pour l'autentification pour le code PIN. L'authentification téléphone réseaux n'a plus besoin de nous.
+4 modes : Off, mode veille (idle)(95\%), mode communicant, mode test (mise à jour et échange de données sans consultation de l'utilisateur).
+Démarrage : après le pin code, ecoute de fréquence, connexion réseau, contrôle d'accès, localisation, ...
+Les fréquences sont dans la carte sim. Ainsi que les réseaux interdits (réseaux des concurrents) => listes des réseaux préférés.
+Chaque carte a un numéro d'authentification (IMSI) (autre que le numéro de tel) et une clé secrète (KI) qui sont stockés dans la base de données de l'opérateur.
+
+cryptage A3A8 pour générer un nombre aléatoire dépendant de la clé pour faire une comparaison résultat carte et opérateur => permet l'authentification (échec = carte fichue) => TMSI (identité temporaire).
+IMSI et TMSI permettent de localiser / identifier un utilisateur et particulièrement à l'étranger. Le téléphone portable permet d'être tracé en temps réel : données possédés par l'opérateur et pouvant être obtenues par les autorités. 
+
+\section{SIM toolkit}
+
+VAS - STK (sim toolkit) app
+La carte prend la main sur le mobile. Des choix sont proposés au mobile (puis utilisateur). Permet une facilité d'accès à des serveices données par l'opérateur sans passé par le télphone : populaire de la fin des années 90 à 2005. Les commandes se résument à la base (get status, input, inkey, texte affiché ...). Cependant la communication se fait par clé de sécurité. Permet une communication internet local (infos envoyés par l'operateur pendant la maintenance et local. ex : sonneries ...) : l'espace est très limité et très encadré par l'opérateur.
+Actuellement, la carte a évolué et son architecture a changé car de nombreuses applis sont disponibles : santé, bancaire...
+En france, il y a dispute entre banques, opérateurs ... pour savoir à qui appartiendra la carte. A l'étranger, il s'agit de l'opérateur qui contrôle et les autres installent leur appli sur la carte.
+
+Plateforme OTA (over the air).\\
+
+Permet de gérer l'application à distance à travers le réseau. Par exemple : l'installation d'une application se fait de l'extérieur.
+
+Copie du téléphone sur le serveur centrale de l'opérateur.
+
+\section{JavaCard}
+
+Portabilité de la machine. Cependant, dans le cas général, c'est un sucide car dans ce cas, il n'y pas plus de valeur à un produit et la concurrence s'effondre.
+Cependant, il y a un environnement dans chaque carte. 
+
+USB inter-composant : 1,8Mo/s comme norme de communication entre composants.
+
+Le java permet l'implémentation d'un serveur web dans la carte pour une communication plus aisé sur l'``internet local'' : pour cela la carte doit changer de structure (ports) de 6 à 8. La communication internet peut se faire par le passage par un proxy de l'opérateur ce qui permet de contrôler les sites (l'adresse du proxy est stocké sur la carte SIM). La gestion des pages web est très différente selon le téléphone ce qui rend chaotique le developpement d'explorateur internet.
+
+Exemple d'app : backup de répértoire sur carte SIM, (250 enregistrements (contacts) perso, 1000 professionnels).
+
+\section{Machine à machine}
+
+10 Milliards de machines à connecter. 
+exemple : trafic routier par le nombre de téléphones sur une surface. Possible de connaitre la vitesse d'une voiture.
+\end{document}
