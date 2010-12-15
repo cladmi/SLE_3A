@@ -503,6 +503,23 @@ I-Push/Pull
                 On peut lire un message
 II-Publish/Subscribe
 	- On peut récupérer des messages qui matchent un topic
+--------------------------------------------------------------------------------
+** SUNRPC - ONCRPC 
+== Gaëtan
+	Open Network Computing ~1980
+	Servit à implémenter à NFS
+	IDLanguage : XDR
+		Pas qu'un langage mais inclut le préprocesseur C
+** MIP: Message Passing Interface
+1990 : SuperComputing
+	SPMD	Single Program Multiple Data
+	SIMD 		Instruction
+		- Groupe de Processus
+		- Point à Point : send/receive
+		- Collections : Gather Reduce
+		- I/O
+		- Synchro
+
 
 
 			

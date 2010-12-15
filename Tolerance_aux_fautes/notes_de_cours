@@ -77,10 +77,232 @@ Logiciels résistants aux fautes
 		Banking = 0.997 //(< 10 s/hour)
 		supercomputer centers A = 0.997 //(< 10 days / year)
 	Safety
-		Probabilité que le système fonctionne corrèctement ou s'arrète en sécurité
+		Probabilité que le système fonctionne correctement ou s'arrête en sécurité
 		Ex: feu tricolores qui passent en orange clignotant
-	
-	
-	
-	
+--------------------------------------------------------------------------------
+== Tue Dec 14
+** Gaëtan
+Tolérance aux fautes
+	Éviter les fautes
+		+ Utiliser des méthodes de design, validation formelle, 
+		réutilisation de modules, programmation structurée
+		+ Règles de fabrication, de correction
+	Prévoir les fautes
+		+ Modèles mathématiques
+	Éviter les fautes 
+		+ Enlever les produits défectueux
+Les tests
+	En informatique, tout produit manufacturé est testé en matériel
+	Design for test
+		ATPG => génération automatique des vecteurs de tests
+		Scan Path/ Boundary scan == JTAG
+	Tests?
+		Vérification : analyse si à un moment donné du développement, le produit respecte les contraintes
+		Validation : évaluation du système à la fin du processus de développement
+			vérif si ala conception est correct
+			Réalisé par simulation, émulation hardware, preuve formelle
+		Test de debug/producton : vérifier si le produit fabrique n'a pas de défauts physiques et paramétriques
+		Testeur : ATE Automatic test équipement
+			tests sous pointes ou tests en boitiers
+		Deux périodes :
+			tests de debug, on fabrique quelques circuits et on les debug (période de 2 ans environ) 
+			test de validation de chaque produit après (à la chaîne)
+	Tests de types:
+		Yield learning : preuve du processus de fabrication
+		test de debug
+		test de production
+		Test pendant le fonctionnement normal: prédiction du vieillissement
+Whatever method is used, faults (HW) and bugs (SW) still remain
+	Introduire des techniques lors du développement pour tolérer des erreurs qui arriveraient
+	HW : redondance, avec spare/repair, redondance temporelle
+	SW : checkpoint and rollback, 
+	Ajouter dans l'application, des mécanismes pour gommer les fautes
+Fault Tolerance
+	Redondance : temporelle qui concerne les erreurs temporaires, avec des retry et opérations répétées
+	Redondance : information
+		static or dynamic
+	Redondance Statique ->
+		Automatic system failure free 
+			\-> on masque les erreurs ou on fait de la redondance massive, 
+				coûte très cher, masque des erreurs multiples
+				Bien pour les systèmes temps réels
+	Redondance Dynamique
+		Detection ou lecture ->
+			\-> repair off line	
+			\-> repair on line (avec le logiciel)
+				- auto correction
+				- reconfiguration, commuter sur des réserves (switch on spare), nouvel état
+				- Retry
+				- reset/reboot
+			Pas cher,
+			beaucoup de latence, impact sur les performances
+						Simple 		Fault tolerance
+		Temps moyen jusqu'à défaillance	6-12 semaines 	21 ans
+Modèles de fautes
+	Erreurs permanentes (hard)
+	Erreurs temporaires (soft)
+Redondance statique
+Triple modular Redundancy
+	Vote majoritaire sur les sorties: tolère 1 erreur.
+	On mets la sortie maj(a,b,c) = ab + bc + ac
+	ON rajoute, si on veut, également, 3 sorties pour dire qui a raison, a xor maj, b xor maj, c xor maj
+	Problèmes
+		Résultats peuvent tous légèrement différents => float, on fait quoi ?
+		Capteurs différents
+		En valeur analogique : 
+			vote en valeur moyenne
+			écarter les valeurs trop différentes (différence dans les MSB)
+		Coût : 	N-redundancy, (N-1)x100%
+			Tolérance of N/2 faults (apolo : N = 5, nucléaire N=4 vote adaptatif)
+			Coût en temps minime
+		NMR/TMR, (N module redundancy)
+			circuit : very used today
+			Module, microprocessor, system (Space born computers - FSTS : avec n unités, n bus, n mémoires,)
+			Software :
+				n-programming : n different implementation, all executed in the same time, output voted
+				SIFT:
+	Other Static Redundancy
+		Error correcting codes : hamming/CRC
+		Add check bits to data bits
+	Hamming codes around a memory
+	Les mémoires peuvent garder des erreurs très longtemps, donc il peut être important de les protéger en priorité
+	Codage de Hamming
+		avec detection 2 bits et correction de 1 
+		R tel que 2^R >= K + R + 1
+		K = bits de données
+		11b -> 4 contrôle
+		128b -> 8 contrôle
+		On essaye de rester <~ 10%
+		  2^ 0  1     2       
+		m = p1 p1 k0 p3 k1 k2 k3 … k10
+		matrice de Hamming = [r lignes n colonnes] = [1 en binaire, 2 en binaire, …, 15 en binaire]
+		Résoudre 
+		m x H^T = 0
+		Ou sinon, prendre les termes qui, dans leur décomposition binaire possèdent le bit d'indice i
+		p1 = p(2^0) = k3 + k5 + k7 + k9 + k11 + k13 + k15
+		P2 = p(2^1) = k3 + k6 + k10 + k11 + k14 + k15
+		P3 = p(2^2) = k4 + k5 + k6 + k7 + k12 + k13 + k14 + k15
+		p4 = p(2^3) = …
+		Circuit de syndrome (détection)
+			lecture de mémoire
+			v = [v1, … v15]
+			v x H^T = S = [S1, …,S4]
+			pas d'erreur S = [0 0 0 0]
+			Si s != [0000], alors donne la position erronée
+			Décodeur : entrée en binaire, sortie en 1 parmi n, seule valeur fausse
+			Solution : on xor la sortie d'un décodeur (en enlevant le fil 0) avec la valeur que l'on a
+			!! S = [0100] peut être égale à [0001] + [0011], et la correction ne corrigera pas l'erreur 
+				(on rajoute alors un bit de correction pour détecter ce cas)
+			Pénalisation de 2 cycles pour la correction d'erreur
+--------------------------------------------------------------------------------
+== Wed Dec 15
+** Gaëtan
+Les codes CRC
+	g(x) polynôme générateur d'ordre (n-k) pour un code (n,k) avec le coefficient unitaire en (n-k)
+		n : nombre total de bits, k nombre de bits de donnée
+		Le polynôme générateur de g(x) est unique, X^n + 1 se divise par g(x) sans reste et 
+                le coefficient dominant est x^(n-k) et il y a un terme en 1
+		Pex: (7,4) -> x³ + x + 1
+		Exemple pratique CRC
+		1+x⁷ = (1+x)(1+x+x³)(1+x²+x³)
+		(7,4) -> on a le choix entre (x³ + x + 1) et (x³ + x² + 1)
+		Les mots codes sont multiples de g(x) alors pour chaque code c(x) 
+			c(x).g(x) = 0 modulo 1+x⁷
+                            Bascules D (à décalage ?)
+                           +----+      +----+    +----+
+                  +--------+ FF |---XOR+ FF +-XOR+ FF |---...-XOR---C(x) non séparable
+                  |        +----+    | +----+   |+----+       |
+		gn = 1               |          |gn-2         |
+		  |                  |gn-1      |             |
+                  +------------------+----------+----------...d(x)
+                Entre les différents polynômes on choisit celui qui a le moins de termes car il fait moins de matériel
+                3) Correction : g(x) = X³+x+1
+                a) ctrl = 0
+                        v(x) -> buffer register 
+				7clk
+				Dans le registre de décalage pour calculer le syndrome
+			Soit une erreur sur position 7 e(x) = X⁶
+			Calcul complet du syndrome
+			s(x³v(x))mod g(x) = ~ magie ~ = x2 reste de la div (001), contenu registre à décalage (001)
+		b) Ctrl =1, sur 7 clk on décharge Reg Buffer
+		Si erreur en position 6, e(x) = X⁵
+		g(x³.x⁵) = X (0 1 0)
+		Y = 0,1,0,0,0,0,0,0 en 7 clk
+                                                                       V(x) mot reçu [7bits, 4 donnée + 3 contrôle]
+                                                                      /
++--------------------+---------------------------------XOR<-------AND+
+|                    |                                  ^             \_ /CTRL
+|                    |                                  |
+|                    |                                  |
+|                    |                                  |
+|       +------+     |    +------+         +------+     |             Ctrl
+|       |      |     v    |      |         |      |     |            /
++------>|  0   +-+--XOR---+  0   +----+----+  1   +-+--XOR<------AND+
+        +------+ |        +------+    |    +------+ |                \
+                 |                    |             |                 \__
+                 |                    |             |                    |
+                 |                    |             |                    |
+                 |                    |             +-\                  |
+                 |                    |                \                 |
+                 |                    +-----------------+AND--Y----------+
+                 |                                     /      |
+                 +------------------------------------/       |
+                                                              |
+v(x) mot reçu                                                 |
+     ----0                                                    v
+          MUX------------- Registre Buffer ----------------->XOR--+-----------sortie corrigée
+    +----1   \                                                    +---+
+    |        ctrl                                                     |
+    |                                                                 |
+    |                                                                 |
+    +-----------------------------------------------------------------+
+~
+Reconfiguration dynamique
+		first : good and quick detection mechanism
+		Second : have a very reliable switch to switch on spares resources
+			Moins cher que la reconfiguration statique
+		Avantages : 
+			On peut faire une isolation et un diagnostique
+			Réparation ON/OFF line et réinsertion
+		Sont utilisables sur des systèmes non-critiques car c'est long, 
+			Et elles visent les erreurs temporaires
+	Error detection: duplication and comparison
+	Problems : 
+		weakest point :comparator
+		Out : agree/disagree
+Dynamic Reconfiguration
+	Pour Erreurs rares, pourquoi laisser tous les modules fonctionner 
+	(consommation de puissance, "gachis" de puissance de calcul -> peuvent être utilisés pour autre chose moins importantes, tant qu'il n'y a pas d'erreur)
+		Detections des erreurs, et si il y a une erreur, on va remplacer les modules erronés par des autres modules
+		Module de détection est très critique
+On line reconfigurable duplication (COMTRAC, tandem)
+	Hot standby redudancy, 2 copies travaillent en parallèle et une seule est connectée
+	quand une faute est détectée par un comparateur, on change tout de suite de système
+	=> le diagnostique doit être rapide
+		Temps max de diagnostique "acceptable" 6 secondes
+	Standby Sparing : Only one module est operational, the other are standby, but hot
+	On déconnecte les modules basés sur ses erreurs, -> après on le corrige/remplace/supprime
+Tri-Duplex technique
+	On met 3 paquets de 2 modules avec 2 étages de votes, un pour les 2 et puis un vote sur les 3 résultats
+Redondance Temporelle
+	Détecter et corriger les erreurs transitoires et de timing
+		Erreurs de timing causées par une VDD trop faible
+		On a une clock décalée, et si le changement de la donné se fait 
+		entre le rising edge de la clock normale et celui de la clock décalée, on lève une erreur
+		En pratique décalage d'environ 30%
+		C'est pas plus de 20 ou 30% de surface en plus
+Time redundancy, shifted operands
+	Transient and permanent faults, detection on position i and or i-1
+		On décale les entrées d'un cran (shift left)
+		On passe l'ALU, (spéciale pour le cas)
+		et on reshift, 
+		On compare ça avec la valeur sans shift et on voit si il y a une erreur sur un bit spécifique
+			Long (au moins 2 cycles, 3 si on fait la correction)
+		On fait ça en décalant 2 fois, comme ça on aura 3 données au final -> la normale, décalée de 1 et décalée de 2
+Timing redundancy: inverted logic
+	Permet de détecter des collages (du permanent), des court circuits entre des fils
+	très utiles pour les communications sur des données unreliable
+	Utilisé dans certains protocoles réseau en doublant le header (pex IP) plus en rajoutant un CRC5
+		Si erreur, on envoie un NON_ACK
+
 

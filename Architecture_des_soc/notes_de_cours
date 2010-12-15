@@ -100,7 +100,29 @@ Loop:	(1)	L.D	F0,	0(R1)
 	(7)	S.D	+8(R1),  F4		
 	(8)	BNEZ	R1,	Loop		
 ~ dérouler encore plus, fera gagner 2 cycles, pour plus de registres utilisés, plus de code (!! Attention au Cache également)
-
+--------------------------------------------------------------------------------
+** Mon Dec 13
+== Gaëtan
+VLIW
+	Exécuter plusieurs instructions à la fois: pex 128 4-issues
+	Chaque unité de calcul écrit et lit dans les registres => au max 4 écritures et 8 lectures
+	Il faut faire attention car float est plus long que int, on a donc pas le résultat en même temps.
+	Désavantages:
+		Pas portable, car dépend de l'architecture et du nombre d'unités fonctionnelles de chaque type
+		Des caches miss bloquent 4 tout le processeur
+		Densité de code:
+			En moyenne on a une utilisation de 50% du vliw, => 50% de code qui sert à rien 
+			une solution => taille variable et 1bit qui dit si une partie de l'instruction est exécutée en parallèle
+			Le matériel doit alors "rétablir" l'instruction dans sa longueur
+	On ne dépasse pas 4 niveaux de parallélisme
+	Du fait des latences différentes entre les instructions, quand on lit une valeur à l'instruction suivante, 
+	on ne sait pas en regardant sans informations, quelle est sa valeur.
+Dynamic Scheduling
+	Les instructions lise la dernière valeur écrite
+	But: éviter les aléas et les ajouts de "bulles"(nop) dans le pipeline
+	L'aspect dynamique est important car on ne sait pas forcément la valeur à l'avance
+			
+			
 
 
 		
