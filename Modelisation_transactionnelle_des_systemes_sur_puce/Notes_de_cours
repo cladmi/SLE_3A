@@ -155,13 +155,57 @@ Question : Implémentation standard de gestion des interruptions ?
 		
 
 
-	
+----------------------------------------------------------------------
+** 07 Janvier 2011
 
+== Mathias	
 
-	
+Discussion autour de ST et l'apparition de la TLM dans l'industrie.
 
+Travail au dessus du RTL : ESL (Electonic System Level)
+But :
+    - Amélioration de la productivité du système de vérification ( du
+    RTL par rapport à la Spec, par un programme C).
+    - Développement sur une puce avant sa création
+    - Aider les architectes à dimensionner le système (bus ...).
 
-	
-	
+Le SystemC se situe entre la TLM et le RTL
 
+Le but du SystemC est de donner un morceau de code simulant la puce
+afin de tester le logiciel.
 
+Disponibilité avant la puce :
+Problématique car la demande du modèle se fait souvent en retard et
+trop proche de la date de sortie.
+Ainsi le modèle n'est pas toujours très utilisé. De plus, les
+développeurs logiciels manquent d'intêret vis à vis du matériel donc
+ils doutent du modèle.
+La concurrence se trouve au niveau de la simulation par FPGA et les
+émulateurs qui sont de gros FPGA. Le problème est le coût du FPGA qui
+peut atteindre une centaine de millier de dollards. Alors que le
+modèle TLM est disponible à moidre coût (après le développement) et
+permet au client de simuler ses logiciels.
+
+Deux business modèles qui se rencontrent :
+En Hardware, le système repose sur des licences souvent très chères,
+alors que en Software, la plupart des outils sont Open Source donc
+gratuit. Ainsi, l'avantage du SystemC est de ne pas avoir de coût de
+licences. Pour cela, il faut standardiser le language pour éviter que
+les fournisseurs d'outils ne créer pas une dépendance du client vis à
+vis d'eux même pour développer des outils à licence. Ainsi tous le
+modèle TLM est "verrouiller" par de nombreuses normes.
+Cela répond au besoin de se mettre d'accord entre entreprise en créant
+un projet OpenSource. De nos jours, il s'agit pour eux d'une erreur
+car après coup, il aurait pu le faire payer. En effet, le produit de
+départ était un simple compilateur semblable au VHDL mais il a été
+modifié par les utilisateurs pour devenir quelque chose de
+complétement fonctionnel et utilisé pour les modèles TLM.
+
+L'analogique reste à faire : en effet, le numérique est déjà
+implémenté par le VHDL, le VERILOG, et le SystemC.
+Certains projets ont commencé tels que le SystemC AMS, le VERILOG A
+...
+
+Permet aussi d'échanger les blocs (API) entre systèmes (ex : HDMI
+entre téléphone portable et set-top box). A l'avantage de mettre en avant
+l'OpenSource.
