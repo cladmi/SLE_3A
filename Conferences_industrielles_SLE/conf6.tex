@@ -1,0 +1,176 @@
+% definit le type de document et ses options
+\documentclass[a4paper,12pt]{article}
+
+% des paquetages indispensables, qui ajoutent des fonctionnalites
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{fancyvrb}
+\usepackage[francais]{babel}
+
+\begin{document}
+
+\begin{center}
+\Large{Les langages de programmation pour les systèmes embarqués.}\\
+\vspace{0.4cm}
+\normalsize{Conférence technologique de E. JENN de THALES.}\\
+\end{center}
+
+\section{Introduction}
+Thales : Internationale, nombreux domaines
+=> calculateur avionique civile
+Airlab : étude sur les ``technologies du logiciel'' :
+Médiateur entre le monde de la recherche et le monde de l'entreprise
+(commercialisable)
+
+\section{La question est-elle pertinente ?}
+Importance : encore nécéssaire malgré une partie automatisé.
+Automatisation :
+ - ``Sureté'' du langage
+ - Lisibilité
+
+Impact sur la productivité.
+Certains cas évidents :
+  ex : Assembleur vs Langage structuré
+D'autres :
+  Qualité 
+  Nombre de lignes
+  Coefficient d'effort
+
+=> Nombreuses études plus ou moins partiales encore d'actualités.
+\section{Quelques observations sur les langages ...}
+Langage informatique : lié à la machine, compilable, optimisable .
+==> Surtout : Déstinés à un individu (codeur, relecture ...)
+
+Pptés :
+- expressif abstrait
+- description du problème
+- cohérence
+- compréhensible
+- détéction d'erreurs
+- le moins contraignant
+- modularité
+
+Pptés ambigues :
+ex : abstraction
+- serialisations
+- gestion de mémoire
+- calculs flottants
+
+** Pb : Cycle de vie des objets :
+pas toujours accessible
+manuel ? : propriété donc gestion non locales donc pertes de
+modularité, fuites mémoires.
+** Solution : 
+
+Comportement complexe : temps d'éxécution non linéaire
+
+** Pb : Traiter des données ``réelles''
+virgule fixe : manuel
+** Sol :
+Conv en entiers
+
+Transivité de l'opérateur ``='' sujet à problème et autres ops.
+Dépends du matériel et du compilateur.
+
+
+1300 langages : problème ou diversité
+selon : framework, technologie, principe, industriel amène chaucun un
+langage. Curiosité - ``mode'' => diffusion rapide des concepts
+
+
+
+******
+
+
+Le besoin d'un langage dépend du domaine (marché, technologies, champs
+d'utilisation, pratiques )
+
+Evolution des langages inéxorable mais aussi de vieux langages restent
+tels que l'ADA et le FORTRAN
+\section{Les systèmes avioniques embarqués }
+Certification, sureté, temps, outillagen volume/poids/dissipation,
+environnement, maintenance
+
+Développement : 
+Donner confience (avoir confiance) 
+Contrainte de certification
+
+Impact : 
+- intérpréter/décliner obj de la DO, (code mort ? éxec ?)
+- atteindre les obj de la DO
+\section{Contraintes sur le choix du langage}
+Contraintes dimensions 
+contraintes mécaniques
+contraintes tenue éléctronique
+contraitens environnemental (important : dissipation)
+
+sols : code correcteur, protection du cache contre rayonnement (tous
+les caches car sinon on peut douter de l'intégrité des données)
+
+Problème de ressourses :
+ capacités et besoins croissants
+ besoin d'évolutions
+
+** Contraintes Architecture.
+** Contraintes de dvlpt (reduire la prob de faute...) : favoriser
+modularité et testabilité => ex : C et ADA
+
+Rêgle de codage (ex : allocation dynamique et récursion interdites)
+pour la certification
+
+COntraintes ``runtime''
+embarquement des librairies, API ...
+Le code source ET le code final doivent être vérifié (certains
+morceaux du code peuvent être généré étrangement par le compilateur).
+Difficulté d'utilisation du java.
+
+Contraintes temporelles :
+temps réel
+
+****** 15-20 min
+
+Nombreuses contraintes ...
+Langages différents -- besoins différents
+
+Le C est l'un des langages les plus fiables mais le plus utilisés dans
+l'embarqués.
+
+Ccl :
+Identifier les sources de changement,
+Anticiper les changements,
+Intégrer les changements utiles (tendance)
+Eviter les changements inutiles ou dangereux 
+
+Résistance à l'évolution : coût industriel, culturelle, ``pedigree''
+du langage
+
+Exemple : KCG
+
+Passage du C++ à l'OCml
+
+\section{Changements en cours et à venir}
+
+Support multi-processus ...
+support conception objet
+contractualisation 
+reconfiguration (futur)
+distribution des traitements  (futur)
+
+Moyens de com : A429 (primaire) -> AFDX (complexe) l'A... (bus de com
+direct entre calculateur et actionneur)
+DO178C (2011)
+=> prise en compte des ``nouveaux'' langages, polymorphisme, gestion
+dynamique de la mémoire, virtualisation
+
+méthode formelle (modèle checking, interprétation abstraite)
+
+Conclusion :
+changement de langage par nécéssité technique et économique
+composantes du choix : tech, culturelle, historique, reglementaire
+tendance : reduire l'activité de codagepour l'application embarqué
+\end{document}
