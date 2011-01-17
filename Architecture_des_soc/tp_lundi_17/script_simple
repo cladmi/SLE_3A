@@ -5,6 +5,10 @@ t_inc=8
 t_max=128
 dinero_arg="-l1-dbsize 32  -l1-dsize 16k -l1-dassoc 2"
 
+# cas avec cache L2 en plus par rapport au 2ème cache avec seulement 32 par ligne
+
+# dinero_arg="-l1-dbsize 32  -l1-dsize 16k -l1-dassoc 2  -l2-dsize 1M -l2-dbsize 64 -l2-dassoc 4"
+
 
 # incrémenter i entre chaque simulation
 
