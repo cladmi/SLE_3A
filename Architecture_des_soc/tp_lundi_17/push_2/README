@@ -1,0 +1,14 @@
+Il faut avoir un fichier rotation.c.x et un fichier rotation.c.y qui correspondent au premier algorithme et au dernier,
+je ne supporte pas les question 15 à 17
+
+
+ATTENTION essayez dans une copie de votre archive, car je ne garantit pas le fonctionnement
+
+formules pour la performance utilisée
+Quote de mon rapport latex 
+"
+153 $$Nb\_cycles\_L1 = (Nb\_accès - Nb\_miss\_L1) * 1 + 250 * Nb\_miss\_L1$$
+154 $$Nb\_cycles\_L2 = (Nb\_accès - Nb\_miss\_L1) * 1 + (Nb\_miss\_L1 - Nb\_miss\_L2) * 10 + 250 * Nb\_miss\_L2$$
+155 J'ai partagé les formules ainsi que les lignes de bash pour générer les courbes à toute la SLE, 
+156 on y a passé 1h30 avec Charles Eynard pour quelquechose qui n'est censé être qu'un outil.
+"

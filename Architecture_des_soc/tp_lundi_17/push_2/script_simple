@@ -1,0 +1,86 @@
+#!/bin/bash
+
+source script_lib
+t_inc=8
+t_max=128
+
+dinero_arg="-l1-dbsize 32  -l1-dsize 16k -l1-dassoc 2"
+
+# cas avec cache L2 en plus par rapport au 2ème cache avec seulement 32 par ligne
+
+#dinero_arg="-l1-dbsize 32  -l1-dsize 16k -l1-dassoc 2  -l2-dsize 1M -l2-dbsize 64 -l2-dassoc 4"
+
+
+# incrémenter i entre chaque simulation
+
+
+
+cp rotation.c.y rotation.c
+make LDLIBS=-lm rotation
+
+
+dinero_arg="-l1-dbsize 64  -l1-dsize 16k -l1-dassoc 2"
+i=1
+alpha=0
+boucle res/expe_simple_${i}_0 $t_inc $t_max  $alpha $dinero_arg
+
+alpha=0.52
+boucle res/expe_simple_${i}_052 $t_inc $t_max  $alpha $dinero_arg
+
+alpha=1.04
+boucle res/expe_simple_${i}_104 $t_inc $t_max  $alpha $dinero_arg
+
+alpha=1.57
+boucle res/expe_simple_${i}_157 $t_inc $t_max  $alpha $dinero_arg
+
+
+
+dinero_arg="-l1-dbsize 32  -l1-dsize 16k -l1-dassoc 2"
+i=2
+alpha=0
+boucle res/expe_simple_${i}_0 $t_inc $t_max  $alpha $dinero_arg
+
+alpha=0.52
+boucle res/expe_simple_${i}_052 $t_inc $t_max  $alpha $dinero_arg
+
+alpha=1.04
+boucle res/expe_simple_${i}_104 $t_inc $t_max  $alpha $dinero_arg
+
+alpha=1.57
+boucle res/expe_simple_${i}_157 $t_inc $t_max  $alpha $dinero_arg
+
+
+dinero_arg="-l1-dbsize 32  -l1-dsize 16k -l1-dassoc 2  -l2-dsize 1M -l2-dbsize 64 -l2-dassoc 4"
+i=3
+alpha=0
+boucle res/expe_simple_${i}_0 $t_inc $t_max  $alpha $dinero_arg
+
+alpha=0.52
+boucle res/expe_simple_${i}_052 $t_inc $t_max  $alpha $dinero_arg
+
+alpha=1.04
+boucle res/expe_simple_${i}_104 $t_inc $t_max  $alpha $dinero_arg
+
+alpha=1.57
+boucle res/expe_simple_${i}_157 $t_inc $t_max  $alpha $dinero_arg
+
+
+cp rotation.c.x rotation.c
+make LDLIBS=-lm rotation
+
+dinero_arg="-l1-dbsize 32  -l1-dsize 16k -l1-dassoc 2"
+i=4
+alpha=0
+boucle res/expe_simple_${i}_0 $t_inc $t_max  $alpha $dinero_arg
+
+alpha=0.52
+boucle res/expe_simple_${i}_052 $t_inc $t_max  $alpha $dinero_arg
+
+alpha=1.04
+boucle res/expe_simple_${i}_104 $t_inc $t_max  $alpha $dinero_arg
+
+alpha=1.57
+boucle res/expe_simple_${i}_157 $t_inc $t_max  $alpha $dinero_arg
+
+pdflatex -output-directory tex rapport.tex
+mv tex/rapport.pdf .
