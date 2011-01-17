@@ -21,7 +21,7 @@
 #
 # TODO
 # - Base config should be in an external file.
-# - Support multiple value for -a and -n option to load more than 1 BranchID at once
+# - Support multiple value for -a option to load more than 1 BranchID at once (already available for -n X,Y,Z)
 # - TZID should not be statically set.
 # - Add possibility to stop the script before starting to log on the website if option y or c match some string
 #	(would be usefull for the cgi version where some users still try to load older project no longer existing
@@ -102,6 +102,14 @@ $default_config{'UT'}{'w'} = 0;
 $default_config{'UT'}{'c'} = 1;
 $default_config{'UT'}{'d'} = 'univ-tours.fr'; # univ-tours.fr or etu.univ-tours.fr
 
+# For Univ Brest (UBO)
+$default_config{'UBO'}{'u'} = 'http://ent.univ-brest.fr/ade/';
+$default_config{'UBO'}{'l'} = '';
+$default_config{'UBO'}{'p'} = ''; # Should be commented if your ADE system don't need a password
+$default_config{'UBO'}{'w'} = 0;
+$default_config{'UBO'}{'c'} = 1;
+$default_config{'UBO'}{'d'} = undef;
+
 my %opts;
 my @tree;
 
@@ -137,12 +145,12 @@ if (!defined $ENV{REQUEST_METHOD}) {
 		print STDERR "\t if you just use -p without password, you will be prompted for it. recommanded for security !\n";
 		print STDERR " -w : write the schedule in time-stamped \"calendar.\" file to track modifications to your calendar.\n";
 		print STDERR " -c : enable CAS Authentification, as used at Telecom Bretagne\n";
-		print STDERR " -d : set domain name to use for CAS authentification\n";
+		print STDERR " -d : set realm to use for CAS authentification (useless for most CAS installation)\n";
 		print STDERR " -v : enable verbose/debug output (will write file on disk)\n";
 		print STDERR "\nSome examples:\n";
 		print STDERR " $0 -l jebabin -p -y '2007-2008' -a 'Etudiants:FIP:FIP 3A 2007-2008:BABIN Jean-Edouard'\n";
-		print STDERR " $0 -e Ensimag -p some_password -y 'ENSIMAG2009-2010' -a 'Enseignants:M:Moy Matthieu'\n";
-		print STDERR " $0 -e Ensimag -p some_password -y 'ENSIMAG2009-2010' -n 717\n";
+		print STDERR " $0 -s Ensimag -p some_password -y 'ENSIMAG2009-2010' -a 'Enseignants:M:Moy Matthieu'\n";
+		print STDERR " $0 -s Ensimag -p some_password -y 'ENSIMAG2009-2010' -n 717,1320,1321,1322,1324,1334,1324\n";
 		print STDERR " even more:\n";
 		print STDERR " $0 -c -l jebabin -p -y '2007-2008' -a 'Etudiants:FIP:FIP 3A 2007-2008:BABIN Jean-Edouard'\n";
 		print STDERR " $0 -w -c -l keryell -p some_password -y '2007-2008' -a 'Enseignants:H à K:KERYELL Ronan'\n";
@@ -197,10 +205,12 @@ if ($opts{'w'}) {
 }
 
 push (@tree,$opts{'y'});
-foreach (split(':', $opts{'a'})) {
-	push (@tree,$_);
-	# $opts{'a'} is ProjectID:Category:branchId:branchId:branchId but of course in text instead of ID
-	# The job is to find the latest branchId ID then parse schedule
+if (defined($opts{'a'})) {
+	foreach (split(':', $opts{'a'})) {
+		push (@tree,$_);
+		# $opts{'a'} is ProjectID:Category:branchId:branchId:branchId but of course in text instead of ID
+		# The job is to find the latest branchId ID then parse schedule
+    	}
 }
 
 my $mech = WWW::Mechanize->new(agent => 'ADEics 0.2', cookie_jar => {});
@@ -790,10 +800,11 @@ __END__
 
 History (doesn't follow commit revision)
 
-Reversion 3.5 TBD
+Reversion 3.5 2010/12/23
 Improved tree parsing
 Improved hours parsing
 Fix a problem with some version of module used by WWW::Mechanize
+Support for UBO
 
 Revision 3.4 2010/05/08
 Improve output when path (-a) is invalid

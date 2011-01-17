@@ -1,0 +1,24 @@
+#!/bin/bash
+
+source script_lib
+t_inc=8
+t_max=128
+dinero_arg="-l1-dbsize 32  -l1-dsize 16k -l1-dassoc 2"
+
+
+# incrémenter i entre chaque simulation
+
+i=2
+
+alpha=0
+boucle res/expe_simple_${i}_0 $t_inc $t_max  $alpha $dinero_arg
+alpha=0.52
+boucle res/expe_simple_${i}_052 $t_inc $t_max  $alpha $dinero_arg
+alpha=1.04
+boucle res/expe_simple_${i}_104 $t_inc $t_max  $alpha $dinero_arg
+alpha=1.57
+boucle res/expe_simple_${i}_157 $t_inc $t_max  $alpha $dinero_arg
+
+
+pdflatex -output-directory tex rapport.tex
+mv tex/rapport.pdf .

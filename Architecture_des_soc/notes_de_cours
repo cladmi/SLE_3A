@@ -12,17 +12,17 @@ Exemple Instructions
 ~~
 Graphe des dépendances
 		1            4
-               /|\           |                                                   
-              / | \          |                                                  
-             v  |  |         v                                                  
-            2   v  v         6                                                 
-           / \--+--+                                                                 
-          /     |   \                                                                 
-         v      v    v                                                               
-        3       5    7                                                              
+               /|\           |
+              / | \          |
+             v  |  |         v
+            2   v  v         6
+           / \--+--+
+          /     |   \
+         v      v    v
+        3       5    7
 Execution sur un processur Out-of-order
-"R"	 0 ,  0 , (2), (4), (6), (7) 
-"I"	(1),  0 ,  0 , (3), (5) 
+"R"	 0 ,  0 , (2), (4), (6), (7)
+"I"	(1),  0 ,  0 , (3), (5)
 Même mieux, on peut mettre (4) et (6) à la place des instructions nulles au début
 ~
 ~
@@ -32,7 +32,7 @@ This code, add a scalar to a vector
 	x[i] and s float
 	for (i = 999; i >= 0, i--)
 		x[i] = x[i] + s;
-					Latency		stalles between 
+					Latency		stalles between
 					in cycles	in cycles
 FP ALU OP 	-> 	FP ALU OP	4		3
 FP ALU OP 	->	Store double	3		2
@@ -51,7 +51,7 @@ Loop:	(1)	L.D	F0,	0(R1)		; FO = vector element
 	(7)	ADDUI	R1,	R1,	-8	; decrement pointer 8B (double word)
 	(8)	NOP
 	(9)	BNEZ	R1,	Loop		; Branch R1 != Zero , -8 en théorie
-~ 
+~
 Changer l'ordre
 Loop:	(1)	L.D	F0,	0(R1)		; FO = vector element
 	(2)	ADDUI	R1,	R1,	-8	; decrement pointer 8B (double word)
@@ -62,7 +62,7 @@ Loop:	(1)	L.D	F0,	0(R1)		; FO = vector element
 	(7)	BNEZ	R1,	Loop		; Branch R1 != Zero , -8 en théorie
 9 instructions -> 7
 ~
-Déroulons en 2 
+Déroulons en 2
 Loop:	(1)	L.D	F0,	0(R1)		; FO = vector element
 	(2)	ADDUI	R1,	R1,	-8	; decrement pointer 8B (double word)
 	(3)	ADD.D	F4,	F0,	F2	; add scalar from F2
@@ -77,28 +77,28 @@ Loop:	(1)	L.D	F0,	0(R1)		; FO = vector element
 	(12)	S.D	+8(R1),  F4		; store result
 	(13)	BNEZ	R1,	Loop		; Branch R1 != Zero , -8 en théorie
 ~ Enlever un add,
-Loop:	(1)	L.D	F0,	0(R1)		
+Loop:	(1)	L.D	F0,	0(R1)
 	(2)	ADDUI	R1,	R1,	-16	; on passe à -16
-	(3)	ADD.D	F4,	F0,	F2	
+	(3)	ADD.D	F4,	F0,	F2
 	(4)	 NOP
 	(5)	 NOP
-	(6)	S.D	+16(R1),  F4		
-	(7)	L.D	F0,	8(R1)		
+	(6)	S.D	+16(R1),  F4
+	(7)	L.D	F0,	8(R1)
 	(8)	 nop				; on a une nouvelle dépendance
-	(9)	ADD.D	F4,	F0,	F2	
+	(9)	ADD.D	F4,	F0,	F2
 	(10)	 NOP
 	(11)	 NOP
-	(12)	S.D	+8(R1),  F4		
-	(13)	BNEZ	R1,	Loop		
-~ on réordonne, et comme il n'y a pas d'interdépendances, 
-Loop:	(1)	L.D	F0,	0(R1)		
-	(2)	L.D	F5,	-8(R1)		
-	(3)	ADD.D	F4,	F0,	F2	
+	(12)	S.D	+8(R1),  F4
+	(13)	BNEZ	R1,	Loop
+~ on réordonne, et comme il n'y a pas d'interdépendances,
+Loop:	(1)	L.D	F0,	0(R1)
+	(2)	L.D	F5,	-8(R1)
+	(3)	ADD.D	F4,	F0,	F2
 	(4)	ADD.D	F9,	F5,	F2	; pas besoin de nop pcq pas de dépendances
 	(5)	ADDUI	R1,	R1,	-16	; on a le
-	(6)	S.D	+16(R1),  F4		
-	(7)	S.D	+8(R1),  F4		
-	(8)	BNEZ	R1,	Loop		
+	(6)	S.D	+16(R1),  F4
+	(7)	S.D	+8(R1),  F4
+	(8)	BNEZ	R1,	Loop
 ~ dérouler encore plus, fera gagner 2 cycles, pour plus de registres utilisés, plus de code (!! Attention au Cache également)
 --------------------------------------------------------------------------------
 ** Mon Dec 13
@@ -111,25 +111,22 @@ VLIW
 		Pas portable, car dépend de l'architecture et du nombre d'unités fonctionnelles de chaque type
 		Des caches miss bloquent 4 tout le processeur
 		Densité de code:
-			En moyenne on a une utilisation de 50% du vliw, => 50% de code qui sert à rien 
+			En moyenne on a une utilisation de 50% du vliw, => 50% de code qui sert à rien
 			une solution => taille variable et 1bit qui dit si une partie de l'instruction est exécutée en parallèle
 			Le matériel doit alors "rétablir" l'instruction dans sa longueur
 	On ne dépasse pas 4 niveaux de parallélisme
-	Du fait des latences différentes entre les instructions, quand on lit une valeur à l'instruction suivante, 
+	Du fait des latences différentes entre les instructions, quand on lit une valeur à l'instruction suivante,
 	on ne sait pas en regardant sans informations, quelle est sa valeur.
 Dynamic Scheduling
 	Les instructions lise la dernière valeur écrite
 	But: éviter les aléas et les ajouts de "bulles"(nop) dans le pipeline
 	L'aspect dynamique est important car on ne sait pas forcément la valeur à l'avance
-			
-			
 
 
-		
-                                                                               
-                                                                               
-                                                                               
-                                                                               
+
+
+
+
 
 
 

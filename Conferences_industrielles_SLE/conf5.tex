@@ -37,7 +37,7 @@ Domaines : téléphonie, téléphonie mobile, cartes bancaires, fidélité, TV p
 
 Utilisation sécurisé : authentification de l'utilisateur (le téléphone permet de l'identifier)
 
-Acteurs : Gemalto (1er), Oberthur ... => concurrence chinoise 
+Acteurs : Gemalto (1er), Oberthur ... => concurrence chinoise
 
 594 millions de cartes SIM actives. plusieurs cartes SIM par portable (plusieurs abonnements) : 1,5 Millards d'abonnés, 1,2 Milliards de téléphones vendues par an (100 millions par moi), 2,4-2,5 Milliards cartes SIM par an.
 La carte SIM n'apprtient pas à l'utilisateur.
@@ -72,7 +72,7 @@ Normalisation de l'existance de certains fichiers.
 Certains fichiers sont directement sous la racine (ex : code pin, cote bancaire ...) : fichiers très protégés.
 Dès qu'il ya un défaut sur la carte ou dans son fonctionnement, elle est tuée pour éviter le piratage ou autres : pas de prise de risque sur l'intégrité de la carte.
 
-Facilité pour l'opérateur pour tuer la carte car dès la déclaration, la responsabilité de l'activité de la carte est l'opérateur : la carte devient donc hors service.
+Facilité pour l'opérateur pour tuer la carte car dès la déclaration de perte, la responsabilité de l'activité de la carte est l'opérateur : la carte devient donc hors service.
 
 La carte ne peut être craquée sans fuite d'information sur la carte de la part du constructeur / opérateur.
 
@@ -103,12 +103,19 @@ Les fréquences sont dans la carte sim. Ainsi que les réseaux interdits (résea
 Chaque carte a un numéro d'authentification (IMSI) (autre que le numéro de tel) et une clé secrète (KI) qui sont stockés dans la base de données de l'opérateur.
 
 cryptage A3A8 pour générer un nombre aléatoire dépendant de la clé pour faire une comparaison résultat carte et opérateur => permet l'authentification (échec = carte fichue) => TMSI (identité temporaire).
-IMSI et TMSI permettent de localiser / identifier un utilisateur et particulièrement à l'étranger. Le téléphone portable permet d'être tracé en temps réel : données possédés par l'opérateur et pouvant être obtenues par les autorités. 
+IMSI et TMSI permettent de localiser / identifier un utilisateur et particulièrement à l'étranger.
+Le téléphone portable permet d'être tracé en temps réel : données possédés par l'opérateur et pouvant être obtenues par les autorités.
 
 \section{SIM toolkit}
 
 VAS - STK (sim toolkit) app
-La carte prend la main sur le mobile. Des choix sont proposés au mobile (puis utilisateur). Permet une facilité d'accès à des serveices données par l'opérateur sans passé par le télphone : populaire de la fin des années 90 à 2005. Les commandes se résument à la base (get status, input, inkey, texte affiché ...). Cependant la communication se fait par clé de sécurité. Permet une communication internet local (infos envoyés par l'operateur pendant la maintenance et local. ex : sonneries ...) : l'espace est très limité et très encadré par l'opérateur.
+La carte prend la main sur le mobile.
+Des choix sont proposés au mobile (puis utilisateur).
+Permet une facilité d'accès à des serveices données par l'opérateur sans passé par le télphone~:
+	populaire de la fin des années 90 à 2005.
+	Les commandes se résument à la base (get status, input, inkey, texte affiché ...).
+	Cependant la communication se fait par clé de sécurité.
+	Permet une communication internet local (infos envoyés par l'operateur pendant la maintenance et local. ex : sonneries ...) : l'espace est très limité et très encadré par l'opérateur.
 Actuellement, la carte a évolué et son architecture a changé car de nombreuses applis sont disponibles : santé, bancaire...
 En france, il y a dispute entre banques, opérateurs ... pour savoir à qui appartiendra la carte. A l'étranger, il s'agit de l'opérateur qui contrôle et les autres installent leur appli sur la carte.
 

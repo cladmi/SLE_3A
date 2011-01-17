@@ -1,8 +1,4 @@
-
-
-
 **Wed Oct 6
-
 ==Gaetan
 Temps
 Objectif : ordonner les événements
@@ -13,7 +9,7 @@ Objectif : ordonner les événements
 
  PC : quartz
  	boot : heure récupérée par le système qui s'en occupe lui même par la suite
-	runtime :  
+	runtime :
 		RDTSC : (ASM) : Timestamp Counter : compte le nombre de clock déclenchés depuis le boot
 			-> relatif au boot
 			-> changement de fréquence
@@ -33,14 +29,14 @@ Algorithmes de synchronisation :
 	 1) Temps de communication entre les machines
 	 2) Choix de la machine référente ?
  Cristian : 1 serveur de référence, 1 client se met à l'heure.
-			T2			T3	
+			T2			T3
  Server ----------------+-----------------------+-------------------------------
                        /|		 	|\
                       / |		 	| \
                      /  |			|  \
                     /   |			|   \
  Client -----------+----+-----------------------+----+---------
-  		  T1 D1				  D2  T4		
+  		  T1 D1				  D2  T4
  En supposant D1~D2, D = (D1+D2)/2
 	 Correction à effectuer :
 	  T4 + THETA = T3 + Delta
@@ -53,7 +49,7 @@ Algorithmes de synchronisation :
  	Organisé en strates :
 	  Niveau 0 : horloges atomiques (pas de synchro, pas de réseau)
 	  Niveau 1 : PCs : reçoivent le temps du niveau 0, connectés à internet.
-	  Niveau 2 : NTP pour déterminer le temps 
+	  Niveau 2 : NTP pour déterminer le temps
 	  Niveau 3 : Reçoivent les requêtes du reste du monde
 	10ms de décalage par internet, 200 microsecondes en locale
   Algorithme : Pool de sources
@@ -66,7 +62,7 @@ Algorithmes de synchronisation :
 	   for (i = 1; i <= n; i++) {
 	   	int = int - type[i];
 		if (int > best) {
-			best = int; 
+			best = int;
 			start = offset[i];
 			end = offset[i+1];
 		}
@@ -75,14 +71,14 @@ Ordre sur les événements / messages
  Idée : identifier les relations de causalité
  	Deux Événements sur la même machine sont forcément ordonnés
 	La réception d'un message a toujours lieu après son envoi
-	Transitivité 
+	Transitivité
  Modèle de processus
   Pi : processus
   e1i, e2i, … eni événements
   Tout changement local est un événement
   Tout envoie/réception aussi
   e1i -> e2i : e1i arrivé avant e2i
-Horloge de Lamport : 
+Horloge de Lamport :
    chaque process possède un compteur (LC)
    chaque événement incrémente le compteur
    Envoie : LCi++ -> timestamp message
@@ -91,31 +87,31 @@ Horloge de Lamport :
    Si a->b alors LCa < LCb
 
 ----------------------------------------------------------------------
-** Wed Oct 13		
+** Wed Oct 13
 
 == Gaëtan
 Examen systèmes répartis
 	1 Fondamentaux
 	1.1 Gestion de temps
 Q1
-    1                         2                 8                     
-     m1                      m2                m3               
+    1                         2                 8
+     m1                      m2                m3
 1 ---+------------------------+----------------+---------------------
-   0  \                        \              /                         
-      1\−−−−−−−−−−−−−−\         \2           /                                
-        |    3 m4  m5 4\         \          /   m3 8                    
+   0  \                        \              /
+      1\−−−−−−−−−−−−−−\         \2           /
+        |    3 m4  m5 4\         \          /   m3 8
 2 ------+-------+--+----\---------+--------/----+--------------------
-   0    m1     /    \    \        m2      /    /                         
-        2     /2     \4   \       5      /_7__/                          
-             /        \    \            /                              
+   0    m1     /    \    \        m2      /    /
+        2     /2     \4   \       5      /_7__/
+             /        \    \            /
 3 -----+----+----------+----+----------+-----------------------------
-   0   |    m4         m5    m1        m3                               
-       |    2          5     6          7                              
-       1                                                               
+   0   |    m4         m5    m1        m3
+       |    2          5     6          7
+       1
 Totally ordered multicast : N Processus
 	- Chaque message est envoyé à tout le monde
 	- canal de communication FIFO et Loss-less
-	- Sur chaque Pi	
+	- Sur chaque Pi
 		- LCi
 		- chaque message est timestampé avec LC
 		- à la reception d'un message un "ack" est envoyé à tout le monde
@@ -123,7 +119,7 @@ Totally ordered multicast : N Processus
 	- un message n'est délivré à l'application que si
 		- tout le monde a envoyé un "ack"
 		- le message est le plus petit timestamp
-	- Si deux messages ont la même horloge, il faut un moyen de les ordonner 
+	- Si deux messages ont la même horloge, il faut un moyen de les ordonner
 	  de la même façon sur toutes les machines. Ex : id machine
 Vector Clocks :
 	- chaque processus possède son vecteur de compteurs
@@ -149,8 +145,8 @@ Distributed Hash Table
 	TEIDE+Kiosk
 	Projet C : pthread, socket, table de hash
 	Rapport :
-		qq pages, 
-		protocole de communication, 
+		qq pages,
+		protocole de communication,
 		choix d'implémentation (argumentés)
 		Description des parties réalisées
 	3 personnes max
@@ -185,7 +181,7 @@ Sockets
 		  AF_NETLINK		Communication avec le kernel
 	type : 	SOCK_STREAM		mode connecté (FIFO, loss-less) TCP
 		SOCK_DGRAM		mode non-connecté UDP
-		SOCK_RAW		
+		SOCK_RAW
 	Protocole : domain-dependent
 		bind() : associe un socket à une addresse locale
 		listen() : déclence l'écoute sur la socket
@@ -206,7 +202,7 @@ Mémoire distribuée
 			!
 			=> Pas performant
 		b)Cache
-			P1 _r(x)-----1_______w(x)2__________________  
+			P1 _r(x)-----1_______w(x)2__________________
 			     \      /         \
 			C1 ~~~\~~~~x=1~~~~~~~~~x=2~~~~~~~~~~~~~~~~~~
 			       \  /             \ update
@@ -223,32 +219,32 @@ Mémoire distribuée
 		Déviation d'ordre
 		~~
 		Cohérence Séquentielle
-			Toute exécution est telle que les opérations pour tous les processus 
+			Toute exécution est telle que les opérations pour tous les processus
 			peuvent être placées dans un ordre qui respecte l'ordre local
 			~
 		Pi 	Ri(x)a : lecture de la variable x : VALEUR a
-			Wi(x)a : écriture dansla variable x la valeur a 
+			Wi(x)a : écriture dansla variable x la valeur a
 			~
-			P1 ___w1(x)a_____________________________ 
-			P2 __________w2(x)b______________________ 
-			P3 _______________r3(x)b_r3(x)a__________ 
-			P4 _______________r4(x)b_r4(x)a__________ 
+			P1 ___w1(x)a_____________________________
+			P2 __________w2(x)b______________________
+			P3 _______________r3(x)b_r3(x)a__________
+			P4 _______________r4(x)b_r4(x)a__________
 			->
 			Ordre total _w2(x)b_r3(x)b_r4(x)b_w1(x)a_r4(x)a_r3(x)a
 		Cohérence causale
 			Les ÉCRITURES potentiellement corrélées doivent être
 			vues par tous les processus dans le même ordre.
 			~
-			P1 ___w1(x)a______________________________________ 
-			P2 __________r2(x)a_w2(x)b________________________ 
-			P3 ________________________r3(x)a_r3(x)b__________ 
-			P4 ________________________r4(x)a_r4(x)b__________ 
+			P1 ___w1(x)a______________________________________
+			P2 __________r2(x)a_w2(x)b________________________
+			P3 ________________________r3(x)a_r3(x)b__________
+			P4 ________________________r4(x)a_r4(x)b__________
 			~
 			~
-			P1 ___w1(x)a_____________________________ 
-			P2 __________w2(x)b______________________ 
-			P3 _________________r3(x)a_r3(x)b________ 
-			P4 _________________r4(x)b_r4(x)a________ 
+			P1 ___w1(x)a_____________________________
+			P2 __________w2(x)b______________________
+			P3 _________________r3(x)a_r3(x)b________
+			P4 _________________r4(x)b_r4(x)a________
 			~
 			Pex :	P1.P3 <---reseau-qui-lague---> P2.P4
 		Séquentielle => causale
@@ -262,7 +258,7 @@ Proposition de cours
 		NFS
 	Distributed Operating System
 		BarelFish
-	BD distribué 
+	BD distribué
 		Chord, haystack
 	Cloud Computing
 		Amazon EC2, Google, Azure
@@ -270,24 +266,24 @@ Proposition de cours
 ** Wed Nov 10
 == Gaëtan
 Barrières mémoire (mem_fence / sync)
-	Permet à un processus de se bloquer jusqu'à ce que toutes les 
-	opérations d'écritures qu'il a déjà réalisé soient 
+	Permet à un processus de se bloquer jusqu'à ce que toutes les
+	opérations d'écritures qu'il a déjà réalisé soient
 	prises en compte par la mémoire.
 	Système: implémenté par le matériel.
-	Mémoire distribuée: 
+	Mémoire distribuée:
 		- conflit
 		- force le système à "flusher" toutes les opérations en attente
 		  (ou provoque un blocage trop long)
-	Peut être utilisé pour implémenter "facilement" 
+	Peut être utilisé pour implémenter "facilement"
 	de la communication entre processus
 Exclusion Mutuelle
-	La façon la plus simple d'implémenter une exclusion mutuelle c'est 
+	La façon la plus simple d'implémenter une exclusion mutuelle c'est
 	l'élection
-	Élection: Un groupe de process, d'un commun accord, choisissent 
+	Élection: Un groupe de process, d'un commun accord, choisissent
 		1 (et un seul) Leader.
-			-> soit l'élection réussit, 
+			-> soit l'élection réussit,
 			   et un processus devient L
-			-> soit l'élection rate, 
+			-> soit l'élection rate,
 			   et aucun process ne devient L
 		La nature du process choisit n'importe peu
 		ex: section critique
@@ -300,12 +296,12 @@ Exclusion Mutuelle
 			- si le maître tombe  en panne, les répliquas élisent
 			  le nouveau maître
 		Impossibilité de base:
-			Si tous les processus sont strictement 
+			Si tous les processus sont strictement
 			identiques (code + mémoire)
-			Alors il n'existe aucun algorithme déterministe 
+			Alors il n'existe aucun algorithme déterministe
 			permettant de réaliser une élection.
 	Algo sur anneau de processus: (unidirectionnel)
-		chaque processus possède un UID 
+		chaque processus possède un UID
 		(unique à chaque processus, comparaison entre UID possible)
 		- chaque processus envoie son UID sur l'anneau
 		- à la réception, le processus compare son UID à celui reçut
@@ -321,55 +317,55 @@ Exclusion Mutuelle
 		Gère les pannes "fail/stop"
 		- Un ou plusieurs processus déclenchent l'élection
 		  en envoyant un message aux UID plus grands
-		- À la réception de ce message on 
+		- À la réception de ce message on
 			envoi un ACK au "déclencheur" (permet de voir qui est en vie)
 			envoi élection à tous les processus de plus
 			haut UID
-		- Si aucun ACK n'est reçu, je suis le leader 
+		- Si aucun ACK n'est reçu, je suis le leader
 		  (et si il mets 1000 ans ?)
 Pannes
-	- fail/stop : tout état d'erreur stoppe le process. 
+	- fail/stop : tout état d'erreur stoppe le process.
 		=> aucune communication erronée
 	- Byzantine : État corrompu de processus déclenchant des communications
-	 	et/ou des opérations erronées	 
+	 	et/ou des opérations erronées
 ~
 Réplication: solution classique au problème de la panne
-	Transparent: 
-		un client n'est pas forcément 
+	Transparent:
+		un client n'est pas forcément
 		conscient de l'apparition d'une panne
 		- N serveurs pour gérer N-1 pannes simultanées
 		- quand une panne est détectée il y a réparation et réinsertion
 	Active: client discute avec tous les serveurs en même temps
-	Primaire: client ne discute qu'avec le primaire, 
+	Primaire: client ne discute qu'avec le primaire,
 		qui est remplacé lors d'une panne, par un des répliquas
 --------------------------------------------------------------------------------
 ** RPC
 == Gaëtan
 Remote procedure Call
 19?? -- phrase de présentation : rendre ~~ aussi simple qu'un appel de fonction
-fonction : 
+fonction :
 	 - paramêtre
 	 - code
 	 - valeur de retour
 -> Local  : support archi pour manipuler une pile d'appel
 -> remote : simuler tout ça en software
-Stub : code local qui permet à un client de faire un appel de foction classique 
+Stub : code local qui permet à un client de faire un appel de foction classique
 	pour déclencher un RPC
-Skel : code local au serveur, écoutant l'arrivée du RPC et 
+Skel : code local au serveur, écoutant l'arrivée du RPC et
 	appelant le code serveur correspondant
-+−−−−−−−−+        +−−−−−−−−+                                                                        
-| Client |        |Serveur |                                                                        
-+−−−−−−−−+        +−−−−−−−−+                                                                        
- 1|   ^              ^  |6                                                    
-  V   |10           5|  V                                                     
-+−−−−−−−−+        +−−−−−−−−+                                                                        
-|  Stub  |        |  Skel  |                                                                       
-+−−−−−−−−+        +−−−−−−−−+                                                                      
- 2|   ^              ^  |7                                                    
-  V   |9     3      4|  V                                                     
-+−−−−−−−−+------->+−−−−−−−−+                                                                       
-| Réseau |   8    | Réseau |                                                                                
-+−−−−−−−−+<-------+−−−−−−−−+                                                                      
++−−−−−−−−+        +−−−−−−−−+
+| Client |        |Serveur |
++−−−−−−−−+        +−−−−−−−−+
+ 1|   ^              ^  |6
+  V   |10           5|  V
++−−−−−−−−+        +−−−−−−−−+
+|  Stub  |        |  Skel  |
++−−−−−−−−+        +−−−−−−−−+
+ 2|   ^              ^  |7
+  V   |9     3      4|  V
++−−−−−−−−+------->+−−−−−−−−+
+| Réseau |   8    | Réseau |
++−−−−−−−−+<-------+−−−−−−−−+
 ~
 1 Client appelle la fonction stub (passage de paramêtres)
 2 Marshalling : encapsuler les paramêtres pour les envoyer sur le réseau
@@ -384,11 +380,11 @@ Problème : passage de paramêtres/valeur de retour
 	Communication : conversion d'une architecture à une autre
 Annuaire :
 	- serveurs s'enregistrent
-		- fonction fournies 
+		- fonction fournies
 		- nom
 	- client
 		- recherche de serveurs
-Un RPC peut s'exécuter 
+Un RPC peut s'exécuter
 	0 Crash serveur
 	1 OK
 	Plusieurs fois perte de réponses
@@ -424,12 +420,12 @@ Rappels RPC & Sockets
 MOM
 	- Communication à base de messages
 	- Transformation des messages à la volée
-	- Gestion de la persistance des messages, 
+	- Gestion de la persistance des messages,
 		gérer le cas où l'envoyeur ou le destinaire n'est pas actif (sauvegarde)
-	+ Message Queues 
+	+ Message Queues
 		méchanisme qui permet au message d'exister en dehors des applications
-	+ Message Broker 
-		la couche middleware qui s'occupe de gérer les messages 
+	+ Message Broker
+		la couche middleware qui s'occupe de gérer les messages
 		qui ne sont pas dans les applications (transformer les messages,…)
 I-Message Queues
 	- Protocole de communication asynchrone
@@ -446,7 +442,7 @@ I-Message Queues
 		- Filtres : une destination ne reçoit que certains messages
 		- Delivery : au plus 1 fois ou au minimum 1 fois
 		- Routage
-		- Batch : regroupe les messages 
+		- Batch : regroupe les messages
 ++++++++++++++++++++++++++++++++++++++++
 +++ À découvrir pour but culturel    +++
 +++	nmap                         +++
@@ -454,7 +450,7 @@ I-Message Queues
 +++	metasploit                   +++
 ++++++++++++++++++++++++++++++++++++++++
 Architecture
-	Centralisée : 1 Broker qui gère toutes les files 
+	Centralisée : 1 Broker qui gère toutes les files
 		- on considèle qu'il est "facile" d'accès
 		  (réponse rapide, peu de pannes, environnement contrôlé)
 	                  Broker
@@ -463,22 +459,22 @@ Architecture
 	|Envoie|       | file_2 |       |Réception|
         +−−−−−−+       |   …    |       +−−−−−−−−−+
                        +−−−−−−−−+
-		- Files dynamiques : 
+		- Files dynamiques :
 			création à la demande des files
 			destruction
 			listing des files courantes
 		- Tolérance aux pannes
 			- persistance forte
-		- Dans la mesure où l'environnement est centralisé, 
+		- Dans la mesure où l'environnement est centralisé,
 		  possibilité de "geler" le système (configuration)
 		- Possibilité pour les clients de s'enregistrer auprès du Broker
 		  afin de recevoir les messages de certaines files
-	Décentralisé : 
+	Décentralisé :
 		- Files installées chez les clients
 		- Transformation est critique
 		- Broadcast + Multicast
-		(dessin avec des clients qui ont des files et une 
-		communication avec des broker qui ont des files également et 
+		(dessin avec des clients qui ont des files et une
+		communication avec des broker qui ont des files également et
 		qui communiquent entre eux)
 	    +----+           +----+
 +-------+   |+--+| +-------+ |+--+|
@@ -504,7 +500,7 @@ I-Push/Pull
 II-Publish/Subscribe
 	- On peut récupérer des messages qui matchent un topic
 --------------------------------------------------------------------------------
-** SUNRPC - ONCRPC 
+** SUNRPC - ONCRPC
 == Gaëtan
 	Open Network Computing ~1980
 	Servit à implémenter à NFS
@@ -519,8 +515,141 @@ II-Publish/Subscribe
 		- Collections : Gather Reduce
 		- I/O
 		- Synchro
-
-
-
-			
+--------------------------------------------------------------------------------
+** Cloud Computing
+== Gaëtan
+1961: John MacCarthy : Cloud computing comme le courant, c'est là partout, tout le temps et on paye à la consommation
+Virtualisation : permet de mettre ce que veut le client dans une "boîte"
+	Amazon : pas de magasin => serveur a pas le droit de planter, sinon pas de clients
+		Noël => gros besoin de serveurs
+		Reste de l'année => 90% des ressources qui dorment
+			Rentabiliser les infrastructures présentes en les louant aux clients
+			Il faut isoler les applications des clients
+			Optimiser l'utilisation des ressources
+		NIST (organisme américain qui fait des standards,
+		pratique pour trouver des définitions correctes sur des termes informatique)
+Cloud computing:
+		Modèle pour fournir à des utilisateurs des ressources
+		en ligne, partagées et configurables.
+		Tout celà en impliquant le minimum d'interactions humaines
+		entre un utilisateur et le fournisseur
+	Caractéristiques actuelles du Cloud Computing
+		- On demand Self-Service:
+			un client peut unilatéralement réserver des ressources
+		- Accès en ligne le plus large possible
+		- Pool de ressources: le client n'a pas connaissance de l'emplacement
+			ou de la nature exacte des ressources occupées
+		- Élasticité: un client peut rapidement et de manière transparente augmenter ou diminuer
+		la quantité de ressources utilisées ~= ressources illimité
+		- Monitoring: la consommation des ressources est monitorée en temps réel et optimisée.
+		Le fournisseur et le client ont accès aux même informations.
+	Software as a Service - SaaS
+	Platform as a Service - PaaS
+	Infrastructure as a Service - IaaS
+	SaaS :
+		On fournit une application et ce qu'il y a derrière ?
+			google docs, google, picasa, … tout ce qui n'est pas une page statique
+	PaaS :
+		Plus orienté développeur: on peut poser une application
+			Google App Engine/serveur J2EE
+	IaaS :
+		Fournit des machines virtuelles sur lesquelles on peut faire ce qu'on veut
+			Amazon EC2 / Virtual Private Server
+	Deployement:
+		Private 	à l'utilisateur
+		Community	appartient à une communauté
+		Hybrid		Une partie publique et une communautaire
+		Public		Tout le monde a accès au pool
+SLA: Service Level Agreement
+	-> Disponibilité: 	Mean Time To Failure
+				Mean Time To Recovery
+	Dans le cloud, les services de monitoring, les coûts de consommation, et les fonctionnalités du cloud sont spécifiés par le SLA
+SaaS:
+	Accord de confiance entre le client et le fournisseur qui est problématique
+PaaS:
+	Google App Engine
+		Construire et déployer des applications Java et/ou Python sur l'infrastructure Google
+		-> On ne paie que ce que l'on consomme (par tranche)
+		-> Sandbox : pas d'accès direct au Système, pas d'écriture disque, connexion par HTTP(S)
+			Pas d'écriture disque -> DataStore
+				N'est pas une BD relationnelle
+		-> API spécifique à la plateforme : - disque, caches mémoire, scheduling
+		-> objets définis par un type et un jeu de propriété
+		-> transactions
+		Cron Job + file de tâche
+Amazon Web Services
+	- Elastic Compute Cloud
+	- Simple Storage Service
+	EC2
+		Déploiement d'images virtuelles sur un jeu de machines chez Amazon
+		Instance: un type de machine
+			- quantité de RAM
+			- le nombre de processeurs (ECU ~= 1 niveau de benchmark)
+			- la qualité des I/O
+			-> pas de persistance: les écritures sont perdues entre deux déploiement de la même image
+	S3
+		Façon de faire de la persistence (pex: DropBox)
+		Stockage dans le nuage
+			API REST (GET/PUT HTTP pour poser des données)
+			Fichiers limités à 5To + 2ko meta-données
+			Les fichiers sont organisés en "bucket" -> associé à une application ou a un compte
+			ACL (Acces Control List)
+			1Gb pendant 1 mois == 0.14 dollars
+** Wed Jan 05
+== Gaëtan
+Distributed Operating Systems
+	Définitions:
+		NIC: Network Integrated Controller: == carte réseau avec un CPU
+		CUDA: interface de programmation pour carte graphique
+		Plan9: Poussé unix au maximum, tout est fichier
+		NUMA(architecture): Non Uniform Memory Access - accès mémoire peut coûter plus cher qu'un autre
+			des cœurs sont groupés ensemble, et des barrettes de ram sont associées à 1 seul groupe
+			Accès à la mémoire d'un autre groupe plus chère que l'un des siens
+		JIT: Compilation Just In Time: Langage interprétés == lent, solution faire de la compilation à la volée
+		Noyau Monolythique: Kernel gère tout, l'abstraction hardware + gestion de partage des ressources + driver.
+			(si un driver plante, vu qu'il fait partie du noyau, le kernel plante)
+		Microkernel: on enlève des choses à l'exokernel, drivers passent un user => changement de contextes + communications user kernel doivent être cheap.
+		Exokernel: garde que l'abstraction hardware, on enlève tout ce qui est politique (aucun utilisés sur le marché actuellement)
+			(plus de libc, plus d'alocateur mémoire virtuelle, pas drivers disque)
+	Un os distribué c'est:
+		"On va fournir l'illusion qu'un système distribué est un système qui tourne sur la machine"
+		Single Image System
+		Agrégat virtuel (une vue de l'esprit) des différents OS déployés
+		sur un ensemble de nœuds (de calcul) indépendants mais communicant à travers un réseau (dédié).
+		Fournir une vue unifiée de système et des ressources disponibles.
+OS traditionnel:
+	+----------+
+	|   USER   |
+	+----------+
+	+----------+
+	|    OS    |
+	+----------+
+	+----------+
+	| HARDWARE |
+	+----------+
+  ~
+  ~
+OS distribué:
+	+---------------------------------------------------+
+	|                      USER                         |
+	+---------------------------------------------------+
+	+---------------------------------------------------+
+	|          COMPOSANTS SYSTÈMES / MANAGERS           |
+	+---------------------------------------------------+
+	+----------+                             +----------+
+	|  KERNEL  |                             |  KERNEL  |
+	+----------+                             +----------+
+	+----------+                             +----------+
+	| HARDWARE |                             | HARDWARE |
+	+----------+                             +----------+
+Kernel: les communications sont au cœur de son design, IPC/conversation-réseau
+	(y compris les communications réseaux vu qu'elles sont essentielles)
+Managers: communication entre machines (routage, …) et entre les processus
+	ressources mémoires, disques, etc
+	processus: PID
+Il faut trouver un équilibre entre ce qu'on donne comme transparence et la compléxité du système et donc la performance
+Exemples:
+	Xtreem OS: tous les laboratoires européens utilisent toutes les machines et les vois comme un seul linux
+	HeliOS:
+	Corey:
 
