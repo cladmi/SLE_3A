@@ -1,13 +1,13 @@
 ** Tue Dec 07
 == Gaëtan
-Introduction 
+Introduction
 	Besoin de sécurité pour les systèmes critiques (avionique, nucléaire)
 	pour les systèmes hautes performances (Complexes => pas fiable)
 	Pour la confidentialité (RFID, système bancaire)
 	=> presque partout
 	Le logiciel a prit une place de + en + importante => tolérance aux pannes également
 Matériel tolérant aux fautes
-	Histoire 
+	Histoire
 		Début ~1950: Military and space applications
 		Semiconductor: plus de circuits dans la même puce => plus fiable => plus complex
 			Airbus A320, Boeing 777 sont parmis les choses les plus évoluées en matière de résistance
@@ -33,13 +33,13 @@ Matériel tolérant aux fautes
 		Facteurs externes: radiations, orage, erreur de manipulation
 Défauts:
 	Défauts systématiques: pendant le procédé de masquage. Collages, ouvertures, court-circuit
-	Défauts paramétriques: courant de fuite !=, plus lent, dégradation des performances, 
+	Défauts paramétriques: courant de fuite !=, plus lent, dégradation des performances,
 		vieillissement accéléré, consommation plus grande
 		Impact des erreurs de fabrication
 		pour un même circuit en 130nm
-			~30% de variation de fréquence et 5~10x plus de consommation 
+			~30% de variation de fréquence et 5~10x plus de consommation
 		30° de différence => 7% d'augmentation des délais
-		Solution => mettre des capteurs, si trop chaud: 
+		Solution => mettre des capteurs, si trop chaud:
 			on souffle, on baisse la VDD et donc on baisse la fréquence
 Aggressions externes
 	Bruits
@@ -84,12 +84,12 @@ Logiciels résistants aux fautes
 ** Gaëtan
 Tolérance aux fautes
 	Éviter les fautes
-		+ Utiliser des méthodes de design, validation formelle, 
+		+ Utiliser des méthodes de design, validation formelle,
 		réutilisation de modules, programmation structurée
 		+ Règles de fabrication, de correction
 	Prévoir les fautes
 		+ Modèles mathématiques
-	Éviter les fautes 
+	Éviter les fautes
 		+ Enlever les produits défectueux
 Les tests
 	En informatique, tout produit manufacturé est testé en matériel
@@ -105,7 +105,7 @@ Les tests
 		Testeur : ATE Automatic test équipement
 			tests sous pointes ou tests en boitiers
 		Deux périodes :
-			tests de debug, on fabrique quelques circuits et on les debug (période de 2 ans environ) 
+			tests de debug, on fabrique quelques circuits et on les debug (période de 2 ans environ)
 			test de validation de chaque produit après (à la chaîne)
 	Tests de types:
 		Yield learning : preuve du processus de fabrication
@@ -115,20 +115,20 @@ Les tests
 Whatever method is used, faults (HW) and bugs (SW) still remain
 	Introduire des techniques lors du développement pour tolérer des erreurs qui arriveraient
 	HW : redondance, avec spare/repair, redondance temporelle
-	SW : checkpoint and rollback, 
+	SW : checkpoint and rollback,
 	Ajouter dans l'application, des mécanismes pour gommer les fautes
 Fault Tolerance
 	Redondance : temporelle qui concerne les erreurs temporaires, avec des retry et opérations répétées
 	Redondance : information
 		static or dynamic
 	Redondance Statique ->
-		Automatic system failure free 
-			\-> on masque les erreurs ou on fait de la redondance massive, 
+		Automatic system failure free
+			\-> on masque les erreurs ou on fait de la redondance massive,
 				coûte très cher, masque des erreurs multiples
 				Bien pour les systèmes temps réels
 	Redondance Dynamique
 		Detection ou lecture ->
-			\-> repair off line	
+			\-> repair off line
 			\-> repair on line (avec le logiciel)
 				- auto correction
 				- reconfiguration, commuter sur des réserves (switch on spare), nouvel état
@@ -149,7 +149,7 @@ Triple modular Redundancy
 	Problèmes
 		Résultats peuvent tous légèrement différents => float, on fait quoi ?
 		Capteurs différents
-		En valeur analogique : 
+		En valeur analogique :
 			vote en valeur moyenne
 			écarter les valeurs trop différentes (différence dans les MSB)
 		Coût : 	N-redundancy, (N-1)x100%
@@ -167,16 +167,16 @@ Triple modular Redundancy
 	Hamming codes around a memory
 	Les mémoires peuvent garder des erreurs très longtemps, donc il peut être important de les protéger en priorité
 	Codage de Hamming
-		avec detection 2 bits et correction de 1 
+		avec detection 2 bits et correction de 1
 		R tel que 2^R >= K + R + 1
 		K = bits de données
 		11b -> 4 contrôle
 		128b -> 8 contrôle
 		On essaye de rester <~ 10%
-		  2^ 0  1     2       
+		  2^ 0  1     2
 		m = p1 p1 k0 p3 k1 k2 k3 … k10
 		matrice de Hamming = [r lignes n colonnes] = [1 en binaire, 2 en binaire, …, 15 en binaire]
-		Résoudre 
+		Résoudre
 		m x H^T = 0
 		Ou sinon, prendre les termes qui, dans leur décomposition binaire possèdent le bit d'indice i
 		p1 = p(2^0) = k3 + k5 + k7 + k9 + k11 + k13 + k15
@@ -191,7 +191,7 @@ Triple modular Redundancy
 			Si s != [0000], alors donne la position erronée
 			Décodeur : entrée en binaire, sortie en 1 parmi n, seule valeur fausse
 			Solution : on xor la sortie d'un décodeur (en enlevant le fil 0) avec la valeur que l'on a
-			!! S = [0100] peut être égale à [0001] + [0011], et la correction ne corrigera pas l'erreur 
+			!! S = [0100] peut être égale à [0001] + [0011], et la correction ne corrigera pas l'erreur
 				(on rajoute alors un bit de correction pour détecter ce cas)
 			Pénalisation de 2 cycles pour la correction d'erreur
 --------------------------------------------------------------------------------
@@ -200,13 +200,13 @@ Triple modular Redundancy
 Les codes CRC
 	g(x) polynôme générateur d'ordre (n-k) pour un code (n,k) avec le coefficient unitaire en (n-k)
 		n : nombre total de bits, k nombre de bits de donnée
-		Le polynôme générateur de g(x) est unique, X^n + 1 se divise par g(x) sans reste et 
+		Le polynôme générateur de g(x) est unique, X^n + 1 se divise par g(x) sans reste et
                 le coefficient dominant est x^(n-k) et il y a un terme en 1
 		Pex: (7,4) -> x³ + x + 1
 		Exemple pratique CRC
 		1+x⁷ = (1+x)(1+x+x³)(1+x²+x³)
 		(7,4) -> on a le choix entre (x³ + x + 1) et (x³ + x² + 1)
-		Les mots codes sont multiples de g(x) alors pour chaque code c(x) 
+		Les mots codes sont multiples de g(x) alors pour chaque code c(x)
 			c(x).g(x) = 0 modulo 1+x⁷
                             Bascules D (à décalage ?)
                            +----+      +----+    +----+
@@ -218,7 +218,7 @@ Les codes CRC
                 Entre les différents polynômes on choisit celui qui a le moins de termes car il fait moins de matériel
                 3) Correction : g(x) = X³+x+1
                 a) ctrl = 0
-                        v(x) -> buffer register 
+                        v(x) -> buffer register
 				7clk
 				Dans le registre de décalage pour calculer le syndrome
 			Soit une erreur sur position 7 e(x) = X⁶
@@ -261,17 +261,17 @@ Reconfiguration dynamique
 		first : good and quick detection mechanism
 		Second : have a very reliable switch to switch on spares resources
 			Moins cher que la reconfiguration statique
-		Avantages : 
+		Avantages :
 			On peut faire une isolation et un diagnostique
 			Réparation ON/OFF line et réinsertion
-		Sont utilisables sur des systèmes non-critiques car c'est long, 
+		Sont utilisables sur des systèmes non-critiques car c'est long,
 			Et elles visent les erreurs temporaires
 	Error detection: duplication and comparison
-	Problems : 
+	Problems :
 		weakest point :comparator
 		Out : agree/disagree
 Dynamic Reconfiguration
-	Pour Erreurs rares, pourquoi laisser tous les modules fonctionner 
+	Pour Erreurs rares, pourquoi laisser tous les modules fonctionner
 	(consommation de puissance, "gachis" de puissance de calcul -> peuvent être utilisés pour autre chose moins importantes, tant qu'il n'y a pas d'erreur)
 		Detections des erreurs, et si il y a une erreur, on va remplacer les modules erronés par des autres modules
 		Module de détection est très critique
@@ -287,7 +287,7 @@ Tri-Duplex technique
 Redondance Temporelle
 	Détecter et corriger les erreurs transitoires et de timing
 		Erreurs de timing causées par une VDD trop faible
-		On a une clock décalée, et si le changement de la donné se fait 
+		On a une clock décalée, et si le changement de la donné se fait
 		entre le rising edge de la clock normale et celui de la clock décalée, on lève une erreur
 		En pratique décalage d'environ 30%
 		C'est pas plus de 20 ou 30% de surface en plus
@@ -295,7 +295,7 @@ Time redundancy, shifted operands
 	Transient and permanent faults, detection on position i and or i-1
 		On décale les entrées d'un cran (shift left)
 		On passe l'ALU, (spéciale pour le cas)
-		et on reshift, 
+		et on reshift,
 		On compare ça avec la valeur sans shift et on voit si il y a une erreur sur un bit spécifique
 			Long (au moins 2 cycles, 3 si on fait la correction)
 		On fait ça en décalant 2 fois, comme ça on aura 3 données au final -> la normale, décalée de 1 et décalée de 2
@@ -304,5 +304,91 @@ Timing redundancy: inverted logic
 	très utiles pour les communications sur des données unreliable
 	Utilisé dans certains protocoles réseau en doublant le header (pex IP) plus en rajoutant un CRC5
 		Si erreur, on envoie un NON_ACK
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+La tolérance aux fautes dans le software
+Les fautes dans le SW
+	Pas de dégradation/vieillissement
+	Pas de fautes physiques dans le SW
+		Faut de conception du logiciel qui sont activées par des entrée de programme
+		Faute de spécifications
+	On les appelle bugs et sont la cause de la majorité des défaillances système.
+Au niveau de la densité du code,
+	pour un software bon, il y a environ 10 à 50 fautes pour lignes de code,
+	et de 1 à 5 fautes après les tests avec des outils automatiques
+Évitement ou prévention de fautes:
+	techniques artistiques => augmentation de la maintenance avec 60-60% du coût total du logiciel
+		modularité, partitionnement en modules qui permet facilement l'évolution
+		toute méthode de partitionnement facilite le test, la maintenance
+		~~
+Que faire avec les fautes du SW
+	Élimination de fautes
+		Utilisation des techniques de test et vérification, analyse de SW avec d'éliminer toute faute
+		Beaucoup de R&D actuellement
+Test et Vérification
+	proof of correctness : vérification formelle par l'induction mathématique (petits logiciels)
+		ne teste pas les contraintes temporelles
+	test conventionnels: vérification de la performance et de la fonctionnalité
+		mais pas exhaustifs
+		- Path testing : passer chaque chemin entre une entrée et une sortie
+		- branch testing:  chaque chemin entre un nœud et la sortie est traversé une fois
+		- functional testing: chaque fonction élémentaire est testée une fois
+		- special value testing: tests des valeurs susceptibles de créer des erreurs
+		- anomaly analysis: test de toutes les constructions de logiciels susceptibles de créer des erreurs
+		- interface analyse: test de tous les problèmes au niveau d'interface entre modules
+Difficulté dans les tests et vérification
+	aucunes de ces méthodes ne peut assurer le niveau de fiabilité nécessaire pour un logiciel utilisé dans une application critique ou de contrôle en temps réel
+~
+Conclusion => Tolérance aux fautes
+	Plusieurs techniques de protections
+	robustness, actions automiques, gérer des valeurs erronées
+	fault containment => éviter la propagation des erreurs
+	tolérance aux fautes => dynamiques statiques
+~
+Robustness
+	Fonctionner avec des valeurs qui sont hors du champ normal d'action, ou erronées
+	Action globales en cas du robustness
+		- on demande une nouvelle entrée
+		- on utilise la dernière valeur correcte, ou une valeur prédéfinie
+		- on utilise un flag pour notifier l'opérateur et faciliter le traitement de l'état erronée.
+System Closure
+	Aucune interaction n'est permise si elle n'est pas systématiquement autorisée
+	enlever toutes les restrictions avant qu'on puisse utiliser une donnée
+	But: limiter les propagations d'erreurs à travers un système fermé
+	très facile de détecter et éliminer toute faute : exemple la prison
+Tolérance aux fautes dynamiques
+	recouvrement == rollback, checkpoint, reboot,
+	détection d'une faute => plusieurs tests d'acceptation possible
+		le résultat doit passer un test d'acceptation
+		s'il réussit le test et continue
+		sinon abort et recouvrement
+	Construction du test d'acceptation:
+		tests simples qui doivent être rapides et faciles à implémenter
+		basé sur des critères qui ne dépendent pas de l'application
+		Contrôles de:
+			Timing
+			codage
+			à l'inverse
+			de structure
+			raisonnable
+		Watchdog => manière d'implémenter un timeout (on créé un objet qui test le timing et on le réutilise, c'est un objet réutilisable)
+	Implémentation des stratégies de détection
+		De manière ad-hoc -> faits par des gens expérimentes qui le font à la bouteille pour savoir où et quoi mettre
+			Impossible d'anticiper toutes les fautes, impossible de tout contrôler car long à exécuter
+		De manière structurée :
+			Construire des arbres de fautes (pas encore au point)
+Checkpointing et roolback
+	Deux approches:
+		Statique : sauvegarde de tous les états critiques d'un système
+			plusieurs checkpoints préétablis possibles
+		Dynamique : sauvegarde de toute modification de l'état du processus
+			Checkpoint établis pendant l'exécution
+	Difficulté = établir ce qu'on sauvegarde
+
+
+
+
 
 
