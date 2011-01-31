@@ -386,6 +386,71 @@ Checkpointing et roolback
 		Dynamique : sauvegarde de toute modification de l'état du processus
 			Checkpoint établis pendant l'exécution
 	Difficulté = établir ce qu'on sauvegarde
+How a Distributed Systems network looks like ?
+system Model:
+	Units == nodes
+	Interconnects == links between nodes
+Modèle de faute:
+	Nodes: défaillante ou down
+	Interconnect: défaillante ou down
+	Les ressources ne peuvent pas savoir si c'est le nœud ou le lien qui fonctionne mal
+	Objectifs:
+		Protéger les liens et les nœuds
+		Mesurer l'impact sur les performances
+			Nombre de fautes
+			Impact sur la longueur des routes (worst case, et moyen)
+système distribué tolérant aux fautes
+	Machine failure:
+		Heartbeat disant "I'm alive"
+		the total absence of messages == process death
+	network failure:
+		On peut par exemple utiliser la moitié des fils si certains sont cassés,
+		et sérialiser les données
+~~
+Achieving fault tolerance
+Global HW/SW Fault Tolerance Strategies
+	Checkpoint roolback
+		si un nœud fail, il va se remettre à un état précédent,
+		mais il a envoyé des messages après qu'il ai fail,
+		les autres ne sont donc pas cohérent avec le nœud
+		il faut donc rollback "d'autres" nœuds
+		-> Il faut revenir à un checkpoint global cohérent
+	Quand un des processus tombe en panne, il recharge son checkpoint précédent,
+	il va renvoyer un message (qu'il avait déjà envoyé) à un autre processus,
+	l'autre processus verra qu'il a déjà été envoyé, et donc le processus 2 retournera a son checkpoint précédent,
+	et les nouveaux messages qui seront renvoyés feront revenir les autres à d'autres checkpoint précédent jusqu'à avoir une cohérence globale.
+	Cas à éviter : messages orphelins et domino (cas précédent)
+	2ème cas à éviter: envoyer un message, faire un checkpoint avant d'avoir reçu une réponse,
+		ce 2ème message sera perdu et le processus qui aura fail, va fail continuellement,
+		car les autres processus auront supposeront qu'il a reçu un message qu'il n'a pas reçu, ce qui le rendra inconsistent
+	Une solution: synchronisation globale, on place un "epoch" autour == zone sécurisée où on interdit les communications à part celles pour la synchronisation.
+	la durée d'epoch doit être minimum
+L'argorithme en 2 phases
+		Élève un coordinateur
+		Q  -> coordinateur
+		Pi -> les autres processus
+		Phase 1 -> Q -> reg à tous les Pi checkp
+			-> Pi -> faire une tentative de chkp
+				-> Ack/Non ack
+		Phase 2 -> Q -> lit les ack / not ack
+			-> si tout les pi ont envoyé ACK
+			-> demmande commit
+			Si non Ack -> abort
+	existe en 3 phases pour intégrer les fails du coordinateur
+	des versions sans coordinateurs
+=> important, trouver l'algo qui donne le moins d'impact sur les performances
+Problème des généraux byzanthins ?
+	Il faut 3m + 1 ressources pouvant tolerer m ressources défaillantes
+	-> on envoie le même message à toutes les ressources,
+		et tout le monde choisit à la majorité
+
+
+
+
+
+
+
+
 
 
 
