@@ -1,0 +1,14 @@
+Réponse à la question 2 :
+
+
+Pour utiliser les script sur matlab, il faut les appelé juste dans l'ordre.
+1) mat_robot_v4
+	initialises les constantes
+2) Définir un vecteur d'échantillons de constantes d'échantillonnages. (ex T = [0 : 0.5 : 100])
+3) appeler la fonction calc_pole(T,kp_teta,ki_teta,l) dans une variable,
+4) tracer le plot des variables.
+
+En fait il faut suivre ce qui est fait dans le script, ou juste lancer le script après avoir chargé les constantes avec mat_robot_v4.
+Mathématiquement parlant, je calcule les pôles du dénominateur de la fonction de transfert après la transformé de z (s=(z-1)/zT -- à vérifier --).
+Puis je regarde pour un certain nombre de valeur d'échantillonage, si les pôles sont dans le cercle unitair (pôles sont complexe).
+Je n'ai pas encore regardé, mais je pense qu'il faut plutôt utiliser les matrices de Hurwitz, mais je sais pas les utilisés pour l'instant.

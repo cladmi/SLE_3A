@@ -1,0 +1,13 @@
+Les sources possibles d’imprécision dans le modèle du robot LEGO et de son contrôleur
+
+Imprécision du robot :
+	Distance entre les deux roues
+	Diamêtre des deux roues
+	Bruit des capteurs
+	Réactivité
+Contrôleur :
+	Coeffs d’action proportionnel kpteta
+	Coeffs d’action intégrale kiteta
+	Constante de temps
+	Période d’échantillonnage
+
