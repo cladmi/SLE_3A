@@ -1,0 +1,33 @@
+Question page 14
+
+Réalisation d'un arbitre prio statique décroissantes (0 max prio)
+1 Description niveau porte
+	s[0] = r[0]
+	s[1] = r[1] && (!r[0])
+	s[i] = r[i] && !(r[i-2] || r[i-1])
+2 Le temps de propagation augmente en m*portes 2 entrées (histoire de décodage après…)
+3 en VHDL => avec une boucle for et un booleen pour sortir de la boucle
+
+Arbitrage tournant
+1 m -> un shift de S bits dans un sens -> fixprio -> un shift de S bits dans l'autre sens -> encodeur -> log2n -> commande du mux
+	les shifts commandés par un compteurs avec S le nombre de décalages à faire
+2 S = log2(m) en moyenne
+
+Priorité Variable
+1 Solution 1 : utiliser 8 fix prio, 1 pour chaque valeur de priorité supplémentaire
+
+
+P1[2..0] 					     ->	|	   |
+Pj[2..0] -> décodeur qui garde K -> fixprio -+-	> OR ->	| fix_prio |--encode
+Pm-1[2..0]		    		     |       -> |          | 	|
+          		    		     |		->		|3 sel
+					     +----------->------Mx8----MUX ->>----------
+							->
+
+
+
+
+
+
+
+
